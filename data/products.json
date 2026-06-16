@@ -1,0 +1,1066 @@
+[
+    {
+        "id":  "aripi-curcan-pg-vid",
+        "name":  "ARIPI CURCAN PG VID",
+        "category":  "Pui",
+        "price":  18.1,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-caserola-oncos",
+        "name":  "ARIPI PUI CASEROLA ONCOS",
+        "category":  "Pui",
+        "price":  11.66,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-pg-2-5kg-slovacia",
+        "name":  "ARIPI PUI FARA VARF PG 2.5KG SLOVACIA",
+        "category":  "Pui",
+        "price":  15.48,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-pg-art",
+        "name":  "ARIPI PUI FARA VARF PG ART",
+        "category":  "Pui",
+        "price":  17.2,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-pg-art-yellow",
+        "name":  "ARIPI PUI FARA VARF PG ART YELLOW",
+        "category":  "Pui",
+        "price":  18.04,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-pg-art-sectionate-yellow",
+        "name":  "ARIPI PUI FARA VARF PG ART SECTIONATE YELLOW",
+        "category":  "Pui",
+        "price":  17.7,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-pg-sectionate-ro-cls-b",
+        "name":  "ARIPI PUI FARA VARF PG SECTIONATE RO (CLS B)",
+        "category":  "Pui",
+        "price":  6.6,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-prime-pg-1kg",
+        "name":  "ARIPI PUI FARA VARF PRIME PG 1KG",
+        "category":  "Pui",
+        "price":  13.26,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-vrac-ylw-ge",
+        "name":  "ARIPI PUI FARA VARF VRAC YLW GE",
+        "category":  "Pui",
+        "price":  16.82,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varfuri-vrac-moy-park",
+        "name":  "ARIPI PUI FARA VARFURI VRAC MOY PARK",
+        "category":  "Pui",
+        "price":  15.76,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aripi-pui-fara-varf-vrac-sectionate-ylw",
+        "name":  "ARIPI PUI FARA VARF VRAC SECTIONATE YLW",
+        "category":  "Pui",
+        "price":  16.1,
+        "unit":  "kg"
+    },
+    {
+        "id":  "ficat-pui-pg-0-5-kg-brz",
+        "name":  "FICAT PUI PG 0,5 KG BRZ",
+        "category":  "Pui",
+        "price":  8.82,
+        "unit":  "kg"
+    },
+    {
+        "id":  "ficat-pui-pg-0-5-kg-hu",
+        "name":  "FICAT PUI PG 0,5 KG HU",
+        "category":  "Pui",
+        "price":  7.71,
+        "unit":  "kg"
+    },
+    {
+        "id":  "gaina-rasa-grea-cong-slov-bg",
+        "name":  "GAINA RASA GREA CONG.SLOV/BG",
+        "category":  "Pui",
+        "price":  13.65,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-aripi-cu-spate-pg-yellow",
+        "name":  "IT ARIPI CU SPATE PG YELLOW",
+        "category":  "Pui",
+        "price":  10.66,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-aripi-pui-cu-spate-vrac-ylw-bax-10kg",
+        "name":  "IT ARIPI PUI CU SPATE VRAC YLW BAX 10KG",
+        "category":  "Pui",
+        "price":  9.93,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-aripi-pui-cu-spate-vrac-ylw-ladite-13kg",
+        "name":  "IT ARIPI PUI CU SPATE VRAC YLW LADITE~13KG",
+        "category":  "Pui",
+        "price":  9.7,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-pulpe-cu-spate-vrac-italia",
+        "name":  "IT PULPE CU SPATE VRAC ITALIA",
+        "category":  "Pui",
+        "price":  10.54,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-pulpe-inferioare-de-pui-bax-10kg",
+        "name":  "IT PULPE INFERIOARE DE PUI BAX 10KG",
+        "category":  "Pui",
+        "price":  11.04,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-pulpe-inferioare-pg-italia",
+        "name":  "IT PULPE INFERIOARE PG ITALIA",
+        "category":  "Pui",
+        "price":  13.88,
+        "unit":  "kg"
+    },
+    {
+        "id":  "it-pulpe-intregi-italia-pg",
+        "name":  "IT PULPE INTREGI ITALIA PG",
+        "category":  "Pui",
+        "price":  12.49,
+        "unit":  "kg"
+    },
+    {
+        "id":  "piept-dezosat-cas-oncos",
+        "name":  "PIEPT DEZOSAT CAS ONCOS",
+        "category":  "Pui",
+        "price":  30.52,
+        "unit":  "kg"
+    },
+    {
+        "id":  "piept-dezosat-cas-banat-bun",
+        "name":  "PIEPT DEZOSAT CAS BANAT BUN",
+        "category":  "Pui",
+        "price":  30.25,
+        "unit":  "kg"
+    },
+    {
+        "id":  "piept-pui-jumatati-dezosat-iqf-2-5kg-pg",
+        "name":  "PIEPT PUI JUMATATI DEZOSAT IQF 2,5KG PG",
+        "category":  "Pui",
+        "price":  26.86,
+        "unit":  "kg"
+    },
+    {
+        "id":  "piept-pui-dezosat-pg-oncos",
+        "name":  "PIEPT PUI DEZOSAT PG ONCOS",
+        "category":  "Pui",
+        "price":  28.58,
+        "unit":  "kg"
+    },
+    {
+        "id":  "piept-curcan-dezosat-pg-vid",
+        "name":  "PIEPT CURCAN DEZOSAT PG VID",
+        "category":  "Pui",
+        "price":  50.73,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pipota-cu-inimi-pg-medas",
+        "name":  "PIPOTA CU INIMI PG MEDAS",
+        "category":  "Pui",
+        "price":  8.27,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pipota-pui-pg-0-5kg-10kg-bax",
+        "name":  "PIPOTA PUI PG 0.5KG(10KG BAX)",
+        "category":  "Pui",
+        "price":  11.77,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pipota-si-inimi-cas-transavia",
+        "name":  "PIPOTA SI INIMI CAS TRANSAVIA",
+        "category":  "Pui",
+        "price":  12.76,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pui-grill-fermierului-ylw-cas",
+        "name":  "PUI GRILL FERMIERULUI YLW CAS",
+        "category":  "Pui",
+        "price":  24.98,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pui-grill-agricola-ylw-pui-fericit-cas",
+        "name":  "PUI GRILL AGRICOLA YLW (PUI FERICIT) CAS",
+        "category":  "Pui",
+        "price":  24.64,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pui-grill-pg-vid-crasna",
+        "name":  "PUI GRILL PG VID CRASNA",
+        "category":  "Pui",
+        "price":  15.2,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pui-grill-pg-transavia",
+        "name":  "PUI GRILL PG TRANSAVIA",
+        "category":  "Pui",
+        "price":  18.15,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-cu-spate-vrac-h",
+        "name":  "PULPE CU SPATE VRAC H",
+        "category":  "Pui",
+        "price":  9.82,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-cu-spate-vrac-pl",
+        "name":  "PULPE CU SPATE VRAC PL",
+        "category":  "Pui",
+        "price":  9.32,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-intergi-cu-sp-pg-art-hu",
+        "name":  "PULPE INTERGI CU SP PG ART HU",
+        "category":  "Pui",
+        "price":  13.26,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-intregi-fara-sp-pg-art-au-hyzza",
+        "name":  "PULPE INTREGI FARA SP PG ART AU/HYZZA",
+        "category":  "Pui",
+        "price":  14.04,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-dez-intregi-fp-cas-onc",
+        "name":  "PULPE DEZ. INTREGI FP CAS ONC",
+        "category":  "Pui",
+        "price":  24.86,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-cas-hyzza",
+        "name":  "PULPE INFERIOARE CAS HYZZA",
+        "category":  "Pui",
+        "price":  13.26,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-cas-transavia",
+        "name":  "PULPE INFERIOARE CAS TRANSAVIA",
+        "category":  "Pui",
+        "price":  18.2,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-pg-1kg-ro",
+        "name":  "PULPE INFERIOARE PG 1KG RO",
+        "category":  "Pui",
+        "price":  10.55,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-pg-1kg-hu",
+        "name":  "PULPE INFERIOARE PG 1KG HU",
+        "category":  "Pui",
+        "price":  13.6,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-pg-art",
+        "name":  "PULPE INFERIOARE PG ART",
+        "category":  "Pui",
+        "price":  14.37,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-pg-art-yellow",
+        "name":  "PULPE INFERIOARE PG ART YELLOW",
+        "category":  "Pui",
+        "price":  16.59,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-pg-2-5kg",
+        "name":  "PULPE INFERIOARE PG 2,5KG",
+        "category":  "Pui",
+        "price":  13.26,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-vrac-2x5kg",
+        "name":  "PULPE INFERIOARE VRAC (2x5KG)",
+        "category":  "Pui",
+        "price":  11.38,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-vrac-10kg-iqf-a",
+        "name":  "PULPE INFERIOARE VRAC 10KG IQF A",
+        "category":  "Pui",
+        "price":  12.1,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-vrac-10kg-cocorico",
+        "name":  "PULPE INFERIOARE VRAC 10KG COCORICO",
+        "category":  "Pui",
+        "price":  11.66,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-vrac-10kg-hu",
+        "name":  "PULPE INFERIOARE VRAC 10KG HU",
+        "category":  "Pui",
+        "price":  10.55,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-vrac-iqf-ylw-5kg",
+        "name":  "PULPE INFERIOARE VRAC IQF YLW 5KG",
+        "category":  "Pui",
+        "price":  14.82,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-intregi-fara-sp-vrac-ylm-au",
+        "name":  "PULPE INTREGI FARA SP VRAC YLM AU",
+        "category":  "Pui",
+        "price":  12.1,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-intregi-fara-sp-vrac-hyzza-bax-12-04kg",
+        "name":  "PULPE INTREGI FARA SP VRAC HYZZA BAX 12.04KG",
+        "category":  "Pui",
+        "price":  12.2,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-inferioare-curcan-pg",
+        "name":  "PULPE INFERIOARE CURCAN PG",
+        "category":  "Pui",
+        "price":  14.36,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pulpe-superioare-fara-spate-vrac-ylw-au",
+        "name":  "PULPE SUPERIOARE FARA SPATE VRAC YLW AU",
+        "category":  "Pui",
+        "price":  13.43,
+        "unit":  "kg"
+    },
+    {
+        "id":  "tacam-cu-aripi-avi-top",
+        "name":  "TACAM CU ARIPI AVI-TOP",
+        "category":  "Pui",
+        "price":  5,
+        "unit":  "kg"
+    },
+    {
+        "id":  "tacam-pui-fara-aripi-oncos-pg",
+        "name":  "TACAM PUI FARA ARIPI ONCOS PG",
+        "category":  "Pui",
+        "price":  4.38,
+        "unit":  "kg"
+    },
+    {
+        "id":  "tacam-spate-cu-aripi-pg-pui-regal",
+        "name":  "TACAM SPATE CU ARIPI PG PUI REGAL",
+        "category":  "Pui",
+        "price":  3.88,
+        "unit":  "kg"
+    },
+    {
+        "id":  "burta-fideluta-cas-1kg",
+        "name":  "BURTA FIDELUTA CAS 1KG",
+        "category":  "Burta vita",
+        "price":  17.48,
+        "unit":  "kg"
+    },
+    {
+        "id":  "burta-vita-fideluta-pg-germania",
+        "name":  "BURTA VITA FIDELUTA PG GERMANIA",
+        "category":  "Burta vita",
+        "price":  26.03,
+        "unit":  "kg"
+    },
+    {
+        "id":  "burta-vita-fideluta-pg-12kg",
+        "name":  "BURTA VITA FIDELUTA PG(12KG)",
+        "category":  "Burta vita",
+        "price":  19.92,
+        "unit":  "kg"
+    },
+    {
+        "id":  "burta-vita-fideluta-pg-16kg",
+        "name":  "BURTA VITA FIDELUTA PG(16KG)",
+        "category":  "Burta vita",
+        "price":  19.2,
+        "unit":  "kg"
+    },
+    {
+        "id":  "aluat-foitaj-bella-800g",
+        "name":  "ALUAT FOITAJ BELLA 800G",
+        "category":  "Semi-preparate",
+        "price":  13.88,
+        "unit":  "buc"
+    },
+    {
+        "id":  "carne-tocata-curcan-1kg",
+        "name":  "CARNE TOCATA CURCAN 1KG",
+        "category":  "Salamuri \u0026 Mezeluri",
+        "price":  11.66,
+        "unit":  "buc"
+    },
+    {
+        "id":  "carne-tocata-pui-500g",
+        "name":  "CARNE TOCATA PUI 500G",
+        "category":  "Salamuri \u0026 Mezeluri",
+        "price":  6.66,
+        "unit":  "buc"
+    },
+    {
+        "id":  "carne-tocata-piept-pui-500g",
+        "name":  "CARNE TOCATA PIEPT PUI 500G",
+        "category":  "Salamuri \u0026 Mezeluri",
+        "price":  10.21,
+        "unit":  "buc"
+    },
+    {
+        "id":  "chiftele-ardelenesti-rumenite-pg-1kg-trans",
+        "name":  "CHIFTELE ARDELENESTI RUMENITE PG 1KG TRANS",
+        "category":  "Semi-preparate",
+        "price":  12.15,
+        "unit":  "buc"
+    },
+    {
+        "id":  "chiftele-pane-din-piept-pui-cu-casc-0-5kg",
+        "name":  "CHIFTELE PANE DIN PIEPT PUI CU CASC 0.5KG",
+        "category":  "Semi-preparate",
+        "price":  14.32,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-amestec-ciorba-vacuta-400g-agro",
+        "name":  "LEG.AMESTEC CIORBA VACUTA 400G AGRO",
+        "category":  "Legume congelate",
+        "price":  4.22,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-amestec-ciorba-fasole-400g-agro",
+        "name":  "LEG.AMESTEC CIORBA FASOLE 400G AGRO",
+        "category":  "Legume congelate",
+        "price":  4.66,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-amestec-leg-tigaie-400g-agrosp",
+        "name":  "LEG.AMESTEC LEG.TIGAIE 400G AGROSP",
+        "category":  "Legume congelate",
+        "price":  4.24,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-amestec-leg-tigaie-20kg-agrosp",
+        "name":  "LEG.AMESTEC LEG.TIGAIE 20KG AGROSP",
+        "category":  "Legume congelate",
+        "price":  184.09,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-bors-romanesc-400gr-agro",
+        "name":  "LEG.BORS ROMANESC 400GR AGRO",
+        "category":  "Legume congelate",
+        "price":  4.33,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-broccoli-buchete-400-g",
+        "name":  "LEG.BROCCOLI BUCHETE 400 G",
+        "category":  "Legume congelate",
+        "price":  5,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-1-kg-10x10mm-gradena",
+        "name":  "LEG.CARTOFI 1 KG 10X10MM GRADENA",
+        "category":  "Legume congelate",
+        "price":  7.66,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-1-kg-ricardo",
+        "name":  "LEG.CARTOFI 1 KG RICARDO",
+        "category":  "Legume congelate",
+        "price":  8.32,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-2-5kg-ricardo",
+        "name":  "LEG.CARTOFI 2.5KG RICARDO",
+        "category":  "Legume congelate",
+        "price":  18.98,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-sunny-fries-10-mm-1kg",
+        "name":  "LEG.CARTOFI SUNNY FRIES 10 MM 1KG",
+        "category":  "Legume congelate",
+        "price":  8.66,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-wedges-gradena-1kg",
+        "name":  "LEG.CARTOFI WEDGES GRADENA 1KG",
+        "category":  "Legume congelate",
+        "price":  8.77,
+        "unit":  "kg"
+    },
+    {
+        "id":  "leg-cartofi-gratinati-cu-sm-si-cascaval-1-kg",
+        "name":  "LEG.CARTOFI GRATINATI CU SM SI CASCAVAL 1 KG",
+        "category":  "Legume congelate",
+        "price":  25.47,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-pati-parts-ust-600g",
+        "name":  "LEG.CARTOFI PATI PARTS UST. 600G",
+        "category":  "Legume congelate",
+        "price":  8.76,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-prajiti-zig-zag-750g",
+        "name":  "LEG.CARTOFI PRAJITI ZIG ZAG 750G",
+        "category":  "Legume congelate",
+        "price":  9.32,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-roasti-triunghi-1kg",
+        "name":  "LEG.CARTOFI ROASTI TRIUNGHI 1KG",
+        "category":  "Legume congelate",
+        "price":  10.32,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-cartofi-steakhouse-2-5kg",
+        "name":  "LEG.CARTOFI STEAKHOUSE 2.5KG",
+        "category":  "Legume congelate",
+        "price":  22.03,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-ciuperci-feliate-400g-agro",
+        "name":  "LEG.CIUPERCI FELIATE 400G AGRO",
+        "category":  "Legume congelate",
+        "price":  4.39,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-fasole-boabe-pestrita-400-g",
+        "name":  "LEG.FASOLE BOABE PESTRITA 400 G",
+        "category":  "Legume congelate",
+        "price":  5.49,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-fasole-galbena-agro-400g",
+        "name":  "LEG.FASOLE GALBENA AGRO 400G",
+        "category":  "Legume congelate",
+        "price":  4,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-fasole-verde-400-g",
+        "name":  "LEG.FASOLE VERDE 400 G",
+        "category":  "Legume congelate",
+        "price":  4.11,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-hajdu-mix-agro-400-g",
+        "name":  "LEG.HAJDU MIX AGRO 400 G",
+        "category":  "Legume congelate",
+        "price":  4.44,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-mazare-verde-400g-agr",
+        "name":  "LEG.MAZARE VERDE 400G AGR",
+        "category":  "Legume congelate",
+        "price":  4.38,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-mix-primavara-400g-agro",
+        "name":  "LEG.MIX PRIMAVARA 400G AGRO",
+        "category":  "Legume congelate",
+        "price":  4.55,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-mix-radacinoase-400g-agro",
+        "name":  "LEG.MIX RADACINOASE 400G AGRO",
+        "category":  "Legume congelate",
+        "price":  4,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-spanac-400g-agro",
+        "name":  "LEG.SPANAC 400G AGRO",
+        "category":  "Legume congelate",
+        "price":  4.22,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-vinete-coapte-agro-400g",
+        "name":  "LEG.VINETE COAPTE AGRO 400G",
+        "category":  "Legume congelate",
+        "price":  6.38,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-vinete-coapte-congelate-2-5kg",
+        "name":  "LEG.VINETE COAPTE CONGELATE 2.5KG",
+        "category":  "Legume congelate",
+        "price":  15.98,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-dfn-brocoli-400g",
+        "name":  "LEG.DFN BROCOLI 400G",
+        "category":  "Legume congelate",
+        "price":  4.45,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-dfn-mix-mexican-fasole-mazare-morcovi-porumb",
+        "name":  "LEG.DFN MIX MEXICAN (FASOLE,MAZARE,MORCOVI,PORUMB,",
+        "category":  "Legume congelate",
+        "price":  3.78,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-dfn-mix-mazare-morcov-400g",
+        "name":  "LEG.DFN MIX MAZARE +MORCOV 400G",
+        "category":  "Legume congelate",
+        "price":  3.45,
+        "unit":  "buc"
+    },
+    {
+        "id":  "leg-dfn-spanac-frunze-400g",
+        "name":  "LEG.DFN SPANAC FRUNZE 400G",
+        "category":  "Legume congelate",
+        "price":  3.33,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pasta-mici-porc-comtim-1kg",
+        "name":  "PASTA MICI PORC COMTIM (1KG)",
+        "category":  "Semi-preparate",
+        "price":  27.47,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pasta-mici-porc-vita-800g",
+        "name":  "PASTA MICI PORC +VITA 800G",
+        "category":  "Semi-preparate",
+        "price":  26.3,
+        "unit":  "buc"
+    },
+    {
+        "id":  "perutnina-parizer-pui-350-g",
+        "name":  "PERUTNINA. PARIZER PUI 350 G",
+        "category":  "Salamuri \u0026 Mezeluri",
+        "price":  6.33,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pizza-rossa-capricciosa-320g",
+        "name":  "PIZZA ROSSA CAPRICCIOSA 320G",
+        "category":  "Semi-preparate",
+        "price":  12.1,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pizza-rossa-pepperoni-salami-320gr",
+        "name":  "PIZZA ROSSA PEPPERONI SALAMI 320GR",
+        "category":  "Semi-preparate",
+        "price":  12.1,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pizza-rossa-speciale-352g",
+        "name":  "PIZZA ROSSA SPECIALE 352G",
+        "category":  "Semi-preparate",
+        "price":  12.1,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-aripi-pregatite-pui-800g",
+        "name":  "SEMIPREP.ARIPI PREGATITE PUI 800G",
+        "category":  "Semi-preparate",
+        "price":  14.76,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-aripi-pui-crusta-nepicant-1kg-pl",
+        "name":  "SEMIPREP.ARIPI PUI CRUSTA NEPICANT 1KG PL",
+        "category":  "Semi-preparate",
+        "price":  23.64,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-aripi-pui-crusta-pic-1kg-pl",
+        "name":  "SEMIPREP.ARIPI PUI CRUSTA PIC 1KG PL",
+        "category":  "Semi-preparate",
+        "price":  23.64,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-aripi-pui-crusta-putin-pic-1kg-pl",
+        "name":  "SEMIPREP.ARIPI PUI CRUSTA PUTIN PIC 1KG PL",
+        "category":  "Semi-preparate",
+        "price":  23.64,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-aripi-marinate-cong-800g",
+        "name":  "SEMIPREP.ARIPI MARINATE CONG. 800G",
+        "category":  "Semi-preparate",
+        "price":  13.09,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-bulete-cascaval-1kg",
+        "name":  "SEMIPREP.BULETE CASCAVAL 1KG",
+        "category":  "Semi-preparate",
+        "price":  31.8,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-cascaval-pane-1kg",
+        "name":  "SEMIPREP.CASCAVAL PANE 1KG",
+        "category":  "Semi-preparate",
+        "price":  24.36,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-cascaval-pane-tri-1-kg",
+        "name":  "SEMIPREP.CASCAVAL PANE TRI. 1 KG",
+        "category":  "Semi-preparate",
+        "price":  24.36,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-cascaval-trapist-pane-460g",
+        "name":  "SEMIPREP.CASCAVAL TRAPIST PANE 460G",
+        "category":  "Semi-preparate",
+        "price":  13.88,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-cascaval-pane-inele-500g",
+        "name":  "SEMIPREP.CASCAVAL PANE INELE 500G",
+        "category":  "Semi-preparate",
+        "price":  15.43,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-medalion-pui-h-1kg",
+        "name":  "SEMIPREP.MEDALION PUI H (1KG)",
+        "category":  "Semi-preparate",
+        "price":  20.54,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-medalion-pui-hu-pg-1kg",
+        "name":  "SEMIPREP.MEDALION PUI HU PG 1KG",
+        "category":  "Semi-preparate",
+        "price":  20.54,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-medalion-pui-hu-festino-1kg",
+        "name":  "SEMIPREP.MEDALION PUI HU FESTINO 1KG",
+        "category":  "Semi-preparate",
+        "price":  20.54,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-nuggets-pui-pg-1-kg",
+        "name":  "SEMIPREP.NUGGETS PUI PG 1 KG",
+        "category":  "Semi-preparate",
+        "price":  14.21,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-crispy-strips-curcan-500g-kinga",
+        "name":  "SEMIPREP.CRISPY STRIPS CURCAN 500G KINGA",
+        "category":  "Semi-preparate",
+        "price":  11.99,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-crispy-strips-piept-pui-nepicante-1kg",
+        "name":  "SEMIPREP.CRISPY STRIPS PIEPT PUI NEPICANTE 1KG",
+        "category":  "Semi-preparate",
+        "price":  37.53,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-piept-crispy-pui-pg-1-kg",
+        "name":  "SEMIPREP.PIEPT CRISPY PUI PG 1 KG",
+        "category":  "Semi-preparate",
+        "price":  22.98,
+        "unit":  "kg"
+    },
+    {
+        "id":  "semiprep-piept-crispy-pui-pg-500-gr-zizu",
+        "name":  "SEMIPREP.PIEPT CRISPY PUI PG 500 GR ZIZU",
+        "category":  "Semi-preparate",
+        "price":  18.32,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-piept-pui-crispy-1kg",
+        "name":  "SEMIPREP.PIEPT PUI CRISPY 1KG",
+        "category":  "Semi-preparate",
+        "price":  22.98,
+        "unit":  "buc"
+    },
+    {
+        "id":  "semiprep-snitel-din-piept-de-pui",
+        "name":  "SEMIPREP.SNITEL DIN PIEPT DE PUI",
+        "category":  "Semi-preparate",
+        "price":  19.2,
+        "unit":  "kg"
+    },
+    {
+        "id":  "pat-croissant-ciocolata-100g-32-buc-bax",
+        "name":  "PAT.CROISSANT CIOCOLATA 100G(32 BUC/BAX)",
+        "category":  "Patiserie congelata",
+        "price":  6.04,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pat-croissant-cu-unt-60g-100-buc-bax",
+        "name":  "PAT.CROISSANT CU UNT 60G (100 BUC/BAX)",
+        "category":  "Patiserie congelata",
+        "price":  3.16,
+        "unit":  "buc"
+    },
+    {
+        "id":  "pat-placinta-cu-mere-100g-50-buc-bax",
+        "name":  "PAT.PLACINTA CU MERE 100G(50 BUC/BAX)",
+        "category":  "Patiserie congelata",
+        "price":  3.22,
+        "unit":  "buc"
+    },
+    {
+        "id":  "gomboti-cu-prune-pg-1kg",
+        "name":  "GOMBOTI CU PRUNE PG 1KG",
+        "category":  "Patiserie congelata",
+        "price":  17.87,
+        "unit":  "buc"
+    },
+    {
+        "id":  "peste-file-cod-pane-pg-uk",
+        "name":  "PESTE FILE COD PANE PG UK",
+        "category":  "Peste",
+        "price":  26.58,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-file-cod-pg-600gr",
+        "name":  "PESTE FILE COD PG 600GR",
+        "category":  "Peste",
+        "price":  13.99,
+        "unit":  "buc"
+    },
+    {
+        "id":  "peste-cod-cu-cap-pg",
+        "name":  "PESTE COD CU CAP PG",
+        "category":  "Peste",
+        "price":  13.65,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-file-macrou-pg-600g",
+        "name":  "PESTE FILE MACROU PG 600G",
+        "category":  "Peste",
+        "price":  20.54,
+        "unit":  "buc"
+    },
+    {
+        "id":  "peste-file-pangasius-800gr",
+        "name":  "PESTE FILE PANGASIUS 800GR",
+        "category":  "Peste",
+        "price":  11.04,
+        "unit":  "buc"
+    },
+    {
+        "id":  "peste-file-salau-300-500-vrac-6kg-tnz",
+        "name":  "PESTE FILE SALAU 300-500 VRAC 6KG TNZ",
+        "category":  "Peste",
+        "price":  54.33,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-fish-fingers-250g",
+        "name":  "PESTE FISH FINGERS 250G",
+        "category":  "Peste",
+        "price":  7.05,
+        "unit":  "buc"
+    },
+    {
+        "id":  "peste-macrou-pg-400-600-rdn-med",
+        "name":  "PESTE MACROU PG 400-600 RDN/MED",
+        "category":  "Peste",
+        "price":  32.13,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-macrou-vrac-300-500-gr",
+        "name":  "PESTE MACROU VRAC 300-500 GR",
+        "category":  "Peste",
+        "price":  32.13,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-merlucius-200-300-pg-art",
+        "name":  "PESTE MERLUCIUS 200-300 PG ART",
+        "category":  "Peste",
+        "price":  18.87,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-merlucius-pg-0-9-kg-alf",
+        "name":  "PESTE MERLUCIUS PG 0.9 KG ALF",
+        "category":  "Peste",
+        "price":  20.7,
+        "unit":  "buc"
+    },
+    {
+        "id":  "peste-merlucius-vrac-iqf-200-300gr-16-kg",
+        "name":  "PESTE MERLUCIUS VRAC IQF 200-300GR 16 KG",
+        "category":  "Peste",
+        "price":  17.65,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-merlucius-vrac-200-300gr-hubbsi-cca-13kg",
+        "name":  "PESTE MERLUCIUS VRAC 200-300GR HUBBSI CCA 13KG",
+        "category":  "Peste",
+        "price":  17.48,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-pastrav-eviscerat-250-300-pg",
+        "name":  "PESTE PASTRAV EVISCERAT 250-300 PG",
+        "category":  "Peste",
+        "price":  33.19,
+        "unit":  "kg"
+    },
+    {
+        "id":  "peste-pastrav-eviscerat-250-300-bax-5kg",
+        "name":  "PESTE PASTRAV EVISCERAT 250/300 BAX 5KG",
+        "category":  "Peste",
+        "price":  31.02,
+        "unit":  "kg"
+    },
+    {
+        "id":  "del-bt-felii-smantana-140g",
+        "name":  "DEL.BT FELII SMANTANA 140G",
+        "category":  "Produse lactate",
+        "price":  5.55,
+        "unit":  "buc"
+    },
+    {
+        "id":  "del-cascaval-sofia-450g",
+        "name":  "DEL.CASCAVAL SOFIA 450G",
+        "category":  "Produse lactate",
+        "price":  24.31,
+        "unit":  "buc"
+    },
+    {
+        "id":  "del-jaeger-unt-82-250g",
+        "name":  "DEL.JAEGER UNT 82% 250G",
+        "category":  "Produse lactate",
+        "price":  8.88,
+        "unit":  "buc"
+    },
+    {
+        "id":  "del-mozzarella-horeca-1-5kg",
+        "name":  "DEL.MOZZARELLA HORECA 1.5KG",
+        "category":  "Produse lactate",
+        "price":  44.96,
+        "unit":  "buc"
+    },
+    {
+        "id":  "prod-lact-koliba-karpatsky-bloc",
+        "name":  "PROD.LACT.KOLIBA KARPATSKY BLOC",
+        "category":  "Produse lactate",
+        "price":  27.64,
+        "unit":  "kg"
+    },
+    {
+        "id":  "prod-lact-specialitatea-pizzarului",
+        "name":  "PROD.LACT.SPECIALITATEA PIZZARULUI",
+        "category":  "Produse lactate",
+        "price":  26.81,
+        "unit":  "kg"
+    },
+    {
+        "id":  "prod-lact-unt-83-parmareggio-400g-mira",
+        "name":  "PROD.LACT.UNT 83% PARMAREGGIO 400G MIRA",
+        "category":  "Produse lactate",
+        "price":  23.31,
+        "unit":  "buc"
+    },
+    {
+        "id":  "prod-lact-unt-koliba-65-200g",
+        "name":  "PROD.LACT.UNT KOLIBA 65% 200G",
+        "category":  "Produse lactate",
+        "price":  4.61,
+        "unit":  "buc"
+    },
+    {
+        "id":  "prod-lact-unt-koliba-82-200g",
+        "name":  "PROD.LACT.UNT KOLIBA 82% 200G",
+        "category":  "Produse lactate",
+        "price":  7.33,
+        "unit":  "buc"
+    }
+]
