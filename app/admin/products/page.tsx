@@ -5,6 +5,7 @@ import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { categories, formatPrice, type Product } from "@/lib/data";
 import { listProducts } from "@/lib/products";
 import { createProductAction, deleteProductAction, updateProductAction } from "../actions";
+import ImageUpload from "./ImageUpload";
 
 export const dynamic = "force-dynamic";
 
@@ -48,15 +49,20 @@ export default async function AdminProductsPage() {
     <AdminShell title="Admin produse" description="Adauga produse noi sau modifica nume, preturi si categorii." active="products">
         <section className="mb-6 rounded-lg border border-neutral-200 bg-white p-5">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-black"><Plus size={20} className="text-brand" /> Produs nou</h2>
-          <form action={createProductAction} className="grid gap-3 md:grid-cols-[2fr_1fr_120px_100px_1fr_auto]">
-            <input name="name" required placeholder="Nume produs" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
-            <CategorySelect />
-            <input name="price" required type="number" min="0" step="0.01" placeholder="Pret" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
-            <UnitSelect />
-            <input name="weight" placeholder="Greutate / calibru" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
-            <button className="inline-flex items-center justify-center gap-2 rounded bg-brand px-4 py-2 text-sm font-black text-white hover:bg-brand-dark">
-              <Plus size={16} /> Adauga
-            </button>
+          <form action={createProductAction} className="space-y-3">
+            <div className="grid gap-3 md:grid-cols-[2fr_1fr_120px_100px_1fr]">
+              <input name="name" required placeholder="Nume produs" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <CategorySelect />
+              <input name="price" required type="number" min="0" step="0.01" placeholder="Pret" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <UnitSelect />
+              <input name="weight" placeholder="Greutate / calibru" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
+            </div>
+            <div className="flex items-end gap-4">
+              <ImageUpload />
+              <button className="inline-flex items-center justify-center gap-2 rounded bg-brand px-4 py-2 text-sm font-black text-white hover:bg-brand-dark">
+                <Plus size={16} /> Adauga
+              </button>
+            </div>
           </form>
         </section>
 
@@ -68,41 +74,47 @@ export default async function AdminProductsPage() {
           <div className="space-y-3">
             {products.map((product) => (
               <div key={product.id} className="rounded-lg border border-neutral-200 p-4">
-                <form action={updateProductAction} className="grid gap-3 lg:grid-cols-[2fr_1fr_120px_100px_1fr_auto_auto]">
+                <form action={updateProductAction} className="space-y-3">
                   <input type="hidden" name="id" value={product.id} />
-                  <label className="text-xs font-semibold uppercase text-neutral-500">
-                    Nume
-                    <input name="name" defaultValue={product.name} required className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
-                  </label>
-                  <label className="text-xs font-semibold uppercase text-neutral-500">
-                    Categorie
-                    <span className="mt-1 block normal-case">
-                      <CategorySelect defaultValue={product.category} />
-                    </span>
-                  </label>
-                  <label className="text-xs font-semibold uppercase text-neutral-500">
-                    Pret
-                    <input name="price" defaultValue={product.price} required type="number" min="0" step="0.01" className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
-                  </label>
-                  <label className="text-xs font-semibold uppercase text-neutral-500">
-                    Unitate
-                    <span className="mt-1 block normal-case">
-                      <UnitSelect defaultValue={product.unit} />
-                    </span>
-                  </label>
-                  <label className="text-xs font-semibold uppercase text-neutral-500">
-                    Greutate
-                    <input name="weight" defaultValue={product.weight || ""} className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
-                  </label>
-                  <div className="flex items-end">
-                    <button className="inline-flex w-full items-center justify-center gap-2 rounded bg-neutral-900 px-4 py-2 text-sm font-black text-white hover:bg-brand">
-                      <Save size={16} /> Salveaza
-                    </button>
+                  <div className="grid gap-3 lg:grid-cols-[2fr_1fr_120px_100px_1fr_auto_auto]">
+                    <label className="text-xs font-semibold uppercase text-neutral-500">
+                      Nume
+                      <input name="name" defaultValue={product.name} required className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
+                    </label>
+                    <label className="text-xs font-semibold uppercase text-neutral-500">
+                      Categorie
+                      <span className="mt-1 block normal-case">
+                        <CategorySelect defaultValue={product.category} />
+                      </span>
+                    </label>
+                    <label className="text-xs font-semibold uppercase text-neutral-500">
+                      Pret
+                      <input name="price" defaultValue={product.price} required type="number" min="0" step="0.01" className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
+                    </label>
+                    <label className="text-xs font-semibold uppercase text-neutral-500">
+                      Unitate
+                      <span className="mt-1 block normal-case">
+                        <UnitSelect defaultValue={product.unit} />
+                      </span>
+                    </label>
+                    <label className="text-xs font-semibold uppercase text-neutral-500">
+                      Greutate
+                      <input name="weight" defaultValue={product.weight || ""} className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
+                    </label>
+                    <div className="flex items-end">
+                      <button className="inline-flex w-full items-center justify-center gap-2 rounded bg-neutral-900 px-4 py-2 text-sm font-black text-white hover:bg-brand">
+                        <Save size={16} /> Salveaza
+                      </button>
+                    </div>
+                    <div className="flex items-end">
+                      <button form={`delete-${product.id}`} className="inline-flex w-full items-center justify-center gap-2 rounded border border-red-200 px-4 py-2 text-sm font-black text-red-700 hover:bg-red-50">
+                        <Trash2 size={16} /> Sterge
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-end">
-                    <button form={`delete-${product.id}`} className="inline-flex w-full items-center justify-center gap-2 rounded border border-red-200 px-4 py-2 text-sm font-black text-red-700 hover:bg-red-50">
-                      <Trash2 size={16} /> Sterge
-                    </button>
+                  <div>
+                    <p className="mb-2 text-xs font-semibold uppercase text-neutral-500">Foto produs</p>
+                    <ImageUpload currentUrl={product.imageUrl} />
                   </div>
                 </form>
                 <form id={`delete-${product.id}`} action={deleteProductAction}>

@@ -75,7 +75,17 @@ export default function CatalogClient({ products }: { products: Product[] }) {
               {items.map((product) => {
                 const qty = quantities[product.id] || 1;
                 return (
-                  <article key={product.id} className="flex min-h-36 flex-col rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
+                  <article key={product.id} className="flex flex-col rounded-lg border border-neutral-200 bg-white shadow-sm">
+                    {product.imageUrl ? (
+                      <div className="h-40 w-full overflow-hidden rounded-t-lg bg-neutral-100">
+                        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
+                      </div>
+                    ) : (
+                      <div className="flex h-40 w-full items-center justify-center rounded-t-lg bg-neutral-100 text-4xl text-neutral-300">
+                        🧊
+                      </div>
+                    )}
+                    <div className="flex flex-1 flex-col p-4">
                     <div className="font-bold">{product.name}</div>
                     {product.weight && <div className="mt-1 text-xs text-neutral-500">{product.weight}</div>}
                     <div className="mt-auto pt-5 text-xl font-black text-brand">
@@ -105,6 +115,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                       >
                         {added[product.id] ? <><Check size={13} /> Adaugat</> : <><Plus size={13} /> Adauga</>}
                       </button>
+                    </div>
                     </div>
                   </article>
                 );

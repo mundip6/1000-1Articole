@@ -32,6 +32,7 @@ function toProduct(product: {
   price: number;
   unit: string;
   weight: string | null;
+  imageUrl: string | null;
 }): Product {
   return {
     id: product.id,
@@ -40,6 +41,7 @@ function toProduct(product: {
     price: product.price,
     unit: product.unit === "buc" ? "buc" : "kg",
     ...(product.weight ? { weight: product.weight } : {}),
+    ...(product.imageUrl ? { imageUrl: product.imageUrl } : {}),
   };
 }
 
@@ -56,6 +58,7 @@ export async function createProduct(formData: FormData) {
   const price = Number(formData.get("price"));
   const unit = String(formData.get("unit") || "");
   const weight = String(formData.get("weight") || "").trim();
+  const imageUrl = String(formData.get("imageUrl") || "").trim();
 
   if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -77,6 +80,7 @@ export async function createProduct(formData: FormData) {
       price,
       unit,
       weight: weight || null,
+      imageUrl: imageUrl || null,
     },
   });
 }
@@ -88,6 +92,7 @@ export async function updateProduct(formData: FormData) {
   const price = Number(formData.get("price"));
   const unit = String(formData.get("unit") || "");
   const weight = String(formData.get("weight") || "").trim();
+  const imageUrl = String(formData.get("imageUrl") || "").trim();
 
   if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -101,6 +106,7 @@ export async function updateProduct(formData: FormData) {
       price,
       unit,
       weight: weight || null,
+      imageUrl: imageUrl || null,
     },
   });
 }
