@@ -54,7 +54,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
               onClick={() => setActiveCat(cat.name)}
               className={`rounded-lg border px-4 py-2 text-sm font-bold ${activeCat === cat.name ? "border-brand bg-brand text-white" : "border-neutral-200 bg-white hover:border-brand"}`}
             >
-              <span className="mr-1">{cat.icon}</span> {cat.name.split(" ")[0]}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -67,7 +67,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
         return (
           <section key={cat.name} className="mb-12">
             <h2 className="mb-4 flex items-center gap-2 text-xl font-black">
-              <span>{cat.icon}</span> {cat.name}
+              {cat.name}
               <span className="text-xs font-normal text-neutral-500">({items.length} produse)</span>
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

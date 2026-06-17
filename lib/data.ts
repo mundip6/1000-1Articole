@@ -24,19 +24,21 @@ export const business = {
   region: "Maramures, Romania",
   phone: "+40 750 266 304",
   phoneHref: "tel:+40750266304",
+  phone2: "0262 221 154",
+  phoneHref2: "tel:+40262221154",
   email: "1001articole@gmail.com",
   cui: "2200749",
   delivery: "Maramures, Satu Mare, Salaj",
 };
 
-export const categories: { name: Category; icon: string; desc: string }[] = [
-  { name: "CARNE PASARE CONGELATA", icon: "CP", desc: "Aripi, pulpe, piept, pui grill" },
-  { name: "BURTA VITA", icon: "BV", desc: "Burta fideluta congelata" },
-  { name: "SEMIPREPARATE", icon: "SP", desc: "Mezeluri, pizza, crispy, snitel, lactate" },
-  { name: "PATISERIE CONGELATA", icon: "PT", desc: "Croissant, placinte, deserturi" },
-  { name: "PESTE", icon: "PE", desc: "Pastrav, Merlucius, cod, macrou" },
-  { name: "LEGUME CONGELATE", icon: "LG", desc: "Legume si mixuri congelate" },
-  { name: "PRODUSE LACTATE", icon: "PL", desc: "Cascaval, unt, mozzarella" },
+export const categories: { name: Category; icon: string; desc: string; label: string }[] = [
+  { name: "CARNE PASARE CONGELATA", icon: "🍗", desc: "Aripi, pulpe, piept, pui grill", label: "CARNE PASARE" },
+  { name: "BURTA VITA", icon: "🥩", desc: "Burta fideluta congelata", label: "BURTA" },
+  { name: "SEMIPREPARATE", icon: "🌭", desc: "Mezeluri, pizza, crispy, snitel, lactate", label: "SEMIPREPARATE" },
+  { name: "PATISERIE CONGELATA", icon: "🥐", desc: "Croissant, placinte, deserturi", label: "PATISERIE" },
+  { name: "PESTE", icon: "🐟", desc: "Pastrav, Merlucius, cod, macrou", label: "PESTE" },
+  { name: "LEGUME CONGELATE", icon: "🥦", desc: "Legume si mixuri congelate", label: "LEGUME" },
+  { name: "PRODUSE LACTATE", icon: "🧀", desc: "Cascaval, unt, mozzarella", label: "PRODUSE LACTATE" },
 ];
 
 export const formatPrice = (price: number) =>

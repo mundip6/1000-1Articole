@@ -37,7 +37,8 @@ export default function ContactPage() {
                   <Phone size={18} className="mt-0.5 shrink-0 text-brand" />
                   <div>
                     <div className="mb-1 text-xs font-black uppercase text-neutral-500">Telefon</div>
-                    <a href={business.phoneHref} className="font-bold hover:text-brand">{business.phone}</a>
+                    <a href={business.phoneHref} className="block font-bold hover:text-brand">{business.phone}</a>
+                    <a href={business.phoneHref2} className="block font-bold hover:text-brand">{business.phone2}</a>
                   </div>
                 </div>
                 <div className="flex gap-3">

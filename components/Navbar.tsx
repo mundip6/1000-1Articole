@@ -36,9 +36,11 @@ export default function Navbar() {
           <span className="flex items-center gap-1 truncate">
             <MapPin size={12} /> {business.address} | CUI: {business.cui}
           </span>
-          <a className="hidden items-center gap-1 sm:flex" href={business.phoneHref}>
-            <Phone size={12} /> {business.phone}
-          </a>
+          <div className="hidden items-center gap-3 sm:flex">
+            <a className="flex items-center gap-1" href={business.phoneHref}><Phone size={12} /> {business.phone}</a>
+            <span>/</span>
+            <a className="flex items-center gap-1" href={business.phoneHref2}>{business.phone2}</a>
+          </div>
         </div>
       </div>
       <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-3">

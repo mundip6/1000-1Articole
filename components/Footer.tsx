@@ -19,6 +19,7 @@ export default function Footer() {
           <div className="space-y-3 text-sm">
             <p className="flex gap-2"><MapPin size={16} className="text-brand" /> {business.address}</p>
             <a className="flex gap-2 hover:text-white" href={business.phoneHref}><Phone size={16} className="text-brand" /> {business.phone}</a>
+            <a className="flex gap-2 hover:text-white" href={business.phoneHref2}><Phone size={16} className="text-brand" /> {business.phone2}</a>
             <a className="flex gap-2 hover:text-white" href={`mailto:${business.email}`}><Mail size={16} className="text-brand" /> {business.email}</a>
             <p className="text-xs text-neutral-500">Zone de livrare: {business.delivery}</p>
           </div>
