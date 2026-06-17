@@ -2,17 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { type Category, type Product } from "@/lib/data";
 
 const validCategories: Category[] = [
-  "Pui",
-  "Peste",
-  "Salamuri & Mezeluri",
-  "Felii & Specialitati",
-  "Carnati",
-  "Specialitati Traditionale",
-  "Legume congelate",
-  "Semi-preparate",
-  "Burta vita",
-  "Patiserie congelata",
-  "Produse lactate",
+  "CARNE PASARE CONGELATA",
+  "BURTA VITA",
+  "SEMIPREPARATE",
+  "PATISERIE CONGELATA",
+  "PESTE",
+  "LEGUME CONGELATE",
 ];
 
 function isCategory(value: string): value is Category {

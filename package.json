@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "prisma generate && prisma db push && node scripts/seed-db.mjs && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
     "db:seed": "node scripts/seed-db.mjs",
+    "db:update-categories": "node scripts/update-categories.mjs",
     "db:studio": "prisma studio"
   },
   "dependencies": {

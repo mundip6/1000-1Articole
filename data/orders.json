@@ -1,117 +1,117 @@
 [
-  {
-    "id": "ORD-1781595014950",
-    "createdAt": "2026-06-16T07:30:14.950Z",
-    "status": "Anulata",
-    "company": "AlexCO",
-    "contact": "Alex",
-    "phone": "0770372378",
-    "email": "alex@gmail.com",
-    "county": "Maramures",
-    "city": "Baia Mare",
-    "address": "Unirii",
-    "notes": "",
-    "items": [
-      {
-        "id": "aripi-pui-caserola-oncos",
-        "name": "ARIPI PUI CASEROLA ONCOS",
-        "category": "Pui",
-        "price": 11.66,
-        "unit": "kg",
-        "qty": 2
-      },
-      {
-        "id": "aripi-pui-fara-varf-pg-art-sectionate-yellow",
-        "name": "ARIPI PUI FARA VARF PG ART SECTIONATE YELLOW",
-        "category": "Pui",
-        "price": 17.7,
-        "unit": "kg",
-        "qty": 1
-      },
-      {
-        "id": "aripi-pui-fara-varf-pg-2-5kg-slovacia",
-        "name": "ARIPI PUI FARA VARF PG 2.5KG SLOVACIA",
-        "category": "Pui",
-        "price": 15.48,
-        "unit": "kg",
-        "qty": 1
-      }
-    ],
-    "total": 56.5,
-    "weight": 4
-  },
-  {
-    "id": "ORD-1781594566845",
-    "createdAt": "2026-06-16T07:22:46.845Z",
-    "status": "Confirmata",
-    "company": "wedf",
-    "contact": "wed",
-    "phone": "wed",
-    "email": "wed",
-    "county": "Maramures",
-    "city": "wed",
-    "address": "wed",
-    "notes": "",
-    "items": [
-      {
-        "id": "aripi-pui-fara-varf-pg-2-5kg-slovacia",
-        "name": "ARIPI PUI FARA VARF PG 2.5KG SLOVACIA",
-        "category": "Pui",
-        "price": 15.48,
-        "unit": "kg",
-        "qty": 4
-      }
-    ],
-    "total": 61.92,
-    "weight": 4
-  },
-  {
-    "id": "ORD-1781594516698",
-    "createdAt": "2026-06-16T07:21:56.698Z",
-    "status": "Noua",
-    "company": "qwed",
-    "contact": "wedc",
-    "phone": "wed",
-    "email": "wed",
-    "county": "Maramures",
-    "city": "qwed",
-    "address": "qwed",
-    "notes": "",
-    "items": [
-      {
-        "id": "aripi-curcan-pg-vid",
-        "name": "ARIPI CURCAN PG VID",
-        "category": "Pui",
-        "price": 18.1,
-        "unit": "kg",
-        "qty": 6
-      },
-      {
-        "id": "aripi-pui-caserola-oncos",
-        "name": "ARIPI PUI CASEROLA ONCOS",
-        "category": "Pui",
-        "price": 11.66,
-        "unit": "kg",
-        "qty": 2
-      },
-      {
-        "id": "aripi-pui-fara-varf-pg-art-sectionate-yellow",
-        "name": "ARIPI PUI FARA VARF PG ART SECTIONATE YELLOW",
-        "category": "Pui",
-        "price": 17.7,
-        "unit": "kg",
-        "qty": 13
-      },
-      {
-        "id": "aripi-pui-fara-varf-vrac-sectionate-ylw",
-        "name": "ARIPI PUI FARA VARF VRAC SECTIONATE YLW",
-        "category": "Pui",
-        "price": 16.1,
-        "unit": "kg",
-        "qty": 12
-      }
-    ],
-    "total": 555.22,
-    "weight": 33
-  }
+    {
+        "id":  "ORD-1781595014950",
+        "createdAt":  "2026-06-16T07:30:14.950Z",
+        "status":  "Anulata",
+        "company":  "AlexCO",
+        "contact":  "Alex",
+        "phone":  "0770372378",
+        "email":  "alex@gmail.com",
+        "county":  "Maramures",
+        "city":  "Baia Mare",
+        "address":  "Unirii",
+        "notes":  "",
+        "items":  [
+                      {
+                          "id":  "aripi-pui-caserola-oncos",
+                          "name":  "ARIPI PUI CASEROLA ONCOS",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  11.66,
+                          "unit":  "kg",
+                          "qty":  2
+                      },
+                      {
+                          "id":  "aripi-pui-fara-varf-pg-art-sectionate-yellow",
+                          "name":  "ARIPI PUI FARA VARF PG ART SECTIONATE YELLOW",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  17.7,
+                          "unit":  "kg",
+                          "qty":  1
+                      },
+                      {
+                          "id":  "aripi-pui-fara-varf-pg-2-5kg-slovacia",
+                          "name":  "ARIPI PUI FARA VARF PG 2.5KG SLOVACIA",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  15.48,
+                          "unit":  "kg",
+                          "qty":  1
+                      }
+                  ],
+        "total":  56.5,
+        "weight":  4
+    },
+    {
+        "id":  "ORD-1781594566845",
+        "createdAt":  "2026-06-16T07:22:46.845Z",
+        "status":  "Confirmata",
+        "company":  "wedf",
+        "contact":  "wed",
+        "phone":  "wed",
+        "email":  "wed",
+        "county":  "Maramures",
+        "city":  "wed",
+        "address":  "wed",
+        "notes":  "",
+        "items":  [
+                      {
+                          "id":  "aripi-pui-fara-varf-pg-2-5kg-slovacia",
+                          "name":  "ARIPI PUI FARA VARF PG 2.5KG SLOVACIA",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  15.48,
+                          "unit":  "kg",
+                          "qty":  4
+                      }
+                  ],
+        "total":  61.92,
+        "weight":  4
+    },
+    {
+        "id":  "ORD-1781594516698",
+        "createdAt":  "2026-06-16T07:21:56.698Z",
+        "status":  "Noua",
+        "company":  "qwed",
+        "contact":  "wedc",
+        "phone":  "wed",
+        "email":  "wed",
+        "county":  "Maramures",
+        "city":  "qwed",
+        "address":  "qwed",
+        "notes":  "",
+        "items":  [
+                      {
+                          "id":  "aripi-curcan-pg-vid",
+                          "name":  "ARIPI CURCAN PG VID",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  18.1,
+                          "unit":  "kg",
+                          "qty":  6
+                      },
+                      {
+                          "id":  "aripi-pui-caserola-oncos",
+                          "name":  "ARIPI PUI CASEROLA ONCOS",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  11.66,
+                          "unit":  "kg",
+                          "qty":  2
+                      },
+                      {
+                          "id":  "aripi-pui-fara-varf-pg-art-sectionate-yellow",
+                          "name":  "ARIPI PUI FARA VARF PG ART SECTIONATE YELLOW",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  17.7,
+                          "unit":  "kg",
+                          "qty":  13
+                      },
+                      {
+                          "id":  "aripi-pui-fara-varf-vrac-sectionate-ylw",
+                          "name":  "ARIPI PUI FARA VARF VRAC SECTIONATE YLW",
+                          "category":  "CARNE PASARE CONGELATA",
+                          "price":  16.1,
+                          "unit":  "kg",
+                          "qty":  12
+                      }
+                  ],
+        "total":  555.22,
+        "weight":  33
+    }
 ]

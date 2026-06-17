@@ -1,15 +1,10 @@
 export type Category =
-  | "Pui"
-  | "Peste"
-  | "Salamuri & Mezeluri"
-  | "Felii & Specialitati"
-  | "Carnati"
-  | "Specialitati Traditionale"
-  | "Legume congelate"
-  | "Semi-preparate"
-  | "Burta vita"
-  | "Patiserie congelata"
-  | "Produse lactate";
+  | "CARNE PASARE CONGELATA"
+  | "BURTA VITA"
+  | "SEMIPREPARATE"
+  | "PATISERIE CONGELATA"
+  | "PESTE"
+  | "LEGUME CONGELATE";
 
 export type Product = {
   id: string;
@@ -33,17 +28,12 @@ export const business = {
 };
 
 export const categories: { name: Category; icon: string; desc: string }[] = [
-  { name: "Pui", icon: "P", desc: "Aripi, pulpe, piept, pui grill" },
-  { name: "Peste", icon: "F", desc: "Pastrav, Merlucius, cod, macrou" },
-  { name: "Salamuri & Mezeluri", icon: "M", desc: "Mezeluri, parizer, carne tocata" },
-  { name: "Felii & Specialitati", icon: "S", desc: "Felii si specialitati ambalate" },
-  { name: "Carnati", icon: "C", desc: "Carnati si produse afumate" },
-  { name: "Specialitati Traditionale", icon: "T", desc: "Produse traditionale" },
-  { name: "Legume congelate", icon: "L", desc: "Legume si mixuri congelate" },
-  { name: "Semi-preparate", icon: "SP", desc: "Pizza, crispy, snitel, cascaval pane" },
-  { name: "Burta vita", icon: "B", desc: "Burta fideluta congelata" },
-  { name: "Patiserie congelata", icon: "PT", desc: "Croissant, placinte, deserturi" },
-  { name: "Produse lactate", icon: "D", desc: "Cascaval, unt, mozzarella" },
+  { name: "CARNE PASARE CONGELATA", icon: "CP", desc: "Aripi, pulpe, piept, pui grill" },
+  { name: "BURTA VITA", icon: "BV", desc: "Burta fideluta congelata" },
+  { name: "SEMIPREPARATE", icon: "SP", desc: "Mezeluri, pizza, crispy, snitel, lactate" },
+  { name: "PATISERIE CONGELATA", icon: "PT", desc: "Croissant, placinte, deserturi" },
+  { name: "PESTE", icon: "PE", desc: "Pastrav, Merlucius, cod, macrou" },
+  { name: "LEGUME CONGELATE", icon: "LG", desc: "Legume si mixuri congelate" },
 ];
 
 export const formatPrice = (price: number) =>
