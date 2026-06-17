@@ -44,7 +44,7 @@ export default function OrderGuidePage() {
           <ul className="space-y-2 text-sm">
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Comanda minima: <strong>50 lei Baia Mare / 300 lei alte zone</strong></li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Zone de livrare: <strong>Maramures, Satu Mare, Salaj</strong></li>
-            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Preturile sunt engros si pot fi confirmate telefonic.</li>
+            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Preturile includ TVA si pot fi confirmate telefonic.</li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Confirmare telefonica obligatorie inainte de livrare.</li>
           </ul>
         </section>
