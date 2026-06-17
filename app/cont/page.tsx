@@ -16,6 +16,7 @@ const emptyProfile = {
   lastName: "",
   isBusiness: false,
   company: "",
+  cui: "",
   phone: "",
   county: "",
   city: "",
@@ -56,6 +57,7 @@ export default function CustomerAccountPage() {
         lastName: meData.customer.lastName,
         isBusiness: meData.customer.isBusiness,
         company: meData.customer.company,
+        cui: meData.customer.cui,
         phone: meData.customer.phone,
         county: meData.customer.county,
         city: meData.customer.city,
@@ -263,7 +265,6 @@ export default function CustomerAccountPage() {
                   {[
                     ["firstName", "Prenume"],
                     ["lastName", "Nume"],
-                    ["company", "Denumire firma"],
                     ["phone", "Telefon"],
                     ["county", "Judet"],
                     ["city", "Localitate"],
@@ -287,6 +288,27 @@ export default function CustomerAccountPage() {
                     />
                     Sunt firma
                   </label>
+                  {profile.isBusiness && (
+                    <>
+                      <label className="block text-xs font-semibold text-neutral-500">
+                        Denumire firma
+                        <input
+                          value={profile.company}
+                          onChange={(event) => setProfile((prev) => ({ ...prev, company: event.target.value }))}
+                          className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
+                        />
+                      </label>
+                      <label className="block text-xs font-semibold text-neutral-500">
+                        CUI
+                        <input
+                          value={profile.cui}
+                          onChange={(event) => setProfile((prev) => ({ ...prev, cui: event.target.value }))}
+                          className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
+                          required={profile.isBusiness}
+                        />
+                      </label>
+                    </>
+                  )}
                   <p className="text-xs text-neutral-500">Email: {customer.email}</p>
                   <button className="w-full rounded-lg bg-neutral-900 py-2 text-sm font-black text-white hover:bg-brand">
                     Salveaza datele

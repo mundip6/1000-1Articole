@@ -62,7 +62,8 @@ export default async function AdminOrdersPage() {
 
                 <div className="mt-5 grid gap-4 border-t border-neutral-100 pt-5 md:grid-cols-2">
                   <div className="space-y-2 text-sm">
-                    <p><strong>Firma:</strong> {order.company}</p>
+                    {order.company && <p><strong>Firma:</strong> {order.company}</p>}
+                    {order.cui && <p><strong>CUI:</strong> {order.cui}</p>}
                     <p><strong>Contact:</strong> {order.contact}</p>
                     <p className="flex items-center gap-2"><Phone size={15} className="text-brand" /> <a href={`tel:${order.phone}`}>{order.phone}</a></p>
                     <p className="flex items-center gap-2"><Mail size={15} className="text-brand" /> <a href={`mailto:${order.email}`}>{order.email}</a></p>

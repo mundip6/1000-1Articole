@@ -18,6 +18,7 @@ type CustomerResponse = {
     email: string;
     isBusiness: boolean;
     company: string;
+    cui: string;
     phone: string;
     county: string;
     city: string;
@@ -32,7 +33,9 @@ export default function CartPage() {
   const [error, setError] = useState("");
   const [prefilledFromAccount, setPrefilledFromAccount] = useState(false);
   const [form, setForm] = useState({
+    isBusiness: false,
     company: "",
+    cui: "",
     contact: "",
     phone: "",
     email: "",
@@ -58,7 +61,9 @@ export default function CartPage() {
 
         setForm((prev) => ({
           ...prev,
+          isBusiness: Boolean(data.customer?.isBusiness),
           company: data.customer?.isBusiness ? data.customer.company : prev.company,
+          cui: data.customer?.isBusiness ? data.customer.cui : prev.cui,
           contact: `${data.customer?.firstName || ""} ${data.customer?.lastName || ""}`.trim(),
           phone: data.customer?.phone || "",
           email: data.customer?.email || "",
@@ -92,6 +97,18 @@ export default function CartPage() {
     setError("");
 
     try {
+      if (form.isBusiness) {
+        const validateResponse = await fetch("/api/validate-cui", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cui: form.cui }),
+        });
+        const validateData = (await validateResponse.json()) as { valid: boolean; message?: string };
+        if (!validateData.valid) {
+          throw new Error(validateData.message || "CUI invalid.");
+        }
+      }
+
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -194,8 +211,36 @@ export default function CartPage() {
                   </div>
                 )}
                 <div className="space-y-3">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-neutral-700">
+                    <input
+                      type="checkbox"
+                      checked={form.isBusiness}
+                      onChange={(event) => setForm((prev) => ({ ...prev, isBusiness: event.target.checked }))}
+                      className="h-4 w-4 accent-brand"
+                    />
+                    Comanda pe firma
+                  </label>
+                  {form.isBusiness && (
+                    <>
+                      <label className="block text-xs font-semibold text-neutral-500">
+                        Denumire firma
+                        <input
+                          value={form.company}
+                          onChange={(event) => setForm((prev) => ({ ...prev, company: event.target.value }))}
+                          className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
+                        />
+                      </label>
+                      <label className="block text-xs font-semibold text-neutral-500">
+                        CUI *
+                        <input
+                          value={form.cui}
+                          onChange={(event) => setForm((prev) => ({ ...prev, cui: event.target.value }))}
+                          className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
+                        />
+                      </label>
+                    </>
+                  )}
                   {[
-                    ["company", "Denumire firma"],
                     ["contact", "Persoana contact *"],
                     ["phone", "Telefon *"],
                     ["email", "Email *"],
@@ -205,7 +250,7 @@ export default function CartPage() {
                     <label key={key} className="block text-xs font-semibold text-neutral-500">
                       {label}
                       <input
-                        value={form[key as keyof typeof form]}
+                        value={String(form[key as keyof typeof form])}
                         onChange={(event) => setForm((prev) => ({ ...prev, [key]: event.target.value }))}
                         className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
                       />
@@ -234,7 +279,7 @@ export default function CartPage() {
                 </div>
                 <button
                   onClick={submitOrder}
-                  disabled={submitting || !meetsMinimum || !form.contact || !form.phone || !form.email || !form.county}
+                  disabled={submitting || !meetsMinimum || !form.contact || !form.phone || !form.email || !form.county || (form.isBusiness && !form.cui)}
                   className="mt-4 w-full rounded-lg bg-brand py-3 font-black text-white hover:bg-brand-dark disabled:opacity-50"
                 >
                   {submitting ? "Se salveaza..." : "Plaseaza Comanda"}

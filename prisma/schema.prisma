@@ -26,6 +26,7 @@ model Customer {
   passwordHash String
   isBusiness   Boolean  @default(false)
   company      String   @default("")
+  cui          String   @default("")
   phone        String   @default("")
   county       String   @default("")
   city         String   @default("")
@@ -40,6 +41,7 @@ model Order {
   updatedAt DateTime    @updatedAt
   status    String      @default("Noua")
   company   String
+  cui       String      @default("")
   contact   String
   phone     String
   email     String

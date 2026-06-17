@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Customer" ADD COLUMN "cui" TEXT NOT NULL DEFAULT '';
+
+-- AlterTable
+ALTER TABLE "Order" ADD COLUMN "cui" TEXT NOT NULL DEFAULT '';

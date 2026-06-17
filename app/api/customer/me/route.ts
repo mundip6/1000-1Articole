@@ -14,6 +14,7 @@ export async function PATCH(request: Request) {
       lastName: String(body.lastName || ""),
       isBusiness: Boolean(body.isBusiness),
       company: String(body.company || ""),
+      cui: String(body.cui || ""),
       phone: String(body.phone || ""),
       county: String(body.county || ""),
       city: String(body.city || ""),

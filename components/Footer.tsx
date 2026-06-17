@@ -31,7 +31,7 @@ export default function Footer() {
             <p className="flex items-center justify-between gap-3"><span>Duminica</span><strong className="text-brand">Inchis</strong></p>
           </div>
           <div className="mt-5 border-t border-neutral-800 pt-5 text-sm">
-            Comanda minima: <strong className="text-white">50 lei Baia Mare</strong> / <strong className="text-white">500 lei alte zone</strong>
+            Comanda minima: <strong className="text-white">50 lei Baia Mare</strong> / <strong className="text-white">300 lei alte zone</strong>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { type Category } from "@/lib/data";
+import { isValidCui, normalizeCui } from "@/lib/cui";
 
 export type OrderStatus = "Noua" | "Confirmata" | "Livrata" | "Anulata";
 
@@ -18,6 +19,7 @@ export type Order = {
   createdAt: string;
   status: OrderStatus;
   company: string;
+  cui: string;
   contact: string;
   phone: string;
   email: string;
@@ -31,7 +33,9 @@ export type Order = {
 };
 
 export type OrderInput = {
+  isBusiness?: boolean;
   company?: string;
+  cui?: string;
   contact: string;
   phone: string;
   email: string;
@@ -55,6 +59,7 @@ function toOrder(order: {
   createdAt: Date;
   status: string;
   company: string;
+  cui: string;
   contact: string;
   phone: string;
   email: string;
@@ -79,6 +84,7 @@ function toOrder(order: {
     createdAt: order.createdAt.toISOString(),
     status: order.status as OrderStatus,
     company: order.company,
+    cui: order.cui,
     contact: order.contact,
     phone: order.phone,
     email: order.email,
@@ -113,11 +119,17 @@ export async function createOrder(input: OrderInput) {
     throw new Error("Comanda nu contine toate datele obligatorii.");
   }
 
+  const cui = normalizeCui(input.cui || "");
+  if (input.isBusiness && !isValidCui(cui)) {
+    throw new Error("CUI invalid. Pentru comenzi pe firma, CUI este obligatoriu si trebuie sa fie valid.");
+  }
+
   const order = await prisma.order.create({
     data: {
       id: `ORD-${Date.now()}`,
       status: "Noua",
       company: input.company || "",
+      cui: input.isBusiness ? cui : "",
       contact: input.contact,
       phone: input.phone,
       email: input.email,

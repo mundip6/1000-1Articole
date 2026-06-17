@@ -1,5 +1,6 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
+import { isValidCui, normalizeCui } from "@/lib/cui";
 import { prisma } from "@/lib/prisma";
 
 const COOKIE_NAME = "customer-session";
@@ -11,6 +12,7 @@ export type PublicCustomer = {
   email: string;
   isBusiness: boolean;
   company: string;
+  cui: string;
   phone: string;
   county: string;
   city: string;
@@ -24,6 +26,7 @@ function toPublicCustomer(customer: {
   email: string;
   isBusiness: boolean;
   company: string;
+  cui: string;
   phone: string;
   county: string;
   city: string;
@@ -36,6 +39,7 @@ function toPublicCustomer(customer: {
     email: customer.email,
     isBusiness: customer.isBusiness,
     company: customer.company,
+    cui: customer.cui,
     phone: customer.phone,
     county: customer.county,
     city: customer.city,
@@ -130,6 +134,7 @@ export async function updateCustomerProfile(input: {
   lastName: string;
   isBusiness: boolean;
   company: string;
+  cui: string;
   phone: string;
   county: string;
   city: string;
@@ -140,6 +145,11 @@ export async function updateCustomerProfile(input: {
     throw new Error("Trebuie sa fii autentificat.");
   }
 
+  const cui = normalizeCui(input.cui);
+  if (input.isBusiness && !isValidCui(cui)) {
+    throw new Error("CUI invalid. Verifica datele firmei.");
+  }
+
   const customer = await prisma.customer.update({
     where: { id: current.id },
     data: {
@@ -147,6 +157,7 @@ export async function updateCustomerProfile(input: {
       lastName: input.lastName.trim(),
       isBusiness: input.isBusiness,
       company: input.company.trim(),
+      cui: input.isBusiness ? cui : "",
       phone: input.phone.trim(),
       county: input.county.trim(),
       city: input.city.trim(),
