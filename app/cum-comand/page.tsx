@@ -53,7 +53,7 @@ export default function OrderGuidePage() {
           {faq.map(([q, a]) => (
             <article key={q} className="rounded-lg border border-neutral-200 bg-white p-5">
               <h3 className="mb-2 font-black">{q}</h3>
-              <p className="text-sm text-neutral-500">{a}</p>
+              <p className="text-sm text-neutral-500 whitespace-pre-line">{a}</p>
             </article>
           ))}
         </div>
