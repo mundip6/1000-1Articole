@@ -86,7 +86,7 @@ export default function PoliticaLivrarePage() {
               </div>
               <div className="flex gap-3">
                 <CheckCircle size={16} className="mt-1 shrink-0 text-brand" />
-                <p>Plata se efectuează exclusiv în numerar, la livrare, către reprezentantul nostru.</p>
+                <p>Plata se efectuează la livrare, direct către reprezentantul nostru (numerar, transfer bancar sau electronic). Nu se acceptă plăți prin site.</p>
               </div>
               <div className="flex gap-3">
                 <CheckCircle size={16} className="mt-1 shrink-0 text-brand" />

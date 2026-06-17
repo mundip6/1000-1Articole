@@ -17,10 +17,11 @@ export default function ModalitatiplataPage() {
               <Banknote size={24} />
             </div>
             <div>
-              <h2 className="mb-2 text-lg font-black">Numerar la livrare (Ramburs)</h2>
+              <h2 className="mb-2 text-lg font-black">Plată la livrare</h2>
               <p className="text-sm leading-7 text-neutral-600">
-                Singura modalitate de plată acceptată este <strong>numerarul achitat curierului</strong> în momentul livrării.
-                Vă rugăm să pregătiți suma exactă sau o sumă apropiată, deoarece curierul poate să nu aibă rest pentru sume mari.
+                Plata se efectuează <strong>în momentul livrării, direct către reprezentantul nostru</strong>.
+                Acceptăm numerar, transfer bancar și alte modalități electronice de plată — toate achitate la livrare, nu prin site.
+                Nu există plată online pe această platformă.
               </p>
             </div>
           </div>
@@ -52,11 +53,11 @@ export default function ModalitatiplataPage() {
           </div>
 
           <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-5 text-sm text-neutral-600">
-            <p className="font-bold text-neutral-900">Nu acceptăm:</p>
+            <p className="font-bold text-neutral-900">Important:</p>
             <ul className="mt-2 list-inside list-disc space-y-1">
-              <li>Plăți online (card, PayPal, etc.)</li>
-              <li>Transfer bancar anticipat</li>
-              <li>Plată la termen / pe credit comercial</li>
+              <li>Nu acceptăm plăți prin site (card online, PayPal etc.)</li>
+              <li>Nu acceptăm plată la termen / pe credit comercial</li>
+              <li>Toate plățile se fac exclusiv la momentul livrării</li>
             </ul>
           </div>
 

@@ -23,14 +23,14 @@ export default function TermeniConditiiPage() {
             <h2 className="mb-3 text-lg font-black text-neutral-900">2. Destinatarii serviciilor</h2>
             <p>
               Serviciile noastre sunt destinate exclusiv persoanelor juridice (firme, restaurante, cantine, magazine, etc.).
-              Nu efectuăm livrări către persoane fizice. Prin plasarea unei comenzi, confirmați că acționați în calitate de reprezentant al unei entități comerciale.
+              Efectuăm livrări către persoane fizice. Prin plasarea unei comenzi, confirmați că acționați în calitate de reprezentant al unei entități comerciale.
             </p>
           </section>
 
           <section>
             <h2 className="mb-3 text-lg font-black text-neutral-900">3. Produse și prețuri</h2>
             <p>
-              Toate prețurile afișate pe site sunt prețuri de catalog engros, exprimate în lei (RON) și pot include TVA.
+              Toate prețurile afișate pe site sunt prețuri de catalog engros, exprimate în lei (RON) și includ TVA.
               Ne rezervăm dreptul de a modifica prețurile fără notificare prealabilă. Prețul final aplicat comenzii va fi cel confirmat telefonic de către reprezentantul nostru.
             </p>
           </section>
@@ -55,8 +55,9 @@ export default function TermeniConditiiPage() {
           <section>
             <h2 className="mb-3 text-lg font-black text-neutral-900">6. Plata</h2>
             <p>
-              Plata se efectuează exclusiv în numerar, la livrare, către curierul care efectuează livrarea.
-              Nu acceptăm plăți online, prin transfer bancar sau alte modalități electronice.
+              Plata se efectuează la livrare, direct către reprezentantul nostru. Acceptăm numerar, transfer bancar
+              și alte modalități electronice de plată, toate achitate în momentul livrării.
+              Nu acceptăm plăți prin intermediul site-ului și nici plăți la termen.
             </p>
           </section>
 
