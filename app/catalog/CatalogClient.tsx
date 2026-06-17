@@ -30,18 +30,18 @@ export default function CatalogClient({ products }: { products: Product[] }) {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-6 text-3xl font-black">Catalog Produse Engros</h1>
-      <div className="mb-8 flex flex-col gap-4 lg:flex-row">
+      <div className="mb-6 flex items-center gap-4">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Cauta produs..."
-            className="w-full rounded-lg border border-neutral-200 bg-white py-3 pl-10 pr-4 text-sm outline-none focus:border-brand"
+            placeholder="Catalog Produse Engros — cauta produs..."
+            className="w-full rounded-lg border border-neutral-200 bg-white py-4 pl-12 pr-4 text-base font-medium outline-none focus:border-brand"
           />
         </div>
-        <div className="flex flex-wrap gap-2">
+      </div>
+      <div className="mb-8 flex flex-wrap gap-2">
           <button
             onClick={() => setActiveCat("Toate")}
             className={`rounded-lg border px-4 py-2 text-sm font-bold ${activeCat === "Toate" ? "border-brand bg-brand text-white" : "border-neutral-200 bg-white hover:border-brand"}`}
@@ -58,7 +58,6 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             </button>
           ))}
         </div>
-      </div>
 
       {filtered.length === 0 && <div className="py-20 text-center text-neutral-500">Nu s-au gasit produse.</div>}
 
