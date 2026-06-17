@@ -24,7 +24,7 @@ export default function Home() {
           <p className="mt-4 text-2xl font-light text-white/95">Distribuitor engros de carne si mezeluri</p>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/75">
             Produse proaspete, preturi competitive pentru firme, restaurante, cantine si magazine.
-            Comanda minima: <strong>50 lei</strong> in Baia Mare sau <strong>500 lei</strong> in rest.
+            Comanda minima: <strong>50 lei</strong> in Baia Mare si <strong>300 lei</strong> in rest.
           </p>
           <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
             <Link href="/catalog" className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-8 py-4 font-black text-brand hover:bg-neutral-100">

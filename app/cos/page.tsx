@@ -44,7 +44,7 @@ export default function CartPage() {
 
   const total = cartTotal(cart);
   const weight = cartWeight(cart);
-  const minimumValue = form.county === "Maramures" ? 50 : 500;
+  const minimumValue = form.county === "Maramures" ? 50 : 300;
   const meetsMinimum = total >= minimumValue;
 
   useEffect(() => {
