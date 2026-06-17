@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Check, Plus, Search } from "lucide-react";
 import { addToCart } from "@/lib/cart";
@@ -75,42 +76,54 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                 const qty = quantities[product.id] || 1;
                 return (
                   <article key={product.id} className="flex flex-col rounded-lg border border-neutral-200 bg-white shadow-sm">
+                    <Link href={`/catalog/${product.id}`} className="block">
                     {product.imageUrl ? (
                       <div className="h-40 w-full overflow-hidden rounded-t-lg bg-neutral-100">
-                        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
+                        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition-transform duration-200 hover:scale-105" />
                       </div>
                     ) : (
-                      <div className="flex h-40 w-full items-center justify-center rounded-t-lg bg-neutral-100 text-4xl text-neutral-300">
+                      <div className="flex h-40 w-full items-center justify-center rounded-t-lg bg-neutral-100 text-4xl text-neutral-300 hover:bg-neutral-200">
                         🧊
                       </div>
                     )}
+                    </Link>
                     <div className="flex flex-1 flex-col p-4">
-                    <div className="font-bold">{product.name}</div>
+                    <div className="flex items-start justify-between gap-2">
+                      <Link href={`/catalog/${product.id}`} className="font-bold hover:text-brand">{product.name}</Link>
+                      {product.stock > 0 ? (
+                        <span className="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-black text-green-700">În stoc</span>
+                      ) : (
+                        <span className="shrink-0 rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-black text-red-600">Stoc epuizat</span>
+                      )}
+                    </div>
                     {product.weight && <div className="mt-1 text-xs text-neutral-500">{product.weight}</div>}
                     <div className="mt-auto pt-5 text-xl font-black text-brand">
                       {formatPrice(product.price)} lei <span className="text-xs font-normal text-neutral-500">/{product.unit}</span>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
-                      <div className="flex items-center overflow-hidden rounded border border-neutral-200">
+                      <div className={`flex items-center overflow-hidden rounded border border-neutral-200 ${product.stock === 0 ? "opacity-40" : ""}`}>
                         <button
                           aria-label="Scade cantitatea"
+                          disabled={product.stock === 0}
                           onClick={() => setQuantities((prev) => ({ ...prev, [product.id]: Math.max(1, qty - 1) }))}
-                          className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900"
+                          className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed"
                         >
                           -
                         </button>
                         <span className="min-w-8 text-center text-sm font-bold">{qty}</span>
                         <button
                           aria-label="Creste cantitatea"
-                          onClick={() => setQuantities((prev) => ({ ...prev, [product.id]: qty + 1 }))}
-                          className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900"
+                          disabled={product.stock === 0 || qty >= product.stock}
+                          onClick={() => setQuantities((prev) => ({ ...prev, [product.id]: Math.min(product.stock, qty + 1) }))}
+                          className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           +
                         </button>
                       </div>
                       <button
+                        disabled={product.stock === 0}
                         onClick={() => handleAdd(product)}
-                        className={`inline-flex flex-1 items-center justify-center gap-1 rounded px-3 py-2 text-xs font-black text-white ${added[product.id] ? "bg-green-600" : "bg-brand hover:bg-brand-dark"}`}
+                        className={`inline-flex flex-1 items-center justify-center gap-1 rounded px-3 py-2 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50 ${added[product.id] ? "bg-green-600" : "bg-brand hover:bg-brand-dark"}`}
                       >
                         {added[product.id] ? <><Check size={13} /> Adaugat</> : <><Plus size={13} /> Adauga</>}
                       </button>

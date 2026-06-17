@@ -15,6 +15,8 @@ export type Product = {
   unit: "kg" | "buc";
   weight?: string;
   imageUrl?: string;
+  stock: number;
+  nutritionInfo?: string;
 };
 
 export const business = {

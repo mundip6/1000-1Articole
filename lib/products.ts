@@ -19,7 +19,7 @@ function slugify(value: string) {
   return value
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 48);
@@ -33,6 +33,8 @@ function toProduct(product: {
   unit: string;
   weight: string | null;
   imageUrl: string | null;
+  stock: number;
+  nutritionInfo: string | null;
 }): Product {
   return {
     id: product.id,
@@ -40,8 +42,10 @@ function toProduct(product: {
     category: product.category as Category,
     price: product.price,
     unit: product.unit === "buc" ? "buc" : "kg",
+    stock: product.stock,
     ...(product.weight ? { weight: product.weight } : {}),
     ...(product.imageUrl ? { imageUrl: product.imageUrl } : {}),
+    ...(product.nutritionInfo ? { nutritionInfo: product.nutritionInfo } : {}),
   };
 }
 
@@ -52,6 +56,12 @@ export async function listProducts(): Promise<Product[]> {
   return products.map(toProduct);
 }
 
+export async function getProduct(id: string): Promise<Product | null> {
+  const product = await prisma.product.findUnique({ where: { id } });
+  if (!product) return null;
+  return toProduct(product);
+}
+
 export async function createProduct(formData: FormData) {
   const name = String(formData.get("name") || "").trim();
   const category = String(formData.get("category") || "");
@@ -59,6 +69,8 @@ export async function createProduct(formData: FormData) {
   const unit = String(formData.get("unit") || "");
   const weight = String(formData.get("weight") || "").trim();
   const imageUrl = String(formData.get("imageUrl") || "").trim();
+  const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
+  const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
 
   if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -81,6 +93,8 @@ export async function createProduct(formData: FormData) {
       unit,
       weight: weight || null,
       imageUrl: imageUrl || null,
+      stock,
+      nutritionInfo: nutritionInfo || null,
     },
   });
 }
@@ -93,6 +107,8 @@ export async function updateProduct(formData: FormData) {
   const unit = String(formData.get("unit") || "");
   const weight = String(formData.get("weight") || "").trim();
   const imageUrl = String(formData.get("imageUrl") || "").trim();
+  const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
+  const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
 
   if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -107,6 +123,8 @@ export async function updateProduct(formData: FormData) {
       unit,
       weight: weight || null,
       imageUrl: imageUrl || null,
+      stock,
+      nutritionInfo: nutritionInfo || null,
     },
   });
 }
