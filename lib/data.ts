@@ -16,6 +16,7 @@ export type Product = {
   weight?: string;
   imageUrl?: string;
   stock: number;
+  packagedByUs: boolean;
   nutritionInfo?: string;
 };
 

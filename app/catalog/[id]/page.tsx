@@ -37,8 +37,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
           <div className="flex flex-col gap-4">
             <div>
-              <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-xs font-black text-brand">
-                <span>{category?.icon}</span> {product.category}
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-xs font-black text-brand">
+                  <span>{category?.icon}</span> {product.category}
+                </span>
+                {product.packagedByUs && (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">
+                    📦 Ambalat de noi
+                  </span>
+                )}
               </div>
               <h1 className="text-3xl font-black">{product.name}</h1>
               {product.weight && (

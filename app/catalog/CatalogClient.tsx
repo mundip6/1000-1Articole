@@ -88,12 +88,15 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                     )}
                     </Link>
                     <div className="flex flex-1 flex-col p-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <Link href={`/catalog/${product.id}`} className="font-bold hover:text-brand">{product.name}</Link>
+                    <Link href={`/catalog/${product.id}`} className="font-bold hover:text-brand">{product.name}</Link>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
                       {product.stock > 0 ? (
-                        <span className="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-black text-green-700">În stoc</span>
+                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-black text-green-700">În stoc</span>
                       ) : (
-                        <span className="shrink-0 rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-black text-red-600">Stoc epuizat</span>
+                        <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-black text-red-600">Stoc epuizat</span>
+                      )}
+                      {product.packagedByUs && (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black text-amber-700">📦 Ambalat de noi</span>
                       )}
                     </div>
                     {product.weight && <div className="mt-1 text-xs text-neutral-500">{product.weight}</div>}

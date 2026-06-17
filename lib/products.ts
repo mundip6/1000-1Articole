@@ -34,6 +34,7 @@ function toProduct(product: {
   weight: string | null;
   imageUrl: string | null;
   stock: number;
+  packagedByUs: boolean;
   nutritionInfo: string | null;
 }): Product {
   return {
@@ -43,6 +44,7 @@ function toProduct(product: {
     price: product.price,
     unit: product.unit === "buc" ? "buc" : "kg",
     stock: product.stock,
+    packagedByUs: product.packagedByUs,
     ...(product.weight ? { weight: product.weight } : {}),
     ...(product.imageUrl ? { imageUrl: product.imageUrl } : {}),
     ...(product.nutritionInfo ? { nutritionInfo: product.nutritionInfo } : {}),
@@ -71,6 +73,7 @@ export async function createProduct(formData: FormData) {
   const imageUrl = String(formData.get("imageUrl") || "").trim();
   const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
+  const packagedByUs = formData.get("packagedByUs") === "on";
 
   if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -94,6 +97,7 @@ export async function createProduct(formData: FormData) {
       weight: weight || null,
       imageUrl: imageUrl || null,
       stock,
+      packagedByUs,
       nutritionInfo: nutritionInfo || null,
     },
   });
@@ -109,6 +113,7 @@ export async function updateProduct(formData: FormData) {
   const imageUrl = String(formData.get("imageUrl") || "").trim();
   const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
+  const packagedByUs = formData.get("packagedByUs") === "on";
 
   if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -124,6 +129,7 @@ export async function updateProduct(formData: FormData) {
       weight: weight || null,
       imageUrl: imageUrl || null,
       stock,
+      packagedByUs,
       nutritionInfo: nutritionInfo || null,
     },
   });

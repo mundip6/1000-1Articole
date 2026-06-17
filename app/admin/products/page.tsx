@@ -75,7 +75,11 @@ export default async function AdminProductsPage() {
                 </label>
               </div>
             </div>
-            <div>
+            <div className="flex items-center gap-4">
+              <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold">
+                <input type="checkbox" name="packagedByUs" className="h-4 w-4 accent-brand" />
+                Ambalat de noi
+              </label>
               <button className="inline-flex items-center justify-center gap-2 rounded bg-brand px-4 py-2 text-sm font-black text-white hover:bg-brand-dark">
                 <Plus size={16} /> Adauga
               </button>
@@ -137,6 +141,10 @@ export default async function AdminProductsPage() {
                     <div>
                       <p className="mb-2 text-xs font-semibold uppercase text-neutral-500">Foto produs</p>
                       <ImageUpload currentUrl={product.imageUrl} />
+                      <label className="mt-3 flex cursor-pointer items-center gap-2 text-sm font-semibold">
+                        <input type="checkbox" name="packagedByUs" defaultChecked={product.packagedByUs} className="h-4 w-4 accent-brand" />
+                        Ambalat de noi
+                      </label>
                     </div>
                     <div>
                       <label className="text-xs font-semibold uppercase text-neutral-500">
