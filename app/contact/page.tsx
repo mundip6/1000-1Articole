@@ -65,7 +65,7 @@ export default function ContactPage() {
           <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
             <iframe
               title="Locatie 1000&1 Articole Baia Mare"
-              src="https://www.google.com/maps?q=Baia+Mare,+Bdul+Regele+Mihai+I+nr+49+G&output=embed"
+              src="https://maps.app.goo.gl/ydDcXBroKiAqQcEB7"
               className="h-full min-h-[420px] w-full"
               loading="lazy"
               allowFullScreen
