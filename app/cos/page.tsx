@@ -39,7 +39,7 @@ export default function CartPage() {
   const remove = (id: string) => setCart(removeFromCart(id));
 
   const submitOrder = async () => {
-    if (!form.company || !form.contact || !form.phone || !form.email || !form.county) return;
+    if (!form.contact || !form.phone || !form.email || !form.county) return;
     setSubmitting(true);
     setError("");
 
@@ -142,7 +142,7 @@ export default function CartPage() {
                 <h2 className="mb-4 font-black">Date Firma</h2>
                 <div className="space-y-3">
                   {[
-                    ["company", "Denumire firma *"],
+                    ["company", "Denumire firma"],
                     ["contact", "Persoana contact *"],
                     ["phone", "Telefon *"],
                     ["email", "Email *"],
@@ -181,7 +181,7 @@ export default function CartPage() {
                 </div>
                 <button
                   onClick={submitOrder}
-                  disabled={submitting || !meetsMinimum || !form.company || !form.contact || !form.phone || !form.email || !form.county}
+                  disabled={submitting || !meetsMinimum || !form.contact || !form.phone || !form.email || !form.county}
                   className="mt-4 w-full rounded-lg bg-brand py-3 font-black text-white hover:bg-brand-dark disabled:opacity-50"
                 >
                   {submitting ? "Se salveaza..." : "Plaseaza Comanda"}

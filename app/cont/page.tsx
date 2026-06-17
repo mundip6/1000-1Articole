@@ -2,91 +2,145 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import { LogOut, Mail, Phone, ShoppingBag, UserRound } from "lucide-react";
+import { LogOut, Mail, ShoppingBag, UserRound, XCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { formatPrice } from "@/lib/data";
 import { type Order } from "@/lib/orders";
+import { type PublicCustomer } from "@/lib/customers";
 
-type Customer = {
-  company?: string;
-  contact?: string;
-  phone: string;
-  email: string;
-  county?: string;
-  city?: string;
-  address?: string;
+type Mode = "login" | "register";
+
+const emptyProfile = {
+  firstName: "",
+  lastName: "",
+  isBusiness: false,
+  company: "",
+  phone: "",
+  county: "",
+  city: "",
+  address: "",
 };
 
-const SESSION_KEY = "1001-customer-session";
-
-function getSavedSession() {
-  if (typeof window === "undefined") return null;
-  try {
-    return JSON.parse(window.localStorage.getItem(SESSION_KEY) || "null") as { email: string; phone: string } | null;
-  } catch {
-    return null;
-  }
-}
-
 export default function CustomerAccountPage() {
-  const [email, setEmail] = useState(() => getSavedSession()?.email || "");
-  const [phone, setPhone] = useState(() => getSavedSession()?.phone || "");
-  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [mode, setMode] = useState<Mode>("login");
+  const [customer, setCustomer] = useState<PublicCustomer | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+  const [auth, setAuth] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    isBusiness: false,
+  });
+  const [profile, setProfile] = useState(emptyProfile);
 
-  const loadOrders = async (credentials: { email: string; phone: string }) => {
+  const loadAccount = async () => {
     setLoading(true);
-    setError("");
+    setMessage("");
     try {
-      const response = await fetch("/api/customer/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
-      const data = (await response.json()) as {
-        ok: boolean;
-        message?: string;
-        customer: Customer;
-        orders: Order[];
-      };
+      const meResponse = await fetch("/api/customer/me");
+      const meData = (await meResponse.json()) as { ok: boolean; customer: PublicCustomer | null };
 
-      if (!response.ok || !data.ok) {
-        throw new Error(data.message || "Nu am putut incarca comenzile.");
+      if (!meData.customer) {
+        setCustomer(null);
+        setOrders([]);
+        return;
       }
 
-      setCustomer(data.customer);
-      setOrders(data.orders);
-      window.localStorage.setItem(SESSION_KEY, JSON.stringify(credentials));
-    } catch (accountError) {
-      setError(accountError instanceof Error ? accountError.message : "Nu am putut incarca comenzile.");
+      setCustomer(meData.customer);
+      setProfile({
+        firstName: meData.customer.firstName,
+        lastName: meData.customer.lastName,
+        isBusiness: meData.customer.isBusiness,
+        company: meData.customer.company,
+        phone: meData.customer.phone,
+        county: meData.customer.county,
+        city: meData.customer.city,
+        address: meData.customer.address,
+      });
+
+      const ordersResponse = await fetch("/api/customer/orders");
+      const ordersData = (await ordersResponse.json()) as { ok: boolean; orders: Order[] };
+      setOrders(ordersData.ok ? ordersData.orders : []);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const saved = getSavedSession();
-    if (saved?.email && saved?.phone) {
-      window.setTimeout(() => void loadOrders(saved), 0);
-    } else {
-      window.localStorage.removeItem(SESSION_KEY);
-    }
+    window.setTimeout(() => void loadAccount(), 0);
   }, []);
 
-  const submit = (event: FormEvent) => {
+  const submitAuth = async (event: FormEvent) => {
     event.preventDefault();
-    void loadOrders({ email, phone });
+    setLoading(true);
+    setMessage("");
+    try {
+      const response = await fetch(`/api/customer/${mode}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auth),
+      });
+      const data = (await response.json()) as { ok: boolean; message?: string };
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "Operatia nu a reusit.");
+      }
+      await loadAccount();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Operatia nu a reusit.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    window.localStorage.removeItem(SESSION_KEY);
+  const saveProfile = async (event: FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/customer/me", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+      });
+      const data = (await response.json()) as { ok: boolean; message?: string };
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "Profilul nu a putut fi salvat.");
+      }
+      setMessage("Datele au fost salvate.");
+      await loadAccount();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Profilul nu a putut fi salvat.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    await fetch("/api/customer/logout", { method: "POST" });
     setCustomer(null);
     setOrders([]);
-    setEmail("");
-    setPhone("");
+    setMode("login");
+  };
+
+  const cancelOrder = async (id: string) => {
+    setLoading(true);
+    setMessage("");
+    try {
+      const response = await fetch(`/api/customer/orders/${id}/cancel`, { method: "PATCH" });
+      const data = (await response.json()) as { ok: boolean; message?: string };
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "Comanda nu a putut fi anulata.");
+      }
+      await loadAccount();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Comanda nu a putut fi anulata.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -99,25 +153,70 @@ export default function CustomerAccountPage() {
           </div>
           <div>
             <h1 className="text-3xl font-black">Cont client</h1>
-            <p className="text-sm text-neutral-500">Vezi datele tale si comenzile plasate.</p>
+            <p className="text-sm text-neutral-500">Autentificare, date personale si comenzi.</p>
           </div>
         </div>
 
+        {message && (
+          <div className="mb-5 rounded-lg border border-neutral-200 bg-white p-3 text-sm font-semibold text-neutral-700">
+            {message}
+          </div>
+        )}
+
         {!customer ? (
           <section className="max-w-md rounded-lg border border-neutral-200 bg-white p-6">
-            <h2 className="mb-2 text-xl font-black">Autentificare client</h2>
+            <div className="mb-5 flex rounded-lg border border-neutral-200 p-1">
+              <button
+                onClick={() => setMode("login")}
+                className={`flex-1 rounded-md px-3 py-2 text-sm font-black ${mode === "login" ? "bg-brand text-white" : "text-neutral-600"}`}
+              >
+                Login
+              </button>
+              <button
+                onClick={() => setMode("register")}
+                className={`flex-1 rounded-md px-3 py-2 text-sm font-black ${mode === "register" ? "bg-brand text-white" : "text-neutral-600"}`}
+              >
+                Register
+              </button>
+            </div>
+
+            <h2 className="mb-2 text-xl font-black">{mode === "login" ? "Autentificare client" : "Creare cont client"}</h2>
             <p className="mb-5 text-sm text-neutral-500">
-              Introdu emailul si telefonul folosite la comanda. Pentru versiunea locala, acestea tin loc de autentificare.
+              {mode === "login"
+                ? "Intra in cont cu email si parola."
+                : "Daca nu ai cont, completeaza datele de mai jos."}
             </p>
-            {error && <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</div>}
-            <form onSubmit={submit} className="space-y-4">
+
+            <form onSubmit={submitAuth} className="space-y-4">
+              {mode === "register" && (
+                <>
+                  <label className="block text-sm font-semibold">
+                    Prenume
+                    <input
+                      value={auth.firstName}
+                      onChange={(event) => setAuth((prev) => ({ ...prev, firstName: event.target.value }))}
+                      required
+                      className="mt-2 w-full rounded-lg border border-neutral-200 px-3 py-3 outline-none focus:border-brand"
+                    />
+                  </label>
+                  <label className="block text-sm font-semibold">
+                    Nume
+                    <input
+                      value={auth.lastName}
+                      onChange={(event) => setAuth((prev) => ({ ...prev, lastName: event.target.value }))}
+                      required
+                      className="mt-2 w-full rounded-lg border border-neutral-200 px-3 py-3 outline-none focus:border-brand"
+                    />
+                  </label>
+                </>
+              )}
               <label className="block text-sm font-semibold">
                 Email
                 <span className="relative mt-2 block">
                   <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
                   <input
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    value={auth.email}
+                    onChange={(event) => setAuth((prev) => ({ ...prev, email: event.target.value }))}
                     type="email"
                     required
                     className="w-full rounded-lg border border-neutral-200 py-3 pl-10 pr-3 outline-none focus:border-brand"
@@ -125,19 +224,28 @@ export default function CustomerAccountPage() {
                 </span>
               </label>
               <label className="block text-sm font-semibold">
-                Telefon
-                <span className="relative mt-2 block">
-                  <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
-                  <input
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
-                    required
-                    className="w-full rounded-lg border border-neutral-200 py-3 pl-10 pr-3 outline-none focus:border-brand"
-                  />
-                </span>
+                Parola
+                <input
+                  value={auth.password}
+                  onChange={(event) => setAuth((prev) => ({ ...prev, password: event.target.value }))}
+                  type="password"
+                  required
+                  className="mt-2 w-full rounded-lg border border-neutral-200 px-3 py-3 outline-none focus:border-brand"
+                />
               </label>
+              {mode === "register" && (
+                <label className="flex items-center gap-2 text-sm font-semibold">
+                  <input
+                    type="checkbox"
+                    checked={auth.isBusiness}
+                    onChange={(event) => setAuth((prev) => ({ ...prev, isBusiness: event.target.checked }))}
+                    className="h-4 w-4 accent-brand"
+                  />
+                  Sunt firma
+                </label>
+              )}
               <button disabled={loading} className="w-full rounded-lg bg-brand py-3 font-black text-white hover:bg-brand-dark disabled:opacity-50">
-                {loading ? "Se incarca..." : "Intra in cont"}
+                {loading ? "Se incarca..." : mode === "login" ? "Intra in cont" : "Creeaza cont"}
               </button>
             </form>
           </section>
@@ -151,15 +259,39 @@ export default function CustomerAccountPage() {
                     <LogOut size={15} /> Iesire
                   </button>
                 </div>
-                <div className="space-y-2 text-sm">
-                  {customer.company && <p><strong>Firma:</strong> {customer.company}</p>}
-                  {customer.contact && <p><strong>Contact:</strong> {customer.contact}</p>}
-                  <p><strong>Email:</strong> {customer.email}</p>
-                  <p><strong>Telefon:</strong> {customer.phone}</p>
-                  {customer.county && <p><strong>Judet:</strong> {customer.county}</p>}
-                  {customer.city && <p><strong>Localitate:</strong> {customer.city}</p>}
-                  {customer.address && <p><strong>Adresa:</strong> {customer.address}</p>}
-                </div>
+                <form onSubmit={saveProfile} className="space-y-3">
+                  {[
+                    ["firstName", "Prenume"],
+                    ["lastName", "Nume"],
+                    ["company", "Denumire firma"],
+                    ["phone", "Telefon"],
+                    ["county", "Judet"],
+                    ["city", "Localitate"],
+                    ["address", "Adresa"],
+                  ].map(([key, label]) => (
+                    <label key={key} className="block text-xs font-semibold text-neutral-500">
+                      {label}
+                      <input
+                        value={String(profile[key as keyof typeof profile])}
+                        onChange={(event) => setProfile((prev) => ({ ...prev, [key]: event.target.value }))}
+                        className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
+                      />
+                    </label>
+                  ))}
+                  <label className="flex items-center gap-2 text-sm font-semibold">
+                    <input
+                      type="checkbox"
+                      checked={profile.isBusiness}
+                      onChange={(event) => setProfile((prev) => ({ ...prev, isBusiness: event.target.checked }))}
+                      className="h-4 w-4 accent-brand"
+                    />
+                    Sunt firma
+                  </label>
+                  <p className="text-xs text-neutral-500">Email: {customer.email}</p>
+                  <button className="w-full rounded-lg bg-neutral-900 py-2 text-sm font-black text-white hover:bg-brand">
+                    Salveaza datele
+                  </button>
+                </form>
               </section>
               <Link href="/catalog" className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand px-4 py-3 font-black text-white hover:bg-brand-dark">
                 <ShoppingBag size={17} /> Plaseaza comanda noua
@@ -173,7 +305,7 @@ export default function CustomerAccountPage() {
               </div>
               {orders.length === 0 ? (
                 <div className="rounded-lg border border-dashed border-neutral-300 p-10 text-center text-neutral-500">
-                  Nu exista comenzi pentru acest email si telefon.
+                  Nu exista comenzi pentru acest cont.
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -187,6 +319,14 @@ export default function CustomerAccountPage() {
                         <div className="text-left sm:text-right">
                           <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-black text-brand">{order.status}</span>
                           <p className="mt-2 text-sm font-black">{formatPrice(order.total)} lei</p>
+                          {order.status === "Noua" && (
+                            <button
+                              onClick={() => void cancelOrder(order.id)}
+                              className="mt-2 inline-flex items-center gap-1 text-xs font-black text-red-600 hover:underline"
+                            >
+                              <XCircle size={14} /> Anuleaza comanda
+                            </button>
+                          )}
                         </div>
                       </div>
                       <div className="mt-4 space-y-2 border-t border-neutral-100 pt-4">

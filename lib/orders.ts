@@ -31,7 +31,7 @@ export type Order = {
 };
 
 export type OrderInput = {
-  company: string;
+  company?: string;
   contact: string;
   phone: string;
   email: string;
@@ -109,7 +109,7 @@ export async function listOrders(): Promise<Order[]> {
 }
 
 export async function createOrder(input: OrderInput) {
-  if (!input.company || !input.contact || !input.phone || !input.email || !input.county || !input.items.length) {
+  if (!input.contact || !input.phone || !input.email || !input.county || !input.items.length) {
     throw new Error("Comanda nu contine toate datele obligatorii.");
   }
 
@@ -117,7 +117,7 @@ export async function createOrder(input: OrderInput) {
     data: {
       id: `ORD-${Date.now()}`,
       status: "Noua",
-      company: input.company,
+      company: input.company || "",
       contact: input.contact,
       phone: input.phone,
       email: input.email,
@@ -154,5 +154,31 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
   await prisma.order.update({
     where: { id },
     data: { status },
+  });
+}
+
+export async function listOrdersByEmail(email: string): Promise<Order[]> {
+  const orders = await prisma.order.findMany({
+    where: { email },
+    include: { items: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return orders.map(toOrder);
+}
+
+export async function cancelCustomerOrder(id: string, email: string) {
+  const order = await prisma.order.findUnique({ where: { id } });
+
+  if (!order || order.email !== email) {
+    throw new Error("Comanda nu a fost gasita.");
+  }
+
+  if (order.status !== "Noua") {
+    throw new Error("Comanda poate fi anulata doar daca are statusul Noua.");
+  }
+
+  await prisma.order.update({
+    where: { id },
+    data: { status: "Anulata" },
   });
 }
