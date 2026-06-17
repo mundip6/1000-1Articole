@@ -11,9 +11,9 @@ const steps = [
 ];
 
 const faq = [
-  ["Care este comanda minima?", "Comanda minima este 50 lei pentru Baia Mare si 500 lei pentru celelalte zone de livrare."],
-  ["Unde livrati?", "Livram in judetele Maramures, Satu Mare si Salaj."],
-  ["Cat timp dureaza livrarea?", "Confirmam comanda in aceeasi zi si stabilim data livrarii in functie de ruta si disponibilitate."],
+  ["Care este comanda minima?", "Comanda minima este 50 lei pentru Baia Mare si 300 lei pentru celelalte zone de livrare."],
+  ["Unde livrati?", "Livram in:\n Satu Mare: Satu Mare, Negrești, Livada, Turț\n Maramureș: Ulmeni, Șomcuta, Borșa, Moisei, Seini, Vișeu, Valea Izei, Sighet, Ocna Șugatag, Cavnic, Tg Lăpuș, Copalnic\n Sălaj: Jibou, Cehu Silvaniei, Zalău, Șimleul Silvaniei, Ileanda\n Bistrița-Năsăud: Beclean\n Cluj: Dej"],
+  ["Cand se efectueaza livrarile?", "🗓️ Marți\n Traseul Principal: Jibou • Cehu Silvaniei • Ulmeni • Șomcuta\n Extensie: Borșa ➔ Moisei ➔ Valea Izei\n\n 🗓️ Miercuri\n Traseul Principal: Seini ➔ Negrești • Livada • Turț • Satu Mare\n Extensie: Vișeu ➔ Valea Izei\n\n 🗓️ Joi\n Traseul Principal: Zalău • Șimleul Silvaniei\n Extensie: Sighet ➔ Ocna Șugatag ➔ Cavnic\n\n 🗓️ Vineri\n Traseul Principal: Dej • Beclean • Ileanda\n Extensie: Târgu Lăpuș ➔ Copalnic"],
   ["Pot plasa comanda telefonic?", "Da, ne puteti contacta la +40 750 266 304 in timpul programului."],
   ["Care este programul de lucru?", "Luni-Vineri: 08:00-15:30. Sambata si duminica: inchis."],
 ];
