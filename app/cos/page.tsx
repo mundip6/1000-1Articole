@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { AlertTriangle, ArrowLeft, CheckCircle, ShoppingBag, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AlertTriangle, ArrowLeft, CheckCircle, ShoppingBag, Trash2, UserRound } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cartTotal, cartWeight, clearCart, getCart, removeFromCart, updateQty, type CartItem } from "@/lib/cart";
@@ -10,11 +10,27 @@ import { formatPrice } from "@/lib/data";
 
 const counties = ["Maramures", "Satu Mare", "Salaj"];
 
+type CustomerResponse = {
+  ok: boolean;
+  customer: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    isBusiness: boolean;
+    company: string;
+    phone: string;
+    county: string;
+    city: string;
+    address: string;
+  } | null;
+};
+
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>(() => getCart());
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [prefilledFromAccount, setPrefilledFromAccount] = useState(false);
   const [form, setForm] = useState({
     company: "",
     contact: "",
@@ -30,6 +46,38 @@ export default function CartPage() {
   const weight = cartWeight(cart);
   const minimumValue = form.county === "Maramures" ? 50 : 500;
   const meetsMinimum = total >= minimumValue;
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadCustomer() {
+      try {
+        const response = await fetch("/api/customer/me");
+        const data = (await response.json()) as CustomerResponse;
+        if (ignore || !data.customer) return;
+
+        setForm((prev) => ({
+          ...prev,
+          company: data.customer?.isBusiness ? data.customer.company : prev.company,
+          contact: `${data.customer?.firstName || ""} ${data.customer?.lastName || ""}`.trim(),
+          phone: data.customer?.phone || "",
+          email: data.customer?.email || "",
+          county: data.customer?.county || "",
+          city: data.customer?.city || "",
+          address: data.customer?.address || "",
+        }));
+        setPrefilledFromAccount(true);
+      } catch {
+        setPrefilledFromAccount(false);
+      }
+    }
+
+    window.setTimeout(() => void loadCustomer(), 0);
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const changeQty = (id: string, qty: number) => {
     if (qty < 1) return;
@@ -140,6 +188,11 @@ export default function CartPage() {
               </div>
               <div className="rounded-lg border border-neutral-200 bg-white p-5">
                 <h2 className="mb-4 font-black">Date Firma</h2>
+                {prefilledFromAccount && (
+                  <div className="mb-4 flex gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-xs font-semibold text-green-800">
+                    <UserRound size={15} /> Date completate automat din contul tau.
+                  </div>
+                )}
                 <div className="space-y-3">
                   {[
                     ["company", "Denumire firma"],
