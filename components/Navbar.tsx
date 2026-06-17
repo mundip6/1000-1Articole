@@ -42,13 +42,10 @@ export default function Navbar() {
         </div>
       </div>
       <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-3">
-        <Link href="/" className="justify-self-start text-center">
-          <div className="text-lg font-black leading-none text-brand">1000&1</div>
-          <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-500">
-            Articole Engros
-          </div>
+        <Link href="/" className="justify-self-start">
+          <img src="/favicon.ico" alt="1000&1 Articole Engros" className="h-14 w-auto scale-[1.35] object-contain mix-blend-multiply" />
         </Link>
-        <nav className="hidden items-center gap-8 text-sm font-semibold md:flex">
+        <nav className="hidden items-center gap-8 text-base font-semibold md:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
