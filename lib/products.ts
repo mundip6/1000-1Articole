@@ -8,6 +8,7 @@ const validCategories: Category[] = [
   "PATISERIE CONGELATA",
   "PESTE",
   "LEGUME CONGELATE",
+  "PRODUSE LACTATE",
 ];
 
 function isCategory(value: string): value is Category {
@@ -44,7 +45,7 @@ function toProduct(product: {
 
 export async function listProducts(): Promise<Product[]> {
   const products = await prisma.product.findMany({
-    orderBy: [{ category: "asc" }, { name: "asc" }],
+    orderBy: { name: "asc" },
   });
   return products.map(toProduct);
 }

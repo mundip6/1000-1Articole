@@ -10,13 +10,28 @@ const categoryMap = new Map([
   ["Felii & Specialitati", "SEMIPREPARATE"],
   ["Carnati", "SEMIPREPARATE"],
   ["Specialitati Traditionale", "SEMIPREPARATE"],
-  ["Produse lactate", "SEMIPREPARATE"],
+  ["Produse lactate", "PRODUSE LACTATE"],
   ["Patiserie congelata", "PATISERIE CONGELATA"],
   ["Peste", "PESTE"],
   ["Legume congelate", "LEGUME CONGELATE"],
+  ["PROD.LACT", "PRODUSE LACTATE"],
+  ["DEL.", "PRODUSE LACTATE"],
 ]);
 
 for (const [oldCategory, newCategory] of categoryMap.entries()) {
+  if (oldCategory === "PROD.LACT" || oldCategory === "DEL.") {
+    await prisma.product.updateMany({
+      where: { name: { startsWith: oldCategory } },
+      data: { category: newCategory },
+    });
+
+    await prisma.orderItem.updateMany({
+      where: { name: { startsWith: oldCategory } },
+      data: { category: newCategory },
+    });
+    continue;
+  }
+
   await prisma.product.updateMany({
     where: { category: oldCategory },
     data: { category: newCategory },

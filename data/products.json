@@ -1003,63 +1003,63 @@
     {
         "id":  "del-bt-felii-smantana-140g",
         "name":  "DEL.BT FELII SMANTANA 140G",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  5.55,
         "unit":  "buc"
     },
     {
         "id":  "del-cascaval-sofia-450g",
         "name":  "DEL.CASCAVAL SOFIA 450G",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  24.31,
         "unit":  "buc"
     },
     {
         "id":  "del-jaeger-unt-82-250g",
         "name":  "DEL.JAEGER UNT 82% 250G",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  8.88,
         "unit":  "buc"
     },
     {
         "id":  "del-mozzarella-horeca-1-5kg",
         "name":  "DEL.MOZZARELLA HORECA 1.5KG",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  44.96,
         "unit":  "buc"
     },
     {
         "id":  "prod-lact-koliba-karpatsky-bloc",
         "name":  "PROD.LACT.KOLIBA KARPATSKY BLOC",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  27.64,
         "unit":  "kg"
     },
     {
         "id":  "prod-lact-specialitatea-pizzarului",
         "name":  "PROD.LACT.SPECIALITATEA PIZZARULUI",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  26.81,
         "unit":  "kg"
     },
     {
         "id":  "prod-lact-unt-83-parmareggio-400g-mira",
         "name":  "PROD.LACT.UNT 83% PARMAREGGIO 400G MIRA",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  23.31,
         "unit":  "buc"
     },
     {
         "id":  "prod-lact-unt-koliba-65-200g",
         "name":  "PROD.LACT.UNT KOLIBA 65% 200G",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  4.61,
         "unit":  "buc"
     },
     {
         "id":  "prod-lact-unt-koliba-82-200g",
         "name":  "PROD.LACT.UNT KOLIBA 82% 200G",
-        "category":  "SEMIPREPARATE",
+        "category":  "PRODUSE LACTATE",
         "price":  7.33,
         "unit":  "buc"
     }

@@ -4,7 +4,8 @@ export type Category =
   | "SEMIPREPARATE"
   | "PATISERIE CONGELATA"
   | "PESTE"
-  | "LEGUME CONGELATE";
+  | "LEGUME CONGELATE"
+  | "PRODUSE LACTATE";
 
 export type Product = {
   id: string;
@@ -34,6 +35,7 @@ export const categories: { name: Category; icon: string; desc: string }[] = [
   { name: "PATISERIE CONGELATA", icon: "PT", desc: "Croissant, placinte, deserturi" },
   { name: "PESTE", icon: "PE", desc: "Pastrav, Merlucius, cod, macrou" },
   { name: "LEGUME CONGELATE", icon: "LG", desc: "Legume si mixuri congelate" },
+  { name: "PRODUSE LACTATE", icon: "PL", desc: "Cascaval, unt, mozzarella" },
 ];
 
 export const formatPrice = (price: number) =>
