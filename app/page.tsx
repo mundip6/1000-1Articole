@@ -21,9 +21,9 @@ export default function Home() {
             Distributie engros - Maramures, Satu Mare, Salaj
           </div>
           <h1 className="text-5xl font-black leading-tight md:text-7xl">{business.name}</h1>
-          <p className="mt-4 text-2xl font-light text-white/95">Distribuitor engros de carne si mezeluri</p>
+          <p className="mt-4 text-2xl font-light text-white/95">Distribuitor engros de carne, peste si semipreparate</p>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/75">
-            Produse proaspete, preturi competitive pentru firme, restaurante, cantine si magazine.
+            Produse congelate, preturi competitive pentru firme, restaurante, cantine si magazine.
             Comanda minima: <strong>50 lei</strong> in Baia Mare si <strong>300 lei</strong> in rest.
           </p>
           <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
