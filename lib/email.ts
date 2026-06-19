@@ -6,7 +6,7 @@ const FROM = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function sendVerificationEmail(email: string, token: string) {
-  const link = `${BASE_URL}/verify-email?token=${token}`;
+  const link = `${BASE_URL}/api/customer/verify-email?token=${token}`;
 
   await resend.emails.send({
     from: FROM,
