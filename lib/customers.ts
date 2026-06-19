@@ -2,6 +2,7 @@ import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { isValidCui, normalizeCui } from "@/lib/cui";
 import { prisma } from "@/lib/prisma";
+import { sendVerificationEmail } from "@/lib/email";
 
 const COOKIE_NAME = "customer-session";
 
@@ -10,6 +11,7 @@ export type PublicCustomer = {
   firstName: string;
   lastName: string;
   email: string;
+  emailVerified: boolean;
   isBusiness: boolean;
   company: string;
   cui: string;
@@ -24,6 +26,7 @@ function toPublicCustomer(customer: {
   firstName: string;
   lastName: string;
   email: string;
+  emailVerified: boolean;
   isBusiness: boolean;
   company: string;
   cui: string;
@@ -37,6 +40,7 @@ function toPublicCustomer(customer: {
     firstName: customer.firstName,
     lastName: customer.lastName,
     email: customer.email,
+    emailVerified: customer.emailVerified,
     isBusiness: customer.isBusiness,
     company: customer.company,
     cui: customer.cui,
@@ -105,6 +109,8 @@ export async function registerCustomer(input: {
     throw new Error("Exista deja un cont cu acest email.");
   }
 
+  const verificationToken = randomBytes(32).toString("hex");
+
   const customer = await prisma.customer.create({
     data: {
       firstName,
@@ -112,7 +118,13 @@ export async function registerCustomer(input: {
       email,
       passwordHash: hashPassword(input.password),
       isBusiness: input.isBusiness,
+      emailVerified: false,
+      verificationToken,
     },
+  });
+
+  await sendVerificationEmail(email, verificationToken).catch(() => {
+    // Don't block registration if email fails
   });
 
   await setCustomerSession(customer.id);
@@ -127,6 +139,29 @@ export async function loginCustomer(email: string, password: string) {
 
   await setCustomerSession(customer.id);
   return toPublicCustomer(customer);
+}
+
+export async function verifyCustomerEmail(token: string) {
+  const customer = await prisma.customer.findUnique({ where: { verificationToken: token } });
+  if (!customer) throw new Error("Link invalid sau expirat.");
+
+  await prisma.customer.update({
+    where: { id: customer.id },
+    data: { emailVerified: true, verificationToken: null },
+  });
+}
+
+export async function resendVerificationEmail() {
+  const current = await getCurrentCustomer();
+  if (!current) throw new Error("Trebuie sa fii autentificat.");
+  if (current.emailVerified) throw new Error("Email-ul este deja verificat.");
+
+  const token = randomBytes(32).toString("hex");
+  await prisma.customer.update({
+    where: { id: current.id },
+    data: { verificationToken: token },
+  });
+  await sendVerificationEmail(current.email, token);
 }
 
 export async function updateCustomerProfile(input: {

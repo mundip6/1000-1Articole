@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import { LogOut, Mail, ShoppingBag, UserRound, XCircle } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { AlertCircle, CheckCircle2, LogOut, Mail, ShoppingBag, UserRound, XCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { formatPrice } from "@/lib/data";
@@ -24,11 +25,14 @@ const emptyProfile = {
 };
 
 export default function CustomerAccountPage() {
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<Mode>("login");
   const [customer, setCustomer] = useState<PublicCustomer | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendDone, setResendDone] = useState(false);
   const [auth, setAuth] = useState({
     firstName: "",
     lastName: "",
@@ -128,6 +132,13 @@ export default function CustomerAccountPage() {
     setMode("login");
   };
 
+  const resendVerification = async () => {
+    setResendLoading(true);
+    await fetch("/api/customer/resend-verification", { method: "POST" });
+    setResendLoading(false);
+    setResendDone(true);
+  };
+
   const cancelOrder = async (id: string) => {
     setLoading(true);
     setMessage("");
@@ -158,6 +169,17 @@ export default function CustomerAccountPage() {
             <p className="text-sm text-neutral-500">Autentificare, date personale si comenzi.</p>
           </div>
         </div>
+
+        {searchParams.get("verified") === "1" && (
+          <div className="mb-5 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800">
+            <CheckCircle2 size={18} className="shrink-0" /> Email verificat cu succes! Contul tau este acum activ.
+          </div>
+        )}
+        {searchParams.get("verified") === "0" && (
+          <div className="mb-5 flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+            <AlertCircle size={18} className="shrink-0" /> Link invalid sau expirat. Solicita un email nou mai jos.
+          </div>
+        )}
 
         {message && (
           <div className="mb-5 rounded-lg border border-neutral-200 bg-white p-3 text-sm font-semibold text-neutral-700">
@@ -253,7 +275,27 @@ export default function CustomerAccountPage() {
           </section>
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
-            <aside className="space-y-4">
+            {!customer.emailVerified && (
+            <div className="col-span-full mb-2 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-amber-800">
+                <AlertCircle size={17} className="shrink-0" />
+                Email-ul nu este verificat. Verifica-ti inbox-ul sau solicita un nou email.
+              </div>
+              {resendDone ? (
+                <span className="text-sm font-semibold text-green-700">Email trimis!</span>
+              ) : (
+                <button
+                  onClick={() => void resendVerification()}
+                  disabled={resendLoading}
+                  className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-black text-white hover:bg-amber-700 disabled:opacity-50"
+                >
+                  {resendLoading ? "Se trimite..." : "Retrimite email"}
+                </button>
+              )}
+            </div>
+          )}
+
+          <aside className="space-y-4">
               <section className="rounded-lg border border-neutral-200 bg-white p-5">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <h2 className="text-xl font-black">Date personale</h2>
