@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogOut, Package, ShoppingBag } from "lucide-react";
+import { LogOut, MessageCircle, Package, ShoppingBag } from "lucide-react";
 import { logoutAdmin } from "@/app/admin/actions";
 
 export default function AdminShell({
@@ -10,7 +10,7 @@ export default function AdminShell({
 }: {
   title: string;
   description: string;
-  active: "products" | "orders";
+  active: "products" | "orders" | "conversations";
   children: React.ReactNode;
 }) {
   return (
@@ -41,6 +41,12 @@ export default function AdminShell({
               className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-black ${active === "orders" ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
             >
               <ShoppingBag size={16} /> Comenzi
+            </Link>
+            <Link
+              href="/admin/conversations"
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-black ${active === "conversations" ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
+            >
+              <MessageCircle size={16} /> Conversatii
             </Link>
           </nav>
         </header>
