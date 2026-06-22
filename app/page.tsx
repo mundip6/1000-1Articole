@@ -19,13 +19,15 @@ export default function Home() {
         className="relative flex min-h-[560px] items-center text-white md:min-h-[640px]"
         style={{ backgroundImage: "url('/background_articole.png')", backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        {/* Left-side gradient — ends at the right edge of the text */}
-        <div className="absolute inset-y-0 left-0 w-[860px] bg-gradient-to-r from-black/85 via-black/60 to-transparent" />
-        {/* Bottom fade so the footer transition is smooth */}
+        {/* Mobile: full dark overlay */}
+        <div className="absolute inset-0 bg-black/60 md:hidden" />
+        {/* Desktop: left-side gradient ending at text edge */}
+        <div className="absolute inset-y-0 left-0 hidden w-[860px] bg-gradient-to-r from-black/85 via-black/60 to-transparent md:block" />
+        {/* Bottom fade */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
 
-        <div className="relative w-full max-w-5xl pl-0 pr-4" style={{ marginLeft: "300px" }}>
-          <div className="max-w-lg">
+        <div className="relative w-full px-6 text-center md:ml-[300px] md:max-w-lg md:px-0 md:pr-4 md:text-left">
+          <div>
 
             {/* Location badge */}
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest backdrop-blur-sm">
@@ -38,7 +40,7 @@ export default function Home() {
             </h1>
 
             {/* Divider */}
-            <div className="mt-6 h-px w-16 bg-brand" />
+            <div className="mt-6 h-px w-16 bg-brand mx-auto md:mx-0" />
 
             {/* Description */}
             <p className="mt-5 text-sm leading-7 text-white/70">
@@ -46,7 +48,7 @@ export default function Home() {
             </p>
 
             {/* Min order pills */}
-            <div className="mt-5 flex flex-wrap gap-3 text-sm">
+            <div className="mt-5 flex flex-wrap justify-center gap-3 text-sm md:justify-start">
               <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <span className="font-black text-white">50 lei</span>
                 <span className="ml-1.5 text-white/60">min. Baia Mare</span>
@@ -58,7 +60,7 @@ export default function Home() {
             </div>
 
             {/* Buttons */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row md:items-start">
               <Link href="/catalog" className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-8 py-4 font-black text-white hover:bg-brand-dark">
                 <ShoppingCart size={18} /> Vezi Catalogul
               </Link>

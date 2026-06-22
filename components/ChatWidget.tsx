@@ -48,9 +48,9 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
       {open && (
-        <div className="flex h-[420px] w-[340px] flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl">
+        <div className="flex w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl sm:w-[340px]" style={{ height: "min(420px, calc(100vh - 100px))" }}>
           {/* Header */}
           <div className="flex items-center justify-between bg-brand px-4 py-3">
             <div>
