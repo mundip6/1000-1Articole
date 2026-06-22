@@ -15,8 +15,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <section className="bg-brand px-4 py-20 text-white md:py-28">
-        <div className="mx-auto max-w-4xl text-center">
+      <section
+        className="relative px-4 py-20 text-white md:py-28"
+        style={{ backgroundImage: "url('/background_articole.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+      >
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="relative mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-block rounded-full bg-white/12 px-4 py-1 text-xs font-black uppercase tracking-widest">
             Distributie engros - Maramures, Satu Mare, Salaj
           </div>
