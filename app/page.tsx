@@ -16,27 +16,57 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <section
-        className="relative px-4 py-20 text-white md:py-28"
+        className="relative flex min-h-[560px] items-center text-white md:min-h-[640px]"
         style={{ backgroundImage: "url('/background_articole.png')", backgroundSize: "cover", backgroundPosition: "center" }}
       >
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="relative mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-block rounded-full bg-white/12 px-4 py-1 text-xs font-black uppercase tracking-widest">
-            Distributie engros - Maramures, Satu Mare, Salaj
-          </div>
-          <h1 className="text-5xl font-black leading-tight md:text-7xl">{business.name}</h1>
-          <p className="mt-4 text-2xl font-light text-white/95">Distribuitor engros de carne, peste si semipreparate</p>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/75">
-            Produse congelate, preturi competitive pentru firme, restaurante, cantine si magazine.
-            Comanda minima: <strong>50 lei</strong> in Baia Mare si <strong>300 lei</strong> in rest.
-          </p>
-          <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link href="/catalog" className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-8 py-4 font-black text-brand hover:bg-neutral-100">
-              <ShoppingCart size={18} /> Vezi Catalogul
-            </Link>
-            <a href={business.phoneHref} className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-8 py-4 font-bold text-white hover:bg-white/10">
-              <Phone size={18} /> Suna Acum
-            </a>
+        {/* Left-side gradient — ends at the right edge of the text */}
+        <div className="absolute inset-y-0 left-0 w-[860px] bg-gradient-to-r from-black/85 via-black/60 to-transparent" />
+        {/* Bottom fade so the footer transition is smooth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+
+        <div className="relative w-full max-w-5xl pl-0 pr-4" style={{ marginLeft: "300px" }}>
+          <div className="max-w-lg">
+
+            {/* Location badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[11px] font-black uppercase tracking-widest backdrop-blur-sm">
+              📍 Maramures · Satu Mare · Salaj
+            </div>
+
+            {/* Main heading */}
+            <h1 className="text-4xl font-black leading-snug text-white md:text-5xl">
+              Distribuitor engros de <span className="text-brand">carne</span>, peste si semipreparate
+            </h1>
+
+            {/* Divider */}
+            <div className="mt-6 h-px w-16 bg-brand" />
+
+            {/* Description */}
+            <p className="mt-5 text-sm leading-7 text-white/70">
+              Produse congelate de calitate pentru firme, restaurante, cantine si magazine din nord-vestul Romaniei.
+            </p>
+
+            {/* Min order pills */}
+            <div className="mt-5 flex flex-wrap gap-3 text-sm">
+              <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
+                <span className="font-black text-white">50 lei</span>
+                <span className="ml-1.5 text-white/60">min. Baia Mare</span>
+              </div>
+              <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
+                <span className="font-black text-white">300 lei</span>
+                <span className="ml-1.5 text-white/60">min. alte judete</span>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/catalog" className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-8 py-4 font-black text-white hover:bg-brand-dark">
+                <ShoppingCart size={18} /> Vezi Catalogul
+              </Link>
+              <a href={business.phoneHref} className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 bg-white/10 px-8 py-4 font-bold text-white backdrop-blur-sm hover:bg-white/20">
+                <Phone size={18} /> Suna Acum
+              </a>
+            </div>
+
           </div>
         </div>
       </section>
