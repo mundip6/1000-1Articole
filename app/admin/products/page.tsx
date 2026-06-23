@@ -6,6 +6,7 @@ import { categories, formatPrice, type Product } from "@/lib/data";
 import { listProducts } from "@/lib/products";
 import { createProductAction, deleteProductAction, updateProductAction } from "../actions";
 import ImageUpload from "./ImageUpload";
+import ImportExcel from "./ImportExcel";
 
 export const dynamic = "force-dynamic";
 
@@ -88,9 +89,12 @@ export default async function AdminProductsPage() {
         </section>
 
         <section className="rounded-lg border border-neutral-200 bg-white p-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 className="text-xl font-black">Produse existente</h2>
-            <span className="text-sm font-semibold text-neutral-500">{products.length} produse</span>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-4">
+              <h2 className="text-xl font-black">Produse existente</h2>
+              <span className="text-sm font-semibold text-neutral-500">{products.length} produse</span>
+            </div>
+            <ImportExcel />
           </div>
           <div className="space-y-3">
             {products.map((product) => (
