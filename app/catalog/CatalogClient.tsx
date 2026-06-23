@@ -73,7 +73,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((product) => {
-                const qty = quantities[product.id] || 1;
+                const qty = quantities[product.id] ?? (product.unit === "kg" ? 0.5 : 1);
                 return (
                   <article key={product.id} className="flex flex-col rounded-lg border border-neutral-200 bg-white shadow-sm">
                     <Link href={`/catalog/${product.id}`} className="block">
@@ -108,16 +108,36 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                         <button
                           aria-label="Scade cantitatea"
                           disabled={product.stock === 0}
-                          onClick={() => setQuantities((prev) => ({ ...prev, [product.id]: Math.max(1, qty - 1) }))}
+                          onClick={() => {
+                            const step = product.unit === "kg" ? 0.5 : 1;
+                            const min = product.unit === "kg" ? 0.5 : 1;
+                            setQuantities((prev) => ({ ...prev, [product.id]: Math.max(min, parseFloat((qty - step).toFixed(2))) }));
+                          }}
                           className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed"
                         >
                           -
                         </button>
-                        <span className="min-w-8 text-center text-sm font-bold">{qty}</span>
+                        <input
+                          type="number"
+                          disabled={product.stock === 0}
+                          min={product.unit === "kg" ? 0.5 : 1}
+                          max={product.stock}
+                          step={product.unit === "kg" ? 0.5 : 1}
+                          value={qty}
+                          onChange={(e) => {
+                            const val = product.unit === "kg" ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
+                            if (isNaN(val) || val <= 0) return;
+                            setQuantities((prev) => ({ ...prev, [product.id]: Math.min(val, product.stock) }));
+                          }}
+                          className="w-12 border-none bg-transparent text-center text-sm font-bold outline-none disabled:cursor-not-allowed"
+                        />
                         <button
                           aria-label="Creste cantitatea"
                           disabled={product.stock === 0 || qty >= product.stock}
-                          onClick={() => setQuantities((prev) => ({ ...prev, [product.id]: Math.min(product.stock, qty + 1) }))}
+                          onClick={() => {
+                            const step = product.unit === "kg" ? 0.5 : 1;
+                            setQuantities((prev) => ({ ...prev, [product.id]: Math.min(product.stock, parseFloat((qty + step).toFixed(2))) }));
+                          }}
                           className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           +

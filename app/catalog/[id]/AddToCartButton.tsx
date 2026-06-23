@@ -7,7 +7,7 @@ import { type Product } from "@/lib/data";
 import { formatPrice } from "@/lib/data";
 
 export default function AddToCartButton({ product }: { product: Product }) {
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(product.unit === "kg" ? 0.5 : 1);
   const [added, setAdded] = useState(false);
 
   const outOfStock = product.stock === 0;
@@ -41,16 +41,28 @@ export default function AddToCartButton({ product }: { product: Product }) {
           <div className="flex items-center overflow-hidden rounded-lg border border-neutral-200">
             <button
               aria-label="Scade cantitatea"
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
+              onClick={() => setQty((q) => Math.max(product.unit === "kg" ? 0.5 : 1, parseFloat((q - (product.unit === "kg" ? 0.5 : 1)).toFixed(2))))}
               className="px-4 py-2 text-lg font-black text-neutral-500 hover:text-neutral-900"
             >
               −
             </button>
-            <span className="min-w-10 text-center font-bold">{qty}</span>
+            <input
+              type="number"
+              min={product.unit === "kg" ? 0.5 : 1}
+              max={product.stock}
+              step={product.unit === "kg" ? 0.5 : 1}
+              value={qty}
+              onChange={(e) => {
+                const val = product.unit === "kg" ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
+                if (isNaN(val) || val <= 0) return;
+                setQty(Math.min(val, product.stock));
+              }}
+              className="w-16 border-none bg-transparent text-center font-bold outline-none"
+            />
             <button
               aria-label="Creste cantitatea"
               disabled={qty >= product.stock}
-              onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
+              onClick={() => setQty((q) => Math.min(product.stock, parseFloat((q + (product.unit === "kg" ? 0.5 : 1)).toFixed(2))))}
               className="px-4 py-2 text-lg font-black text-neutral-500 hover:text-neutral-900 disabled:opacity-40"
             >
               +
