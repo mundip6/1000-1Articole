@@ -13,6 +13,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
   const [activeCat, setActiveCat] = useState<Category | "Toate">(initialCat);
   const [search, setSearch] = useState("");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [rawInputs, setRawInputs] = useState<Record<string, string>>({});
   const [added, setAdded] = useState<Record<string, boolean>>({});
 
   const filtered = useMemo(() => {
@@ -23,8 +24,23 @@ export default function CatalogClient({ products }: { products: Product[] }) {
     });
   }, [activeCat, products, search]);
 
+  const getQty = (product: Product) => quantities[product.id] ?? 1;
+
+  const applyQty = (product: Product, n: number) => {
+    const step = product.unit === "kg" ? 0.5 : 1;
+    const min = product.unit === "kg" ? 0.5 : 1;
+    const clamped = parseFloat(Math.min(Math.max(min, n), product.stock).toFixed(2));
+    setQuantities((prev) => ({ ...prev, [product.id]: clamped }));
+    setRawInputs((prev) => ({ ...prev, [product.id]: String(clamped) }));
+  };
+
+  const handleBlur = (product: Product, raw: string) => {
+    const val = product.unit === "kg" ? parseFloat(raw) : parseInt(raw, 10);
+    applyQty(product, isNaN(val) ? 1 : val);
+  };
+
   const handleAdd = (product: Product) => {
-    addToCart(product, quantities[product.id] || 1);
+    addToCart(product, getQty(product));
     setAdded((prev) => ({ ...prev, [product.id]: true }));
     window.setTimeout(() => setAdded((prev) => ({ ...prev, [product.id]: false })), 1200);
   };
@@ -73,7 +89,9 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((product) => {
-                const qty = quantities[product.id] ?? (product.unit === "kg" ? 0.5 : 1);
+                const qty = getQty(product);
+                const step = product.unit === "kg" ? 0.5 : 1;
+                const raw = rawInputs[product.id] ?? String(qty);
                 return (
                   <article key={product.id} className="flex flex-col rounded-lg border border-neutral-200 bg-white shadow-sm">
                     <Link href={`/catalog/${product.id}`} className="block">
@@ -108,11 +126,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                         <button
                           aria-label="Scade cantitatea"
                           disabled={product.stock === 0}
-                          onClick={() => {
-                            const step = product.unit === "kg" ? 0.5 : 1;
-                            const min = product.unit === "kg" ? 0.5 : 1;
-                            setQuantities((prev) => ({ ...prev, [product.id]: Math.max(min, parseFloat((qty - step).toFixed(2))) }));
-                          }}
+                          onClick={() => applyQty(product, parseFloat((qty - step).toFixed(2)))}
                           className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed"
                         >
                           -
@@ -122,22 +136,16 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                           disabled={product.stock === 0}
                           min={product.unit === "kg" ? 0.5 : 1}
                           max={product.stock}
-                          step={product.unit === "kg" ? 0.5 : 1}
-                          value={qty}
-                          onChange={(e) => {
-                            const val = product.unit === "kg" ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
-                            if (isNaN(val) || val <= 0) return;
-                            setQuantities((prev) => ({ ...prev, [product.id]: Math.min(val, product.stock) }));
-                          }}
+                          step={step}
+                          value={raw}
+                          onChange={(e) => setRawInputs((prev) => ({ ...prev, [product.id]: e.target.value }))}
+                          onBlur={() => handleBlur(product, raw)}
                           className="w-12 border-none bg-transparent text-center text-sm font-bold outline-none disabled:cursor-not-allowed"
                         />
                         <button
                           aria-label="Creste cantitatea"
                           disabled={product.stock === 0 || qty >= product.stock}
-                          onClick={() => {
-                            const step = product.unit === "kg" ? 0.5 : 1;
-                            setQuantities((prev) => ({ ...prev, [product.id]: Math.min(product.stock, parseFloat((qty + step).toFixed(2))) }));
-                          }}
+                          onClick={() => applyQty(product, parseFloat((qty + step).toFixed(2)))}
                           className="px-3 py-1 font-black text-neutral-500 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           +
