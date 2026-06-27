@@ -37,16 +37,10 @@ function parseUnit(val: unknown): "kg" | "buc" {
 type CellWithStyle = {
   v?: unknown;
   s?: {
-    bold?: boolean;
-    font?: { bold?: boolean };
     patternType?: string;
     fgColor?: { rgb?: string };
   };
 };
-
-function isBold(cell: CellWithStyle | undefined): boolean {
-  return cell?.s?.bold === true || cell?.s?.font?.bold === true;
-}
 
 function isYellow(cell: CellWithStyle | undefined): boolean {
   return cell?.s?.patternType === "solid" && cell?.s?.fgColor?.rgb === "FFFF00";
@@ -84,22 +78,25 @@ export async function POST(request: Request) {
   let skipped = 0;
   const idSeen = new Set<string>();
 
-  for (let r = range.s.r + 1; r <= range.e.r; r++) {
+  for (let r = range.s.r; r <= range.e.r; r++) {
     const cellA = sheet[XLSX.utils.encode_cell({ r, c: 0 })] as CellWithStyle | undefined;
     if (!cellA?.v) continue;
 
     const cellName = String(cellA.v).trim();
     if (!cellName) continue;
 
-    if (isBold(cellA)) {
+    const cellB = sheet[XLSX.utils.encode_cell({ r, c: 1 })] as CellWithStyle | undefined;
+    const cellD = sheet[XLSX.utils.encode_cell({ r, c: 3 })] as CellWithStyle | undefined;
+
+    // Category header: has name in A but no unit in B and no price in D
+    const hasUnit = cellB?.v !== undefined && cellB.v !== "";
+    const hasPrice = cellD?.v !== undefined && cellD.v !== "";
+    if (!hasUnit && !hasPrice) {
       currentCategory = matchCategory(cellName);
       continue;
     }
 
     if (!currentCategory) { skipped++; continue; }
-
-    const cellB = sheet[XLSX.utils.encode_cell({ r, c: 1 })] as CellWithStyle | undefined;
-    const cellD = sheet[XLSX.utils.encode_cell({ r, c: 3 })] as CellWithStyle | undefined;
 
     const price = parsePrice(cellD?.v);
     if (!price || price <= 0) { skipped++; continue; }
