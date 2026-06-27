@@ -23,7 +23,7 @@ function NutritionTable({ text }: { text: string }) {
       <table className="w-full text-sm">
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} className={i % 2 === 0 ? "bg-red-50" : "bg-white"}>
+            <tr key={i} className={i % 2 === 1 ? "bg-red-50" : "bg-white"}>
               <td className="px-4 py-2.5 font-semibold text-neutral-700">{row.label}</td>
               <td className="px-4 py-2.5 text-right text-neutral-900">{row.value}</td>
             </tr>

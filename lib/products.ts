@@ -141,6 +141,15 @@ export async function updateProduct(formData: FormData) {
   });
 }
 
+export async function getSimilarProducts(category: string, excludeId: string): Promise<Product[]> {
+  const products = await prisma.product.findMany({
+    where: { category, id: { not: excludeId } },
+    orderBy: { name: "asc" },
+    take: 24,
+  });
+  return products.map(toProduct);
+}
+
 export async function deleteProduct(formData: FormData) {
   const id = String(formData.get("id") || "");
   if (!id) return;

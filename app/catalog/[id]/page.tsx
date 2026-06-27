@@ -3,10 +3,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getProduct } from "@/lib/products";
+import { getProduct, getSimilarProducts } from "@/lib/products";
 import { categories, formatPrice } from "@/lib/data";
 import AddToCartButton from "./AddToCartButton";
 import ProductTabs from "./ProductTabs";
+import SimilarProducts from "./SimilarProducts";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const product = await getProduct(id);
   if (!product) notFound();
 
-  const category = categories.find((c) => c.name === product.category);
+  const [category, similar] = await Promise.all([
+    Promise.resolve(categories.find((c) => c.name === product.category)),
+    getSimilarProducts(product.category, product.id),
+  ]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -59,6 +63,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         </div>
 
         <ProductTabs nutritionInfo={product.nutritionInfo} specifications={product.specifications} />
+        <SimilarProducts products={similar} />
       </main>
       <Footer />
     </div>
