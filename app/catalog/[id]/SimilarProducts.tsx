@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { formatPrice, type Product } from "@/lib/data";
 
-const CARD_W = 216; // card width + gap (px) — scroll step per arrow click
+const CARD_W = 280; // card width + gap (px) — scroll step per arrow click
 
 export default function SimilarProducts({ products }: { products: Product[] }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -58,10 +58,10 @@ export default function SimilarProducts({ products }: { products: Product[] }) {
             <Link
               key={i}
               href={`/catalog/${product.id}`}
-              className="w-[200px] flex-shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:border-brand hover:shadow-md"
+              className="w-[260px] flex-shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:border-brand hover:shadow-md"
             >
               {product.imageUrl ? (
-                <div className="h-32 w-full overflow-hidden bg-neutral-100">
+                <div className="h-48 w-full overflow-hidden bg-neutral-100">
                   <img
                     src={product.imageUrl}
                     alt={product.name}
@@ -69,15 +69,15 @@ export default function SimilarProducts({ products }: { products: Product[] }) {
                   />
                 </div>
               ) : (
-                <div className="flex h-32 w-full items-center justify-center bg-neutral-100 text-4xl text-neutral-300">
+                <div className="flex h-48 w-full items-center justify-center bg-neutral-100 text-5xl text-neutral-300">
                   🧊
                 </div>
               )}
-              <div className="p-3">
-                <p className="line-clamp-2 text-xs font-bold leading-snug text-neutral-800">{product.name}</p>
-                <p className="mt-1.5 text-sm font-black text-brand">
+              <div className="p-4">
+                <p className="line-clamp-2 text-sm font-bold leading-snug text-neutral-800">{product.name}</p>
+                <p className="mt-2 text-base font-black text-brand">
                   {formatPrice(product.price)} lei{" "}
-                  <span className="text-[11px] font-normal text-neutral-400">/{product.unit}</span>
+                  <span className="text-xs font-normal text-neutral-400">/{product.unit}</span>
                 </p>
               </div>
             </Link>
