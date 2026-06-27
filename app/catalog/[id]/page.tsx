@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { getProduct } from "@/lib/products";
 import { categories, formatPrice } from "@/lib/data";
 import AddToCartButton from "./AddToCartButton";
+import ProductTabs from "./ProductTabs";
 
 export const dynamic = "force-dynamic";
 
@@ -57,12 +58,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
 
-        {product.nutritionInfo && (
-          <section className="mt-10 rounded-xl border border-neutral-200 bg-white p-6">
-            <h2 className="mb-4 text-xl font-black">Informații nutriționale</h2>
-            <p className="whitespace-pre-line text-sm leading-7 text-neutral-600">{product.nutritionInfo}</p>
-          </section>
-        )}
+        <ProductTabs nutritionInfo={product.nutritionInfo} specifications={product.specifications} />
       </main>
       <Footer />
     </div>

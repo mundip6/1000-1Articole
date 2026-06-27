@@ -36,6 +36,7 @@ function toProduct(product: {
   stock: number;
   packagedByUs: boolean;
   nutritionInfo: string | null;
+  specifications: string | null;
 }): Product {
   return {
     id: product.id,
@@ -48,6 +49,7 @@ function toProduct(product: {
     ...(product.weight ? { weight: product.weight } : {}),
     ...(product.imageUrl ? { imageUrl: product.imageUrl } : {}),
     ...(product.nutritionInfo ? { nutritionInfo: product.nutritionInfo } : {}),
+    ...(product.specifications ? { specifications: product.specifications } : {}),
   };
 }
 
@@ -73,6 +75,7 @@ export async function createProduct(formData: FormData) {
   const imageUrl = String(formData.get("imageUrl") || "").trim();
   const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
+  const specifications = String(formData.get("specifications") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
 
   if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
@@ -99,6 +102,7 @@ export async function createProduct(formData: FormData) {
       stock,
       packagedByUs,
       nutritionInfo: nutritionInfo || null,
+      specifications: specifications || null,
     },
   });
 }
@@ -113,6 +117,7 @@ export async function updateProduct(formData: FormData) {
   const imageUrl = String(formData.get("imageUrl") || "").trim();
   const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
+  const specifications = String(formData.get("specifications") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
 
   if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
@@ -131,6 +136,7 @@ export async function updateProduct(formData: FormData) {
       stock,
       packagedByUs,
       nutritionInfo: nutritionInfo || null,
+      specifications: specifications || null,
     },
   });
 }

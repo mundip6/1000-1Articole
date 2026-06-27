@@ -64,13 +64,22 @@ export default async function AdminProductsPage() {
                 <p className="mb-2 text-xs font-semibold uppercase text-neutral-500">Foto produs</p>
                 <ImageUpload />
               </div>
-              <div>
+              <div className="grid gap-3">
                 <label className="text-xs font-semibold uppercase text-neutral-500">
-                  Informații nutriționale
+                  Valori nutritionale 100g
                   <textarea
                     name="nutritionInfo"
-                    rows={5}
+                    rows={4}
                     placeholder={"Energie: 250 kcal\nProteine: 18g\nGrăsimi: 12g\nGlucide: 0g\nSare: 0.8g"}
+                    className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand"
+                  />
+                </label>
+                <label className="text-xs font-semibold uppercase text-neutral-500">
+                  Specificatii
+                  <textarea
+                    name="specifications"
+                    rows={4}
+                    placeholder={"Tara de origine: Polonia\nAmbalaj: Vrac\nTemperatura depozitare: -18°C"}
                     className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand"
                   />
                 </label>
@@ -150,14 +159,24 @@ export default async function AdminProductsPage() {
                         Ambalat de noi
                       </label>
                     </div>
-                    <div>
+                    <div className="grid gap-3">
                       <label className="text-xs font-semibold uppercase text-neutral-500">
-                        Informații nutriționale
+                        Valori nutritionale 100g
                         <textarea
                           name="nutritionInfo"
                           defaultValue={product.nutritionInfo || ""}
-                          rows={5}
+                          rows={4}
                           placeholder={"Energie: 250 kcal\nProteine: 18g\nGrăsimi: 12g\nGlucide: 0g\nSare: 0.8g"}
+                          className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand"
+                        />
+                      </label>
+                      <label className="text-xs font-semibold uppercase text-neutral-500">
+                        Specificatii
+                        <textarea
+                          name="specifications"
+                          defaultValue={product.specifications || ""}
+                          rows={4}
+                          placeholder={"Tara de origine: Polonia\nAmbalaj: Vrac\nTemperatura depozitare: -18°C"}
                           className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand"
                         />
                       </label>

@@ -18,6 +18,7 @@ export type Product = {
   stock: number;
   packagedByUs: boolean;
   nutritionInfo?: string;
+  specifications?: string;
 };
 
 export const business = {
