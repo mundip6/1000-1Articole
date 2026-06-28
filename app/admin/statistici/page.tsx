@@ -51,12 +51,12 @@ async function fetchStats(): Promise<StatsResponse> {
     prisma.$queryRaw<RawOrderRow[]>`
       SELECT DATE_TRUNC('month', "createdAt") AS month, COUNT(*)::bigint AS count,
              COALESCE(SUM(total), 0)::float AS revenue
-      FROM "Order" WHERE "createdAt" >= ${cutoff}
+      FROM "Order" WHERE "createdAt" >= ${cutoff} AND status = 'Livrata'
       GROUP BY DATE_TRUNC('month', "createdAt") ORDER BY month ASC
     `,
     prisma.customer.count(),
-    prisma.order.count(),
-    prisma.order.aggregate({ _sum: { total: true } }),
+    prisma.order.count({ where: { status: "Livrata" } }),
+    prisma.order.aggregate({ where: { status: "Livrata" }, _sum: { total: true } }),
   ]);
 
   const cMap = new Map(customerRows.map((r) => [monthKey(new Date(r.month)), Number(r.count)]));
