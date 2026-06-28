@@ -7,19 +7,21 @@ import { loginAdmin } from "./actions";
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; wait?: string }>;
 }) {
   if (await isAdminAuthenticated()) {
     redirect("/admin/products");
   }
 
   const params = await searchParams;
+  const isRateLimited = params.error === "rate";
+  const waitSeconds = Number(params.wait ?? 0);
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-neutral-100 px-4 py-12">
       <section className="w-full max-w-md rounded-lg border border-neutral-200 bg-white p-8 shadow-sm">
         <Link href="/" className="mb-8 block text-center">
-          <div className="text-2xl font-black text-brand">1000&1</div>
+          <div className="text-2xl font-black text-brand">1000&amp;1</div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">Admin produse</div>
         </Link>
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-brand">
@@ -27,7 +29,12 @@ export default async function AdminLoginPage({
         </div>
         <h1 className="text-center text-2xl font-black">Operator admin</h1>
         <p className="mb-6 mt-2 text-center text-sm text-neutral-500">Conectare pentru adaugare si modificare produse.</p>
-        {params.error && (
+        {isRateLimited && (
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">
+            Prea multe incercari. Incearca din nou peste {Math.ceil(waitSeconds / 60)} minute.
+          </div>
+        )}
+        {params.error === "1" && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">
             Parola este gresita.
           </div>
@@ -46,9 +53,6 @@ export default async function AdminLoginPage({
             Intra in admin
           </button>
         </form>
-        <p className="mt-4 text-center text-xs text-neutral-500">
-          Parola implicita este <strong>admin123</strong>. Schimb-o cu variabila <strong>ADMIN_PASSWORD</strong>.
-        </p>
       </section>
     </main>
   );

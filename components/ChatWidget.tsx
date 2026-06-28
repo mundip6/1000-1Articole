@@ -5,6 +5,16 @@ import { MessageCircle, Send, X } from "lucide-react";
 
 type Msg = { id: string; text: string; sender: string; createdAt: string };
 
+function getSessionToken(): string {
+  const key = "chat-session-token";
+  let token = localStorage.getItem(key);
+  if (!token) {
+    token = crypto.randomUUID();
+    localStorage.setItem(key, token);
+  }
+  return token;
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -14,7 +24,9 @@ export default function ChatWidget() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const load = async () => {
-    const res = await fetch("/api/chat");
+    const res = await fetch("/api/chat", {
+      headers: { "x-chat-token": getSessionToken() },
+    });
     const data = await res.json() as { ok: boolean; conversationId: string; messages: Msg[] };
     if (data.ok) {
       setConvId(data.conversationId);
@@ -40,7 +52,7 @@ export default function ChatWidget() {
     setText("");
     await fetch("/api/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-chat-token": getSessionToken() },
       body: JSON.stringify({ text: trimmed }),
     });
     await load();

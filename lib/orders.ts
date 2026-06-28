@@ -125,6 +125,17 @@ export async function createOrder(input: OrderInput) {
   }
 
   const order = await prisma.$transaction(async (tx) => {
+    // Verify stock before touching anything
+    for (const item of input.items) {
+      const product = await tx.product.findUnique({ where: { id: item.id } });
+      if (!product) throw new Error(`Produsul "${item.name}" nu mai este disponibil.`);
+      if (product.stock < item.qty) {
+        throw new Error(
+          `Stoc insuficient pentru "${item.name}". Disponibil: ${product.stock} ${item.unit}.`,
+        );
+      }
+    }
+
     const created = await tx.order.create({
       data: {
         id: `ORD-${Date.now()}`,

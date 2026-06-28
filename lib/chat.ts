@@ -7,13 +7,14 @@ export type ChatMsg = {
   createdAt: Date;
 };
 
-export async function getOrCreateConversation(ip: string) {
-  const existing = await prisma.conversation.findFirst({
-    where: { ip, status: "open" },
-    orderBy: { updatedAt: "desc" },
-  });
-  if (existing) return existing;
-  return prisma.conversation.create({ data: { ip } });
+export async function getOrCreateConversation(ip: string, sessionToken: string) {
+  if (sessionToken) {
+    const existing = await prisma.conversation.findFirst({
+      where: { sessionToken, status: "open" },
+    });
+    if (existing) return existing;
+  }
+  return prisma.conversation.create({ data: { ip, sessionToken } });
 }
 
 export async function addMessage(conversationId: string, text: string, sender: "customer" | "admin") {
