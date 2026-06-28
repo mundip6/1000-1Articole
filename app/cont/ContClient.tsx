@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { AlertCircle, CheckCircle2, LogOut, Mail, ShoppingBag, UserRound, XCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CountyCitySelect from "@/components/CountyCitySelect";
 import { formatPrice } from "@/lib/data";
 import { type Order } from "@/lib/orders";
 import { type PublicCustomer } from "@/lib/customers";
@@ -308,8 +309,6 @@ export default function CustomerAccountPage() {
                     ["firstName", "Prenume"],
                     ["lastName", "Nume"],
                     ["phone", "Telefon"],
-                    ["county", "Judet"],
-                    ["city", "Localitate"],
                     ["address", "Adresa"],
                   ].map(([key, label]) => (
                     <label key={key} className="block text-xs font-semibold text-neutral-500">
@@ -321,6 +320,12 @@ export default function CustomerAccountPage() {
                       />
                     </label>
                   ))}
+                  <CountyCitySelect
+                    county={profile.county}
+                    city={profile.city}
+                    onCountyChange={(county) => setProfile((prev) => ({ ...prev, county }))}
+                    onCityChange={(city) => setProfile((prev) => ({ ...prev, city }))}
+                  />
                   <label className="flex items-center gap-2 text-sm font-semibold">
                     <input
                       type="checkbox"

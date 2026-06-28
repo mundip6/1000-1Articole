@@ -7,8 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cartTotal, cartWeight, clearCart, getCart, removeFromCart, updateQty, type CartItem } from "@/lib/cart";
 import { formatPrice } from "@/lib/data";
-
-const counties = ["Maramures", "Satu Mare", "Salaj"];
+import CountyCitySelect from "@/components/CountyCitySelect";
 
 type CustomerResponse = {
   ok: boolean;
@@ -47,7 +46,7 @@ export default function CartPage() {
 
   const total = cartTotal(cart);
   const weight = cartWeight(cart);
-  const minimumValue = form.county === "Maramures" ? 50 : 300;
+  const minimumValue = form.county === "Maramureș" ? 50 : 300;
   const meetsMinimum = total >= minimumValue;
 
   useEffect(() => {
@@ -244,7 +243,6 @@ export default function CartPage() {
                     ["contact", "Persoana contact *"],
                     ["phone", "Telefon *"],
                     ["email", "Email *"],
-                    ["city", "Localitate"],
                     ["address", "Adresa livrare"],
                   ].map(([key, label]) => (
                     <label key={key} className="block text-xs font-semibold text-neutral-500">
@@ -256,17 +254,12 @@ export default function CartPage() {
                       />
                     </label>
                   ))}
-                  <label className="block text-xs font-semibold text-neutral-500">
-                    Judet livrare *
-                    <select
-                      value={form.county}
-                      onChange={(event) => setForm((prev) => ({ ...prev, county: event.target.value }))}
-                      className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
-                    >
-                      <option value="">Selectati judetul</option>
-                      {counties.map((county) => <option key={county}>{county}</option>)}
-                    </select>
-                  </label>
+                  <CountyCitySelect
+                    county={form.county}
+                    city={form.city}
+                    onCountyChange={(county) => setForm((prev) => ({ ...prev, county }))}
+                    onCityChange={(city) => setForm((prev) => ({ ...prev, city }))}
+                  />
                   <label className="block text-xs font-semibold text-neutral-500">
                     Observatii
                     <textarea
