@@ -6,12 +6,14 @@ const FROM = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function sendAdminOtpEmail(code: string) {
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (!adminEmail) throw new Error("ADMIN_EMAIL nu este configurat in variabilele de mediu.");
+  const raw = process.env.ADMIN_EMAIL;
+  if (!raw) throw new Error("ADMIN_EMAIL nu este configurat in variabilele de mediu.");
+
+  const adminEmails = raw.split(",").map((e) => e.trim()).filter(Boolean);
 
   await resend.emails.send({
     from: FROM,
-    to: adminEmail,
+    to: adminEmails,
     subject: `${code} — Cod verificare admin 1000&1 Articole`,
     html: `
       <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;">
