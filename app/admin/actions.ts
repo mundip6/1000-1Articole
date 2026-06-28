@@ -89,10 +89,10 @@ export async function deleteProductAction(formData: FormData) {
 
 export async function updateOrderStatusAction(formData: FormData) {
   await requireAdmin();
-  await updateOrderStatus(
-    String(formData.get("id") || ""),
-    String(formData.get("status") || "") as OrderStatus,
-  );
+  const id = String(formData.get("id") || "");
+  await updateOrderStatus(id, String(formData.get("status") || "") as OrderStatus);
   revalidatePath("/admin/orders");
-  redirect("/admin/orders");
+  revalidatePath(`/admin/orders/${id}`);
+  const redirectTo = String(formData.get("redirectTo") || "/admin/orders");
+  redirect(redirectTo);
 }

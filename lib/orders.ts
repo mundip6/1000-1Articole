@@ -106,6 +106,11 @@ function toOrder(order: {
   };
 }
 
+export async function getOrder(id: string): Promise<Order | null> {
+  const order = await prisma.order.findUnique({ where: { id }, include: { items: true } });
+  return order ? toOrder(order) : null;
+}
+
 export async function listOrders(): Promise<Order[]> {
   const orders = await prisma.order.findMany({
     include: { items: true },
