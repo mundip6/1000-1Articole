@@ -73,7 +73,7 @@ export async function createProduct(formData: FormData) {
   const unit = String(formData.get("unit") || "");
   const weight = String(formData.get("weight") || "").trim();
   const imageUrl = String(formData.get("imageUrl") || "").trim();
-  const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
+  const stock = Math.max(0, parseFloat(String(formData.get("stock") ?? "0")) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
   const specifications = String(formData.get("specifications") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
@@ -115,7 +115,7 @@ export async function updateProduct(formData: FormData) {
   const unit = String(formData.get("unit") || "");
   const weight = String(formData.get("weight") || "").trim();
   const imageUrl = String(formData.get("imageUrl") || "").trim();
-  const stock = Math.max(0, Number(formData.get("stock") ?? 0) || 0);
+  const stock = Math.max(0, parseFloat(String(formData.get("stock") ?? "0")) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
   const specifications = String(formData.get("specifications") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";

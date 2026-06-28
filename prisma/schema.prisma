@@ -15,7 +15,7 @@ model Product {
   unit      String
   weight    String?
   imageUrl  String?
-  stock         Int      @default(100)
+  stock         Float    @default(100)
   packagedByUs  Boolean  @default(false)
   nutritionInfo  String?
   specifications String?
@@ -92,7 +92,7 @@ model OrderItem {
   price     Float
   unit      String
   weight    String?
-  qty       Int
+  qty       Float
   order     Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])

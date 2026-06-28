@@ -57,7 +57,7 @@ export default async function AdminProductsPage() {
               <input name="price" required type="number" min="0" step="0.01" placeholder="Pret" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <UnitSelect />
               <input name="weight" placeholder="Greutate / calibru" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
-              <input name="stock" type="number" min="0" step="1" placeholder="Stoc" defaultValue={0} className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input name="stock" type="number" min="0" step="0.5" placeholder="Stoc" defaultValue={0} className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div>

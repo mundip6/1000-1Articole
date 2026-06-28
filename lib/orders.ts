@@ -124,34 +124,46 @@ export async function createOrder(input: OrderInput) {
     throw new Error("CUI invalid. Pentru comenzi pe firma, CUI este obligatoriu si trebuie sa fie valid.");
   }
 
-  const order = await prisma.order.create({
-    data: {
-      id: `ORD-${Date.now()}`,
-      status: "Noua",
-      company: input.company || "",
-      cui: input.isBusiness ? cui : "",
-      contact: input.contact,
-      phone: input.phone,
-      email: input.email,
-      county: input.county,
-      city: input.city || "",
-      address: input.address || "",
-      notes: input.notes || "",
-      total: Number(orderTotal(input.items).toFixed(2)),
-      weight: Number(orderWeight(input.items).toFixed(2)),
-      items: {
-        create: input.items.map((item) => ({
-          productId: item.id,
-          name: item.name,
-          category: item.category,
-          price: item.price,
-          unit: item.unit,
-          weight: item.weight || null,
-          qty: item.qty,
-        })),
+  const order = await prisma.$transaction(async (tx) => {
+    const created = await tx.order.create({
+      data: {
+        id: `ORD-${Date.now()}`,
+        status: "Noua",
+        company: input.company || "",
+        cui: input.isBusiness ? cui : "",
+        contact: input.contact,
+        phone: input.phone,
+        email: input.email,
+        county: input.county,
+        city: input.city || "",
+        address: input.address || "",
+        notes: input.notes || "",
+        total: Number(orderTotal(input.items).toFixed(2)),
+        weight: Number(orderWeight(input.items).toFixed(2)),
+        items: {
+          create: input.items.map((item) => ({
+            productId: item.id,
+            name: item.name,
+            category: item.category,
+            price: item.price,
+            unit: item.unit,
+            weight: item.weight || null,
+            qty: item.qty,
+          })),
+        },
       },
-    },
-    include: { items: true },
+      include: { items: true },
+    });
+
+    // Decrement stock for each ordered product
+    for (const item of input.items) {
+      await tx.product.update({
+        where: { id: item.id },
+        data: { stock: { decrement: item.qty } },
+      });
+    }
+
+    return created;
   });
 
   return toOrder(order);
@@ -163,9 +175,21 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     throw new Error("Status invalid.");
   }
 
-  await prisma.order.update({
-    where: { id },
-    data: { status },
+  await prisma.$transaction(async (tx) => {
+    const order = await tx.order.findUnique({ where: { id }, include: { items: true } });
+    if (!order) throw new Error("Comanda nu a fost gasita.");
+
+    // Restore stock only when cancelling a non-cancelled order
+    if (status === "Anulata" && order.status !== "Anulata") {
+      for (const item of order.items) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: { increment: item.qty } },
+        });
+      }
+    }
+
+    await tx.order.update({ where: { id }, data: { status } });
   });
 }
 
@@ -179,18 +203,25 @@ export async function listOrdersByEmail(email: string): Promise<Order[]> {
 }
 
 export async function cancelCustomerOrder(id: string, email: string) {
-  const order = await prisma.order.findUnique({ where: { id } });
+  await prisma.$transaction(async (tx) => {
+    const order = await tx.order.findUnique({ where: { id }, include: { items: true } });
 
-  if (!order || order.email !== email) {
-    throw new Error("Comanda nu a fost gasita.");
-  }
+    if (!order || order.email !== email) {
+      throw new Error("Comanda nu a fost gasita.");
+    }
 
-  if (order.status !== "Noua") {
-    throw new Error("Comanda poate fi anulata doar daca are statusul Noua.");
-  }
+    if (order.status !== "Noua") {
+      throw new Error("Comanda poate fi anulata doar daca are statusul Noua.");
+    }
 
-  await prisma.order.update({
-    where: { id },
-    data: { status: "Anulata" },
+    // Restore stock for each item
+    for (const item of order.items) {
+      await tx.product.update({
+        where: { id: item.productId },
+        data: { stock: { increment: item.qty } },
+      });
+    }
+
+    await tx.order.update({ where: { id }, data: { status: "Anulata" } });
   });
 }
