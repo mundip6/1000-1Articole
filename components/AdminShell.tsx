@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogOut, MessageCircle, Package, ShoppingBag } from "lucide-react";
+import { BarChart2, LogOut, MessageCircle, Package, ShoppingBag } from "lucide-react";
 import { logoutAdmin } from "@/app/admin/actions";
 
 export default function AdminShell({
@@ -10,7 +10,7 @@ export default function AdminShell({
 }: {
   title: string;
   description: string;
-  active: "products" | "orders" | "conversations";
+  active: "products" | "orders" | "conversations" | "statistici";
   children: React.ReactNode;
 }) {
   return (
@@ -47,6 +47,12 @@ export default function AdminShell({
               className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-black ${active === "conversations" ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
             >
               <MessageCircle size={16} /> Conversatii
+            </Link>
+            <Link
+              href="/admin/statistici"
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-black ${active === "statistici" ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
+            >
+              <BarChart2 size={16} /> Statistici
             </Link>
           </nav>
         </header>
