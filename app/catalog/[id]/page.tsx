@@ -32,7 +32,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
             {product.imageUrl ? (
-              <img src={product.imageUrl} alt={product.name} className="h-full max-h-[480px] w-full object-cover" />
+              <img src={product.imageUrl} alt={product.name} className="h-full max-h-[480px] w-full object-contain p-4" />
             ) : (
               <div className="flex h-80 items-center justify-center text-8xl text-neutral-200">
                 {category?.icon ?? "🧊"}
