@@ -117,7 +117,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                         <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black text-amber-700">📦 Ambalat de noi</span>
                       )}
                       {product.unit === "kg" && (
-                        <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600">Pret estimat</span>
+                        <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold text-neutral-500">⚖️ pret estimat</span>
                       )}
                     </div>
                     {product.weight && <div className="mt-1 text-xs text-neutral-500">{product.weight}</div>}
