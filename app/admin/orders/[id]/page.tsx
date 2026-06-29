@@ -184,13 +184,13 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                       const actual = item.actualQty;
                       const finalSubtotal = actual !== undefined ? item.price * actual : null;
                       return (
-                        <tr key={item.id} className="border-b border-neutral-100 last:border-0">
+                        <tr key={item.itemId} className="border-b border-neutral-100 last:border-0">
                           <td className="py-2.5 pr-4 font-semibold">{item.name}</td>
                           <td className="py-2.5 pr-4 text-neutral-500">{item.qty} kg</td>
                           <td className="py-2.5 pr-4">
                             <input
                               type="number"
-                              name={`actualQty_${item.id}`}
+                              name={`actualQty_${item.itemId}`}
                               defaultValue={actual?.toFixed(3) ?? ""}
                               min="0"
                               step="0.001"

@@ -5,7 +5,8 @@ import { isValidCui, normalizeCui } from "@/lib/cui";
 export type OrderStatus = "Noua" | "Confirmata" | "Livrata" | "Anulata";
 
 export type OrderItem = {
-  id: string;
+  id: string;       // productId — used for cart/catalog references
+  itemId: string;   // OrderItem DB row id — used for updates
   name: string;
   category: Category;
   price: number;
@@ -71,6 +72,7 @@ function toOrder(order: {
   total: number;
   weight: number;
   items: {
+    id: string;
     productId: string;
     name: string;
     category: string;
@@ -98,6 +100,7 @@ function toOrder(order: {
     weight: order.weight,
     items: order.items.map((item) => ({
       id: item.productId,
+      itemId: item.id,
       name: item.name,
       category: item.category as Category,
       price: item.price,
@@ -225,7 +228,7 @@ export async function updateOrderItemsActualQty(orderId: string, updates: { item
   await prisma.$transaction(
     updates.map(({ itemId, actualQty }) =>
       prisma.orderItem.update({
-        where: { id: itemId, orderId },
+        where: { id: itemId },
         data: { actualQty: parseFloat(actualQty.toFixed(3)) },
       }),
     ),
