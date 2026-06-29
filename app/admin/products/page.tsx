@@ -51,13 +51,14 @@ export default async function AdminProductsPage() {
         <section className="mb-6 rounded-lg border border-neutral-200 bg-white p-5">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-black"><Plus size={20} className="text-brand" /> Produs nou</h2>
           <form action={createProductAction} className="space-y-3">
-            <div className="grid gap-3 md:grid-cols-[2fr_1fr_120px_100px_1fr_100px]">
+            <div className="grid gap-3 md:grid-cols-[2fr_1fr_120px_100px_1fr_100px_100px]">
               <input name="name" required placeholder="Nume produs" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <CategorySelect />
               <input name="price" required type="number" min="0" step="0.01" placeholder="Pret" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <UnitSelect />
               <input name="weight" placeholder="Greutate / calibru" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <input name="stock" type="number" min="0" step="0.5" placeholder="Stoc" defaultValue={0} className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input name="kgStep" type="number" min="0.001" step="0.001" placeholder="Pas kg" defaultValue={1} title="Pas cantitate (kg)" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
@@ -110,7 +111,7 @@ export default async function AdminProductsPage() {
               <div key={product.id} className="rounded-lg border border-neutral-200 p-4">
                 <form action={updateProductAction} className="space-y-3">
                   <input type="hidden" name="id" value={product.id} />
-                  <div className="grid gap-3 lg:grid-cols-[2fr_1fr_120px_100px_1fr_100px_auto_auto]">
+                  <div className="grid gap-3 lg:grid-cols-[2fr_1fr_120px_100px_1fr_100px_80px_auto_auto]">
                     <label className="text-xs font-semibold uppercase text-neutral-500">
                       Nume
                       <input name="name" defaultValue={product.name} required className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
@@ -138,6 +139,10 @@ export default async function AdminProductsPage() {
                     <label className="text-xs font-semibold uppercase text-neutral-500">
                       Stoc
                       <input name="stock" type="number" min="0" step="1" defaultValue={product.stock} className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
+                    </label>
+                    <label className="text-xs font-semibold uppercase text-neutral-500" title="Pas cantitate (doar pentru kg)">
+                      Pas kg
+                      <input name="kgStep" type="number" min="0.001" step="0.001" defaultValue={product.unit === "kg" ? product.kgStep : 1} className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
                     </label>
                     <div className="flex items-end">
                       <button className="inline-flex w-full items-center justify-center gap-2 rounded bg-neutral-900 px-4 py-2 text-sm font-black text-white hover:bg-brand">

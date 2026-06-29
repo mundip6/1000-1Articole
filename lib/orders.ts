@@ -12,6 +12,7 @@ export type OrderItem = {
   unit: "kg" | "buc";
   weight?: string;
   qty: number;
+  actualQty?: number;
 };
 
 export type Order = {
@@ -77,6 +78,7 @@ function toOrder(order: {
     unit: string;
     weight: string | null;
     qty: number;
+    actualQty: number | null;
   }[];
 }): Order {
   return {
@@ -102,6 +104,7 @@ function toOrder(order: {
       unit: item.unit === "buc" ? "buc" : "kg",
       ...(item.weight ? { weight: item.weight } : {}),
       qty: item.qty,
+      ...(item.actualQty !== null ? { actualQty: item.actualQty } : {}),
     })),
   };
 }
@@ -216,6 +219,17 @@ export async function listOrdersByEmail(email: string): Promise<Order[]> {
     orderBy: { createdAt: "desc" },
   });
   return orders.map(toOrder);
+}
+
+export async function updateOrderItemsActualQty(orderId: string, updates: { itemId: string; actualQty: number }[]) {
+  await prisma.$transaction(
+    updates.map(({ itemId, actualQty }) =>
+      prisma.orderItem.update({
+        where: { id: itemId, orderId },
+        data: { actualQty: parseFloat(actualQty.toFixed(3)) },
+      }),
+    ),
+  );
 }
 
 export async function cancelCustomerOrder(id: string, email: string) {

@@ -15,7 +15,7 @@ import {
 import { getPackerPassword, setPackerPending } from "@/lib/packerAuth";
 import { createAndSendOtp, verifyOtp } from "@/lib/adminOtp";
 import { checkRateLimit } from "@/lib/rateLimit";
-import { updateOrderStatus, type OrderStatus } from "@/lib/orders";
+import { updateOrderItemsActualQty, updateOrderStatus, type OrderStatus } from "@/lib/orders";
 import { createProduct, deleteProduct, updateProduct } from "@/lib/products";
 
 async function requireAdmin() {
@@ -94,6 +94,22 @@ export async function deleteProductAction(formData: FormData) {
   revalidatePath("/catalog");
   revalidatePath("/admin/products");
   redirect("/admin/products");
+}
+
+export async function updateOrderActualWeightsAction(formData: FormData) {
+  await requireAdmin();
+  const orderId = String(formData.get("orderId") || "");
+  const updates: { itemId: string; actualQty: number }[] = [];
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith("actualQty_")) {
+      const itemId = key.slice("actualQty_".length);
+      const qty = parseFloat(String(value));
+      if (itemId && !isNaN(qty) && qty >= 0) updates.push({ itemId, actualQty: qty });
+    }
+  }
+  if (updates.length > 0) await updateOrderItemsActualQty(orderId, updates);
+  revalidatePath(`/admin/orders/${orderId}`);
+  redirect(`/admin/orders/${orderId}`);
 }
 
 export async function updateOrderStatusAction(formData: FormData) {

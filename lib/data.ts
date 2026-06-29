@@ -19,6 +19,7 @@ export type Product = {
   packagedByUs: boolean;
   nutritionInfo?: string;
   specifications?: string;
+  kgStep: number;
 };
 
 export const business = {

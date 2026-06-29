@@ -27,8 +27,8 @@ export default function CatalogClient({ products }: { products: Product[] }) {
   const getQty = (product: Product) => quantities[product.id] ?? 1;
 
   const applyQty = (product: Product, n: number) => {
-    const step = product.unit === "kg" ? 0.5 : 1;
-    const min = product.unit === "kg" ? 0.5 : 1;
+    const step = product.unit === "kg" ? product.kgStep : 1;
+    const min = product.unit === "kg" ? product.kgStep : 1;
     const clamped = parseFloat(Math.min(Math.max(min, n), product.stock).toFixed(2));
     setQuantities((prev) => ({ ...prev, [product.id]: clamped }));
     setRawInputs((prev) => ({ ...prev, [product.id]: String(clamped) }));
@@ -90,7 +90,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((product) => {
                 const qty = getQty(product);
-                const step = product.unit === "kg" ? 0.5 : 1;
+                const step = product.unit === "kg" ? product.kgStep : 1;
                 const raw = rawInputs[product.id] ?? String(qty);
                 return (
                   <article key={product.id} className="flex flex-col rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -116,6 +116,9 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                       {product.packagedByUs && (
                         <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black text-amber-700">📦 Ambalat de noi</span>
                       )}
+                      {product.unit === "kg" && (
+                        <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600">Pret estimat</span>
+                      )}
                     </div>
                     {product.weight && <div className="mt-1 text-xs text-neutral-500">{product.weight}</div>}
                     <div className="mt-auto pt-5 text-xl font-black text-brand">
@@ -134,7 +137,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                         <input
                           type="number"
                           disabled={product.stock === 0}
-                          min={product.unit === "kg" ? 0.5 : 1}
+                          min={product.unit === "kg" ? product.kgStep : 1}
                           max={product.stock}
                           step={step}
                           value={raw}

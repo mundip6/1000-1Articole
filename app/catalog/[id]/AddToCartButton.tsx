@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Plus } from "lucide-react";
+import { Check, Info, Plus } from "lucide-react";
 import { addToCart } from "@/lib/cart";
 import { type Product, formatPrice } from "@/lib/data";
 
@@ -10,8 +10,8 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const [raw, setRaw] = useState("1");
   const [added, setAdded] = useState(false);
 
-  const step = product.unit === "kg" ? 0.5 : 1;
-  const min = product.unit === "kg" ? 0.5 : 1;
+  const step = product.unit === "kg" ? product.kgStep : 1;
+  const min = product.unit === "kg" ? product.kgStep : 1;
   const outOfStock = product.stock === 0;
 
   const applyQty = (n: number) => {
@@ -38,6 +38,13 @@ export default function AddToCartButton({ product }: { product: Product }) {
         {formatPrice(product.price)} lei{" "}
         <span className="text-base font-normal text-neutral-500">/ {product.unit}</span>
       </div>
+
+      {product.unit === "kg" && (
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-800">
+          <Info size={14} className="mt-0.5 shrink-0" />
+          <span>Cantitatea si pretul sunt <strong>estimate</strong>. Pretul final va fi calculat in functie de greutatea exacta la cantarire.</span>
+        </div>
+      )}
 
       <div className="mb-4 flex items-center gap-2">
         {outOfStock ? (
