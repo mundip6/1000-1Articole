@@ -387,7 +387,21 @@ export default function CustomerAccountPage() {
                         </div>
                         <div className="text-left sm:text-right">
                           <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-black text-brand">{order.status}</span>
-                          <p className="mt-2 text-sm font-black">{formatPrice(order.total)} lei</p>
+                          {(() => {
+                            const hasActual = order.items.some((i) => i.unit === "kg" && i.actualQty !== undefined);
+                            const finalTotal = order.items.reduce((s, i) => {
+                              const qty = i.unit === "kg" && i.actualQty !== undefined ? i.actualQty : i.qty;
+                              return s + i.price * qty;
+                            }, 0);
+                            return hasActual ? (
+                              <div className="mt-2 text-right">
+                                <p className="text-xs text-neutral-400 line-through">{formatPrice(order.total)} lei estimat</p>
+                                <p className="text-sm font-black text-green-700">{formatPrice(finalTotal)} lei final</p>
+                              </div>
+                            ) : (
+                              <p className="mt-2 text-sm font-black">{formatPrice(order.total)} lei <span className="text-xs font-normal text-neutral-400">(estimat)</span></p>
+                            );
+                          })()}
                           {order.status === "Noua" && (
                             <button
                               onClick={() => void cancelOrder(order.id)}
@@ -400,9 +414,22 @@ export default function CustomerAccountPage() {
                       </div>
                       <div className="mt-4 space-y-2 border-t border-neutral-100 pt-4">
                         {order.items.map((item) => (
-                          <div key={item.id} className="flex justify-between gap-4 text-sm">
+                          <div key={item.itemId} className="flex items-start justify-between gap-4 text-sm">
                             <span className="font-semibold">{item.name}</span>
-                            <span className="shrink-0 text-neutral-500">{item.qty} {item.unit}</span>
+                            <div className="shrink-0 text-right">
+                              {item.unit === "kg" && item.actualQty !== undefined ? (
+                                <>
+                                  <p className="text-xs text-neutral-400 line-through">{item.qty} kg est.</p>
+                                  <p className="font-black text-green-700">{item.actualQty.toFixed(3)} kg</p>
+                                  <p className="text-xs text-neutral-500">{formatPrice(item.price * item.actualQty)} lei</p>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="text-neutral-500">{item.qty} {item.unit}</p>
+                                  {item.unit === "kg" && <p className="text-[10px] text-neutral-400">estimat</p>}
+                                </>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>
