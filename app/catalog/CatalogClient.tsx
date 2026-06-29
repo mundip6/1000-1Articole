@@ -24,7 +24,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
     });
   }, [activeCat, products, search]);
 
-  const getQty = (product: Product) => quantities[product.id] ?? 1;
+  const getQty = (product: Product) => quantities[product.id] ?? (product.unit === "kg" ? product.kgStep : 1);
 
   const applyQty = (product: Product, n: number) => {
     const step = product.unit === "kg" ? product.kgStep : 1;

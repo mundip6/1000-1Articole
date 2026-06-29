@@ -6,8 +6,9 @@ import { addToCart } from "@/lib/cart";
 import { type Product, formatPrice } from "@/lib/data";
 
 export default function AddToCartButton({ product }: { product: Product }) {
-  const [qty, setQty] = useState(1);
-  const [raw, setRaw] = useState("1");
+  const defaultQty = product.unit === "kg" ? product.kgStep : 1;
+  const [qty, setQty] = useState(defaultQty);
+  const [raw, setRaw] = useState(String(defaultQty));
   const [added, setAdded] = useState(false);
 
   const step = product.unit === "kg" ? product.kgStep : 1;
