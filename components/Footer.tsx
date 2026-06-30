@@ -20,7 +20,7 @@ export default function Footer() {
           <div className="text-xl font-black text-white">{business.name}</div>
           <div className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">Distributie engros</div>
           <p className="text-sm leading-6">
-            Distribuitor engros de produse din carne carne, peste si semipreparate pentru Maramures, Satu Mare si Salaj.
+            Distribuitor engros de produse din carne, peste si semipreparate pentru Maramures, Satu Mare si Salaj.
             Calitate garantata, livrare rapida.
           </p>
           <p className="mt-5 text-xs text-neutral-500">CUI: {business.cui}</p>
