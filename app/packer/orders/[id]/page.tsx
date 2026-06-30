@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Mail, MapPin, Phone, Save, Scale } from "lucide-react";
 import PackerShell from "@/components/PackerShell";
+import PrintOrderButton from "@/components/PrintOrderButton";
 import { isPackerAuthenticated } from "@/lib/packerAuth";
 import { formatPrice } from "@/lib/data";
 import { getOrder, type OrderStatus } from "@/lib/orders";
@@ -45,10 +46,11 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
 
   return (
     <PackerShell title={order.id} description={`Plasata pe ${dateTime}`}>
-      <div className="mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <Link href="/packer/orders" className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-brand">
           <ArrowLeft size={15} /> Inapoi la comenzi
         </Link>
+        <PrintOrderButton order={order} />
       </div>
 
       <div className="space-y-5">
