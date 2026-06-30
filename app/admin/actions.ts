@@ -13,7 +13,7 @@ import {
   setAdminPending,
 } from "@/lib/adminAuth";
 import { getPackerPassword, setPackerPending } from "@/lib/packerAuth";
-import { createAndSendOtp, verifyOtp } from "@/lib/adminOtp";
+import { createAndSendOtp, createAndSendPackerOtp, verifyOtp } from "@/lib/adminOtp";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { updateOrderItemsActualQty, updateOrderStatus, type OrderStatus } from "@/lib/orders";
 import { createProduct, deleteProduct, updateProduct } from "@/lib/products";
@@ -40,7 +40,7 @@ export async function loginAdmin(formData: FormData) {
 
   const packerPassword = getPackerPassword();
   if (packerPassword && password === packerPassword) {
-    await createAndSendOtp();
+    await createAndSendPackerOtp();
     await setPackerPending();
     redirect("/packer/2fa");
   }

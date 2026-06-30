@@ -29,6 +29,30 @@ export async function sendAdminOtpEmail(code: string) {
   });
 }
 
+export async function sendPackerOtpEmail(code: string) {
+  const raw = process.env.PACKER_EMAIL;
+  if (!raw) throw new Error("PACKER_EMAIL nu este configurat in variabilele de mediu.");
+
+  const packerEmails = raw.split(",").map((e) => e.trim()).filter(Boolean);
+
+  await resend.emails.send({
+    from: FROM,
+    to: packerEmails,
+    subject: `${code} — Cod verificare impachetare 1000&1 Articole`,
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;">
+        <h2 style="color:#c8102e;margin-bottom:8px;">1000&amp;1 Articole</h2>
+        <h3 style="margin-bottom:16px;">Cod de verificare zona impachetare</h3>
+        <p style="color:#444;line-height:1.6;">Codul tau de verificare este:</p>
+        <div style="font-size:36px;font-weight:900;letter-spacing:10px;color:#111;margin:24px 0;padding:20px;background:#f5f5f5;border-radius:8px;text-align:center;">
+          ${code}
+        </div>
+        <p style="color:#888;font-size:13px;">Codul este valabil <strong>10 minute</strong>.<br/>Daca nu ai incercat sa te autentifici, ignora acest mesaj.</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendVerificationEmail(email: string, token: string) {
   const link = `${BASE_URL}/api/customer/verify-email?token=${token}`;
 
