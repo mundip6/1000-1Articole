@@ -1,11 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Mail, MapPin, Phone, Save } from "lucide-react";
+import { ArrowLeft, Calendar, Mail, MapPin, Phone, Save, Scale } from "lucide-react";
 import PackerShell from "@/components/PackerShell";
 import { isPackerAuthenticated } from "@/lib/packerAuth";
 import { formatPrice } from "@/lib/data";
 import { getOrder, type OrderStatus } from "@/lib/orders";
-import { updateOrderStatusPackerAction } from "../../actions";
+import { updateOrderActualWeightsPackerAction, updateOrderStatusPackerAction } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +31,17 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
     hour: "2-digit", minute: "2-digit",
   });
   const badge = STATUS_STYLES[order.status] ?? "bg-neutral-100 text-neutral-500";
+
+  const kgItems = order.items.filter((item) => item.unit === "kg");
+  const hasKgItems = kgItems.length > 0;
+  const allWeighed = kgItems.every((item) => item.actualQty !== undefined);
+
+  const estimatedTotal = order.items.reduce((s, item) => s + item.price * item.qty, 0);
+  const finalTotal = order.items.reduce((s, item) => {
+    const qty = item.unit === "kg" && item.actualQty !== undefined ? item.actualQty : item.qty;
+    return s + item.price * qty;
+  }, 0);
+  const diff = finalTotal - estimatedTotal;
 
   return (
     <PackerShell title={order.id} description={`Plasata pe ${dateTime}`}>
@@ -121,7 +132,12 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
                 {order.items.map((item) => (
                   <tr key={item.id} className="border-b border-neutral-100 last:border-0">
                     <td className="py-2.5 pr-4 font-semibold">{item.name}</td>
-                    <td className="py-2.5 pr-4">{item.qty} {item.unit}</td>
+                    <td className="py-2.5 pr-4">
+                      {item.qty} {item.unit}
+                      {item.unit === "kg" && item.actualQty !== undefined && (
+                        <span className="ml-2 font-black text-green-700">→ {item.actualQty.toFixed(3)} kg</span>
+                      )}
+                    </td>
                     <td className="py-2.5 pr-4 text-neutral-500">{formatPrice(item.price)} lei/{item.unit}</td>
                     <td className="py-2.5 text-right font-black">{formatPrice(item.price * item.qty)} lei</td>
                   </tr>
@@ -142,6 +158,83 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
             </table>
           </div>
         </div>
+
+        {/* Actual weights section */}
+        {hasKgItems && (
+          <div className="rounded-lg border border-neutral-200 bg-white p-5">
+            <div className="mb-4 flex items-center gap-2">
+              <Scale size={18} className="text-brand" />
+              <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Cantarire reala</h2>
+            </div>
+
+            <form action={updateOrderActualWeightsPackerAction} className="space-y-4">
+              <input type="hidden" name="orderId" value={order.id} />
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[480px] border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-neutral-200 text-left text-xs uppercase text-neutral-500">
+                      <th className="py-2 pr-4">Produs (kg)</th>
+                      <th className="py-2 pr-4">Comandat</th>
+                      <th className="py-2 pr-4">Cantitate reala (kg)</th>
+                      <th className="py-2 text-right">Pret final</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {kgItems.map((item) => {
+                      const actual = item.actualQty;
+                      const finalSubtotal = actual !== undefined ? item.price * actual : null;
+                      return (
+                        <tr key={item.itemId} className="border-b border-neutral-100 last:border-0">
+                          <td className="py-2.5 pr-4 font-semibold">{item.name}</td>
+                          <td className="py-2.5 pr-4 text-neutral-500">{item.qty} kg</td>
+                          <td className="py-2.5 pr-4">
+                            <input
+                              type="number"
+                              name={`actualQty_${item.itemId}`}
+                              defaultValue={actual?.toFixed(3) ?? ""}
+                              min="0"
+                              step="0.001"
+                              placeholder="0.000"
+                              className="w-28 rounded border border-neutral-200 px-2 py-1 text-sm font-bold outline-none focus:border-brand"
+                            />
+                          </td>
+                          <td className="py-2.5 text-right font-black">
+                            {finalSubtotal !== null
+                              ? <span className="text-green-700">{formatPrice(finalSubtotal)} lei</span>
+                              : <span className="text-neutral-400">—</span>
+                            }
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <button className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-5 py-2 text-sm font-black text-white hover:bg-brand">
+                <Save size={15} /> Salveaza greutatile
+              </button>
+            </form>
+
+            {allWeighed && (
+              <div className="mt-5 grid grid-cols-3 gap-4 border-t border-neutral-100 pt-5">
+                <div className="rounded-lg bg-neutral-50 p-4 text-center">
+                  <p className="text-xs font-semibold uppercase text-neutral-500">Total estimat</p>
+                  <p className="mt-1 text-xl font-black text-neutral-600">{formatPrice(estimatedTotal)} lei</p>
+                </div>
+                <div className="rounded-lg bg-green-50 p-4 text-center">
+                  <p className="text-xs font-semibold uppercase text-neutral-500">Total final</p>
+                  <p className="mt-1 text-xl font-black text-green-700">{formatPrice(finalTotal)} lei</p>
+                </div>
+                <div className={`rounded-lg p-4 text-center ${diff >= 0 ? "bg-red-50" : "bg-blue-50"}`}>
+                  <p className="text-xs font-semibold uppercase text-neutral-500">Diferenta</p>
+                  <p className={`mt-1 text-xl font-black ${diff >= 0 ? "text-red-600" : "text-blue-600"}`}>
+                    {diff >= 0 ? "+" : ""}{formatPrice(diff)} lei
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </PackerShell>
   );

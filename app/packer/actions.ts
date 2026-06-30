@@ -10,7 +10,7 @@ import {
   setPackerAuthenticated,
 } from "@/lib/packerAuth";
 import { verifyOtp } from "@/lib/adminOtp";
-import { updateOrderStatus, type OrderStatus } from "@/lib/orders";
+import { updateOrderItemsActualQty, updateOrderStatus, type OrderStatus } from "@/lib/orders";
 
 async function requirePacker() {
   if (!(await isPackerAuthenticated())) redirect("/admin");
@@ -32,6 +32,22 @@ export async function verifyPackerOtp(formData: FormData) {
 export async function logoutPacker() {
   await clearPackerAuthenticated();
   redirect("/admin");
+}
+
+export async function updateOrderActualWeightsPackerAction(formData: FormData) {
+  await requirePacker();
+  const orderId = String(formData.get("orderId") || "");
+  const updates: { itemId: string; actualQty: number }[] = [];
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith("actualQty_")) {
+      const itemId = key.slice("actualQty_".length);
+      const qty = parseFloat(String(value));
+      if (itemId && !isNaN(qty) && qty >= 0) updates.push({ itemId, actualQty: qty });
+    }
+  }
+  if (updates.length > 0) await updateOrderItemsActualQty(orderId, updates);
+  revalidatePath(`/packer/orders/${orderId}`);
+  redirect(`/packer/orders/${orderId}`);
 }
 
 export async function updateOrderStatusPackerAction(formData: FormData) {
