@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { getProduct, getSimilarProducts } from "@/lib/products";
 import { categories, formatPrice } from "@/lib/data";
 import AddToCartButton from "./AddToCartButton";
+import ImageZoom from "./ImageZoom";
 import ProductTabs from "./ProductTabs";
 import SimilarProducts from "./SimilarProducts";
 
@@ -30,15 +31,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-            {product.imageUrl ? (
-              <img src={product.imageUrl} alt={product.name} className="h-full max-h-[480px] w-full object-contain p-4" />
-            ) : (
-              <div className="flex h-80 items-center justify-center text-8xl text-neutral-200">
-                {category?.icon ?? "🧊"}
-              </div>
-            )}
-          </div>
+          {product.imageUrl ? (
+            <ImageZoom src={product.imageUrl} alt={product.name} />
+          ) : (
+            <div className="flex h-80 items-center justify-center rounded-xl border border-neutral-200 bg-white text-8xl text-neutral-200">
+              {category?.icon ?? "🧊"}
+            </div>
+          )}
 
           <div className="flex flex-col gap-4">
             <div>
