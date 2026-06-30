@@ -53,7 +53,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         ) : (
           <>
             <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-black text-green-700">În stoc</span>
-            <span className="text-sm text-neutral-500">{product.stock} {product.unit === "buc" ? "bucăți" : "kg"} disponibile</span>
+            <span className="text-sm text-neutral-500">{product.stock} {product.unit === "kg" ? "kg" : product.unit === "bax" ? "bax" : "bucăți"} disponibile</span>
           </>
         )}
       </div>

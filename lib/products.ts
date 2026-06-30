@@ -34,7 +34,7 @@ function toProduct(product: {
     name: product.name,
     category: product.category as Category,
     price: product.price,
-    unit: product.unit === "buc" ? "buc" : "kg",
+    unit: product.unit === "kg" ? "kg" : product.unit === "bax" ? "bax" : "buc",
     stock: product.stock,
     packagedByUs: product.packagedByUs,
     kgStep: product.kgStep,
@@ -71,7 +71,7 @@ export async function createProduct(formData: FormData) {
   const packagedByUs = formData.get("packagedByUs") === "on";
   const kgStep = Math.max(0.001, parseFloat(String(formData.get("kgStep") ?? "1")) || 1);
 
-  if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
+  if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc" && unit !== "bax")) {
     throw new Error("Datele produsului nu sunt valide.");
   }
 
@@ -115,7 +115,7 @@ export async function updateProduct(formData: FormData) {
   const packagedByUs = formData.get("packagedByUs") === "on";
   const kgStep = Math.max(0.001, parseFloat(String(formData.get("kgStep") ?? "1")) || 1);
 
-  if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc")) {
+  if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc" && unit !== "bax")) {
     throw new Error("Datele produsului nu sunt valide.");
   }
 

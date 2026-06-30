@@ -30,8 +30,11 @@ function parsePrice(val: unknown): number | null {
   return isFinite(n) ? Math.round(n * 100) / 100 : null;
 }
 
-function parseUnit(val: unknown): "kg" | "buc" {
-  return String(val || "").toLowerCase().trim() === "buc" ? "buc" : "kg";
+function parseUnit(val: unknown): "kg" | "buc" | "bax" {
+  const v = String(val || "").toLowerCase().trim();
+  if (v === "buc") return "buc";
+  if (v === "bax") return "bax";
+  return "kg";
 }
 
 type CellWithStyle = {

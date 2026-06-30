@@ -35,6 +35,7 @@ function UnitSelect({ defaultValue }: { defaultValue?: Product["unit"] }) {
     >
       <option value="kg">kg</option>
       <option value="buc">buc</option>
+      <option value="bax">bax</option>
     </select>
   );
 }

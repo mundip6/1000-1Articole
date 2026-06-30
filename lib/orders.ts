@@ -10,7 +10,7 @@ export type OrderItem = {
   name: string;
   category: Category;
   price: number;
-  unit: "kg" | "buc";
+  unit: "kg" | "buc" | "bax";
   weight?: string;
   qty: number;
   actualQty?: number;
@@ -104,7 +104,7 @@ function toOrder(order: {
       name: item.name,
       category: item.category as Category,
       price: item.price,
-      unit: item.unit === "buc" ? "buc" : "kg",
+      unit: item.unit === "kg" ? "kg" : item.unit === "bax" ? "bax" : "buc",
       ...(item.weight ? { weight: item.weight } : {}),
       qty: item.qty,
       ...(item.actualQty !== null ? { actualQty: item.actualQty } : {}),

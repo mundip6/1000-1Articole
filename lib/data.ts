@@ -13,7 +13,7 @@ export type Product = {
   name: string;
   category: Category;
   price: number;
-  unit: "kg" | "buc";
+  unit: "kg" | "buc" | "bax";
   weight?: string;
   imageUrl?: string;
   stock: number;
