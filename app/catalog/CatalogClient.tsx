@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Check, Plus, Search } from "lucide-react";
@@ -78,7 +79,9 @@ export default function CatalogClient({ products }: { products: Product[] }) {
 
       {filtered.length === 0 && <div className="py-20 text-center text-neutral-500">Nu s-au gasit produse.</div>}
 
-      {categories.map((cat) => {
+      {(() => {
+        let imgIdx = 0;
+        return categories.map((cat) => {
         const items = filtered.filter((product) => product.category === cat.name);
         if (!items.length) return null;
         return (
@@ -92,12 +95,20 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                 const qty = getQty(product);
                 const step = product.unit === "kg" ? product.kgStep : 1;
                 const raw = rawInputs[product.id] ?? String(qty);
+                const priority = product.imageUrl ? imgIdx++ < 6 : false;
                 return (
                   <article key={product.id} className="flex flex-col rounded-lg border border-neutral-200 bg-white shadow-sm">
                     <Link href={`/catalog/${product.id}`} className="block">
                     {product.imageUrl ? (
-                      <div className="h-40 w-full overflow-hidden rounded-t-lg bg-neutral-100">
-                        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition-transform duration-200 hover:scale-105" />
+                      <div className="relative h-40 w-full overflow-hidden rounded-t-lg bg-neutral-100">
+                        <Image
+                          src={product.imageUrl}
+                          alt={product.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-cover transition-transform duration-200 hover:scale-105"
+                          priority={priority}
+                        />
                       </div>
                     ) : (
                       <div className="flex h-40 w-full items-center justify-center rounded-t-lg bg-neutral-100 text-4xl text-neutral-300 hover:bg-neutral-200">
@@ -169,7 +180,8 @@ export default function CatalogClient({ products }: { products: Product[] }) {
             </div>
           </section>
         );
-      })}
+      });
+      })()}
     </main>
   );
 }
