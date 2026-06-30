@@ -6,7 +6,8 @@ export type Category =
   | "PESTE"
   | "LEGUME CONGELATE"
   | "PRODUSE LACTATE"
-  | "CONSERVE";
+  | "CONSERVE"
+  | "CARNE PORC";
 
 export type Product = {
   id: string;
@@ -46,6 +47,7 @@ export const categories: { name: Category; icon: string; desc: string; label: st
   { name: "LEGUME CONGELATE", icon: "🥦", desc: "Legume si mixuri congelate", label: "LEGUME" },
   { name: "PRODUSE LACTATE", icon: "🧀", desc: "Cascaval, unt, mozzarella", label: "PRODUSE LACTATE" },
   { name: "CONSERVE", icon: "🥫", desc: "Conserve legume, peste, carne", label: "CONSERVE" },
+  { name: "CARNE PORC", icon: "🥓", desc: "Carne de porc congelata", label: "CARNE PORC" },
 ];
 
 export const formatPrice = (price: number) =>
