@@ -1,18 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { type Category, type Product } from "@/lib/data";
-
-const validCategories: Category[] = [
-  "CARNE PASARE CONGELATA",
-  "BURTA VITA",
-  "SEMIPREPARATE",
-  "PATISERIE CONGELATA",
-  "PESTE",
-  "LEGUME CONGELATE",
-  "PRODUSE LACTATE",
-];
+import { categories, type Category, type Product } from "@/lib/data";
 
 function isCategory(value: string): value is Category {
-  return validCategories.includes(value as Category);
+  return categories.some((c) => c.name === value);
 }
 
 function slugify(value: string) {
