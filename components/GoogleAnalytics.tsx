@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Script from "next/script";
 
 const GA_ID = "G-MLX3KMT88X";
 
 export default function GoogleAnalytics() {
-  const [hasConsent, setHasConsent] = useState(false);
-
   useEffect(() => {
-    if (localStorage.getItem("cookie-consent")) {
-      setHasConsent(true);
-      return;
-    }
-    const handler = () => setHasConsent(true);
-    window.addEventListener("cookie-consent-given", handler);
-    return () => window.removeEventListener("cookie-consent-given", handler);
-  }, []);
+    const grant = () => {
+      (window as any).gtag?.("consent", "update", { analytics_storage: "granted" });
+    };
 
-  if (!hasConsent) return null;
+    if (localStorage.getItem("cookie-consent")) {
+      grant();
+    } else {
+      window.addEventListener("cookie-consent-given", grant);
+      return () => window.removeEventListener("cookie-consent-given", grant);
+    }
+  }, []);
 
   return (
     <>
@@ -30,6 +29,7 @@ export default function GoogleAnalytics() {
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
+          gtag('consent', 'default', { analytics_storage: 'denied' });
           gtag('js', new Date());
           gtag('config', '${GA_ID}');
         `}
