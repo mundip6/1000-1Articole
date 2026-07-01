@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ChatWidget from "@/components/ChatWidget";
+import CookieBanner from "@/components/CookieBanner";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
 
@@ -62,6 +63,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         {children}
         <ChatWidget />
+        <CookieBanner />
       </body>
     </html>
   );
