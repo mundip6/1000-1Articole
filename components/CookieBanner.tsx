@@ -12,6 +12,7 @@ export default function CookieBanner() {
 
   const accept = () => {
     localStorage.setItem("cookie-consent", "1");
+    window.dispatchEvent(new Event("cookie-consent-given"));
     setVisible(false);
   };
 
@@ -21,7 +22,7 @@ export default function CookieBanner() {
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-white px-4 py-4 shadow-lg sm:px-6">
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-neutral-600">
-          Acest site foloseste cookie-uri strict necesare pentru functionarea cosului de cumparaturi si autentificarii.{" "}
+          Acest site foloseste cookie-uri pentru functionarea cosului de cumparaturi, autentificarii si pentru analiza traficului (Google Analytics).{" "}
           <Link href="/politica-confidentialitate" className="font-semibold text-brand underline underline-offset-2">
             Politica de confidentialitate
           </Link>
