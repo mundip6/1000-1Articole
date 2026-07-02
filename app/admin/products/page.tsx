@@ -7,6 +7,7 @@ import { listProducts } from "@/lib/products";
 import { createProductAction, deleteProductAction, updateProductAction } from "../actions";
 import ImageUpload from "./ImageUpload";
 import ImportExcel from "./ImportExcel";
+import CompetitorPriceCheck from "@/components/CompetitorPriceCheck";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +53,7 @@ export default async function AdminProductsPage() {
         <section className="mb-6 rounded-lg border border-neutral-200 bg-white p-5">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-black"><Plus size={20} className="text-brand" /> Produs nou</h2>
           <form action={createProductAction} className="space-y-3">
+            <CompetitorPriceCheck />
             <div className="grid gap-3 md:grid-cols-[2fr_1fr_120px_100px_1fr_100px_100px_90px]">
               <input name="name" required placeholder="Nume produs" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <CategorySelect />
@@ -117,6 +119,9 @@ export default async function AdminProductsPage() {
                     <label className="text-xs font-semibold uppercase text-neutral-500">
                       Nume
                       <input name="name" defaultValue={product.name} required className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
+                      <span className="mt-1 block">
+                        <CompetitorPriceCheck defaultName={product.name} />
+                      </span>
                     </label>
                     <label className="text-xs font-semibold uppercase text-neutral-500">
                       Categorie
