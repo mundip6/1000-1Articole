@@ -22,6 +22,7 @@ export type Product = {
   nutritionInfo?: string;
   specifications?: string;
   kgStep: number;
+  discount: number;
 };
 
 export const business = {

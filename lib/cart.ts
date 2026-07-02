@@ -46,8 +46,12 @@ export function clearCart() {
   saveCart([]);
 }
 
+export function effectivePrice(item: CartItem) {
+  return item.price * (1 - (item.discount ?? 0) / 100);
+}
+
 export function cartTotal(cart: CartItem[]) {
-  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  return cart.reduce((sum, item) => sum + effectivePrice(item) * item.qty, 0);
 }
 
 export function cartWeight(cart: CartItem[]) {

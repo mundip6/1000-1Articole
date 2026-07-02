@@ -135,9 +135,14 @@ export async function createOrder(input: OrderInput) {
     throw new Error("CUI invalid. Pentru comenzi pe firma, CUI este obligatoriu si trebuie sa fie valid.");
   }
 
+  const effectiveItems = input.items.map((item) => ({
+    ...item,
+    price: Number((item.price * (1 - ((item as any).discount ?? 0) / 100)).toFixed(2)),
+  }));
+
   const order = await prisma.$transaction(async (tx) => {
     // Verify stock before touching anything
-    for (const item of input.items) {
+    for (const item of effectiveItems) {
       const product = await tx.product.findUnique({ where: { id: item.id } });
       if (!product) throw new Error(`Produsul "${item.name}" nu mai este disponibil.`);
       if (product.stock < item.qty) {
@@ -160,10 +165,10 @@ export async function createOrder(input: OrderInput) {
         city: input.city || "",
         address: input.address || "",
         notes: input.notes || "",
-        total: Number(orderTotal(input.items).toFixed(2)),
-        weight: Number(orderWeight(input.items).toFixed(2)),
+        total: Number(orderTotal(effectiveItems).toFixed(2)),
+        weight: Number(orderWeight(effectiveItems).toFixed(2)),
         items: {
-          create: input.items.map((item) => ({
+          create: effectiveItems.map((item) => ({
             productId: item.id,
             name: item.name,
             category: item.category,
@@ -178,7 +183,7 @@ export async function createOrder(input: OrderInput) {
     });
 
     // Decrement stock for each ordered product
-    for (const item of input.items) {
+    for (const item of effectiveItems) {
       await tx.product.update({
         where: { id: item.id },
         data: { stock: { decrement: item.qty } },

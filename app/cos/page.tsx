@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, ArrowLeft, CheckCircle, ShoppingBag, Trash2, UserRound } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cartTotal, cartWeight, clearCart, getCart, removeFromCart, updateQty, type CartItem } from "@/lib/cart";
+import { cartTotal, cartWeight, clearCart, effectivePrice, getCart, removeFromCart, updateQty, type CartItem } from "@/lib/cart";
 import { formatPrice } from "@/lib/data";
 import CountyCitySelect from "@/components/CountyCitySelect";
 
@@ -170,14 +170,22 @@ export default function CartPage() {
                   <div className="min-w-0 flex-1">
                     <div className="font-bold">{item.name}</div>
                     {item.weight && <div className="text-xs text-neutral-500">{item.weight}</div>}
-                    <div className="mt-1 text-sm font-black text-brand">{formatPrice(item.price)} lei/{item.unit}</div>
+                    {item.discount > 0 ? (
+                      <div className="mt-1 flex items-baseline gap-2">
+                        <span className="text-sm font-black text-brand">{formatPrice(effectivePrice(item))} lei/{item.unit}</span>
+                        <span className="text-xs text-neutral-400 line-through">{formatPrice(item.price)}</span>
+                        <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-black text-red-600">-{item.discount}%</span>
+                      </div>
+                    ) : (
+                      <div className="mt-1 text-sm font-black text-brand">{formatPrice(item.price)} lei/{item.unit}</div>
+                    )}
                   </div>
                   <div className="flex items-center overflow-hidden rounded border border-neutral-200">
                     <button onClick={() => changeQty(item.id, item.qty - 1)} className="px-3 py-1 font-black text-neutral-500">-</button>
                     <span className="min-w-8 text-center text-sm font-bold">{item.qty}</span>
                     <button onClick={() => changeQty(item.id, item.qty + 1)} className="px-3 py-1 font-black text-neutral-500">+</button>
                   </div>
-                  <div className="min-w-24 text-right text-sm font-black">{formatPrice(item.price * item.qty)} lei</div>
+                  <div className="min-w-24 text-right text-sm font-black">{formatPrice(effectivePrice(item) * item.qty)} lei</div>
                   <button aria-label="Sterge produsul" onClick={() => remove(item.id)} className="text-neutral-400 hover:text-brand">
                     <Trash2 size={17} />
                   </button>

@@ -28,6 +28,7 @@ function toProduct(product: {
   nutritionInfo: string | null;
   specifications: string | null;
   kgStep: number;
+  discount: number;
 }): Product {
   return {
     id: product.id,
@@ -38,6 +39,7 @@ function toProduct(product: {
     stock: product.stock,
     packagedByUs: product.packagedByUs,
     kgStep: product.kgStep,
+    discount: product.discount,
     ...(product.weight ? { weight: product.weight } : {}),
     ...(product.imageUrl ? { imageUrl: product.imageUrl } : {}),
     ...(product.nutritionInfo ? { nutritionInfo: product.nutritionInfo } : {}),
@@ -70,6 +72,7 @@ export async function createProduct(formData: FormData) {
   const specifications = String(formData.get("specifications") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
   const kgStep = Math.max(0.001, parseFloat(String(formData.get("kgStep") ?? "1")) || 1);
+  const discount = Math.min(100, Math.max(0, parseFloat(String(formData.get("discount") ?? "0")) || 0));
 
   if (!name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc" && unit !== "bax")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -97,6 +100,7 @@ export async function createProduct(formData: FormData) {
       nutritionInfo: nutritionInfo || null,
       specifications: specifications || null,
       kgStep: unit === "kg" ? kgStep : 1,
+      discount,
     },
   });
 }
@@ -114,6 +118,7 @@ export async function updateProduct(formData: FormData) {
   const specifications = String(formData.get("specifications") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
   const kgStep = Math.max(0.001, parseFloat(String(formData.get("kgStep") ?? "1")) || 1);
+  const discount = Math.min(100, Math.max(0, parseFloat(String(formData.get("discount") ?? "0")) || 0));
 
   if (!id || !name || !isCategory(category) || !Number.isFinite(price) || price < 0 || (unit !== "kg" && unit !== "buc" && unit !== "bax")) {
     throw new Error("Datele produsului nu sunt valide.");
@@ -133,6 +138,7 @@ export async function updateProduct(formData: FormData) {
       nutritionInfo: nutritionInfo || null,
       specifications: specifications || null,
       kgStep: unit === "kg" ? kgStep : 1,
+      discount,
     },
   });
 }

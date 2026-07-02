@@ -35,10 +35,21 @@ export default function AddToCartButton({ product }: { product: Product }) {
 
   return (
     <div className="rounded-lg border border-neutral-200 bg-white p-6">
-      <div className="mb-4 text-3xl font-black text-brand">
-        {formatPrice(product.price)} lei{" "}
-        <span className="text-base font-normal text-neutral-500">/ {product.unit}</span>
-      </div>
+      {product.discount > 0 ? (
+        <div className="mb-4">
+          <span className="mb-2 inline-block rounded-full bg-red-600 px-3 py-1 text-xs font-black text-white">-{product.discount}% REDUCERE</span>
+          <div className="flex items-baseline gap-3">
+            <span className="text-3xl font-black text-brand">{formatPrice(product.price * (1 - product.discount / 100))} lei</span>
+            <span className="text-lg text-neutral-400 line-through">{formatPrice(product.price)} lei</span>
+          </div>
+          <span className="text-sm text-neutral-500">/ {product.unit}</span>
+        </div>
+      ) : (
+        <div className="mb-4 text-3xl font-black text-brand">
+          {formatPrice(product.price)} lei{" "}
+          <span className="text-base font-normal text-neutral-500">/ {product.unit}</span>
+        </div>
+      )}
 
       {product.unit === "kg" && (
         <div className="mb-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-800">
