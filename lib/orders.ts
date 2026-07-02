@@ -206,12 +206,22 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     const order = await tx.order.findUnique({ where: { id }, include: { items: true } });
     if (!order) throw new Error("Comanda nu a fost gasita.");
 
-    // Restore stock only when cancelling a non-cancelled order
+    // Restore stock when cancelling
     if (status === "Anulata" && order.status !== "Anulata") {
       for (const item of order.items) {
         await tx.product.update({
           where: { id: item.productId },
           data: { stock: { increment: item.qty } },
+        });
+      }
+    }
+
+    // Decrement stock when un-cancelling (e.g. Anulata → Noua)
+    if (order.status === "Anulata" && status !== "Anulata") {
+      for (const item of order.items) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: { decrement: item.qty } },
         });
       }
     }
