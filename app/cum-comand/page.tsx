@@ -21,6 +21,7 @@ const faq = [
   ["Care este comanda minima?", "Comanda minima este 50 lei pentru Baia Mare si 300 lei pentru celelalte zone de livrare."],
   ["Unde livrati?", "Livram in:\n Satu Mare: Satu Mare, Negrești, Livada, Turț\n Maramureș: Ulmeni, Șomcuta, Borșa, Moisei, Seini, Vișeu, Valea Izei, Sighet, Ocna Șugatag, Cavnic, Tg Lăpuș, Copalnic\n Sălaj: Jibou, Cehu Silvaniei, Zalău, Șimleul Silvaniei, Ileanda\n Bistrița-Năsăud: Beclean\n Cluj: Dej"],
   ["Cand se efectueaza livrarile?", "🗓️ Marți\n Traseul Principal 1: Jibou • Cehu Silvaniei • Ulmeni • Șomcuta\n Traseul Principal 2: Borșa ➔ Moisei ➔ Valea Izei\n\n 🗓️ Miercuri\n Traseul Principal 1: Seini ➔ Negrești • Livada • Turț • Satu Mare\n Traseul Principal 2: Vișeu ➔ Valea Izei\n\n 🗓️ Joi\n Traseul Principal: Zalău • Șimleul Silvaniei\n Traseul Principal 2: Sighet ➔ Ocna Șugatag ➔ Cavnic\n\n 🗓️ Vineri\n Traseul Principal 1: Dej • Beclean • Ileanda\n Traseul Principal 2: Târgu Lăpuș ➔ Copalnic"],
+  ["Nu sunt dintr-o zona de livrare. Pot comanda?", "Da! Daca nu va aflati in judetele si orasele pe care avem ruta de livrare, va rugam sa ne contactati telefonic la +40 750 266 304 sau 0262 221 154 si vom vedea impreuna cum putem rezolva."],
   ["Pot plasa comanda telefonic?", "Da, ne puteti contacta la +40 750 266 304 sau 0262 221 154 in timpul programului."],
   ["Care este programul de lucru?", "Luni-Vineri: 08:00-15:30. Sambata si duminica: inchis."],
 ];
@@ -50,7 +51,8 @@ export default function OrderGuidePage() {
           <h2 className="mb-4 text-xl font-black">Conditii de comanda</h2>
           <ul className="space-y-2 text-sm">
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Comanda minima: <strong>50 lei Baia Mare / 300 lei alte zone</strong></li>
-            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Zone de livrare: <strong>Maramures, Satu Mare, Salaj</strong></li>
+            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Zone de livrare: <strong>Maramures, Satu Mare, Salaj si imprejurimi</strong></li>
+            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Nu esti din zona noastra? <strong>Contacteaza-ne telefonic</strong> si vom vedea cum putem rezolva.</li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Preturile includ TVA si pot fi confirmate telefonic.</li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Confirmare telefonica obligatorie inainte de livrare.</li>
           </ul>

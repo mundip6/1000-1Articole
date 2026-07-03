@@ -59,8 +59,17 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Outside delivery zone note */}
+            <p className="mt-4 text-xs text-white/50">
+              Nu esti din zona noastra de livrare?{" "}
+              <a href={business.phoneHref} className="font-bold text-white/80 underline underline-offset-2 hover:text-white">
+                Contacteaza-ne telefonic
+              </a>{" "}
+              si vom gasi o solutie.
+            </p>
+
             {/* Buttons */}
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row md:items-start">
+            <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row md:items-start">
               <Link href="/catalog" className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-8 py-4 font-black text-white hover:bg-brand-dark">
                 <ShoppingCart size={18} /> Vezi Catalogul
               </Link>
