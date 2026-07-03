@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { CheckCircle, MapPin, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Politica de livrare",
+  description: "Livrare en-gros in Maramures, Satu Mare si Salaj. Afla conditiile de livrare 1000&1 Articole Baia Mare.",
+  alternates: { canonical: "/politica-livrare" },
+};
 import { business } from "@/lib/data";
 
 const routes = [

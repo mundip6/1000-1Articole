@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { business } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Termeni si conditii",
+  alternates: { canonical: "/termeni-conditii" },
+};
 
 export default function TermeniConditiiPage() {
   return (

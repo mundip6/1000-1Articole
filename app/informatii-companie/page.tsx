@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Informatii companie — 1000&1 Articole SRL",
+  description: "Date de contact si informatii despre 1000&1 Articole SRL, distribuitor en-gros din Baia Mare, Maramures.",
+  alternates: { canonical: "/informatii-companie" },
+};
 import { business } from "@/lib/data";
 
 export default function InformatiiCompaniePage() {

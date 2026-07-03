@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { ExternalLink, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "ANPC — Solutionarea litigiilor",
+  alternates: { canonical: "/anpc" },
+};
 import { business } from "@/lib/data";
 
 export default function AnpcPage() {

@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { business } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Politica de confidentialitate",
+  alternates: { canonical: "/politica-confidentialitate" },
+};
 
 export default function PoliticaConfidentialitatePage() {
   return (

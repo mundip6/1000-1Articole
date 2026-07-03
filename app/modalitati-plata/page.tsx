@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { Banknote, ShieldCheck, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Modalitati de plata",
+  description: "Afla metodele de plata acceptate la 1000&1 Articole — plata la livrare, transfer bancar.",
+  alternates: { canonical: "/modalitati-plata" },
+};
 import { business } from "@/lib/data";
 
 export default function ModalitatiplataPage() {

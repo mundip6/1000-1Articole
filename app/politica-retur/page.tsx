@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { business } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Politica de retur",
+  alternates: { canonical: "/politica-retur" },
+};
 
 export default function PoliticaReturPage() {
   return (

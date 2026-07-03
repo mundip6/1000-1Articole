@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getProduct, getSimilarProducts } from "@/lib/products";
@@ -11,6 +12,23 @@ import ProductTabs from "./ProductTabs";
 import SimilarProducts from "./SimilarProducts";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+  if (!product) return {};
+  const effectivePrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+  return {
+    title: product.name,
+    description: `Cumpara ${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Disponibil la 1000&1 Articole Baia Mare — livrare in Maramures, Satu Mare, Salaj.`,
+    alternates: { canonical: `/catalog/${id}` },
+    openGraph: {
+      title: product.name,
+      description: `${product.name} — ${formatPrice(effectivePrice)} lei/${product.unit} | 1000&1 Articole engros Baia Mare`,
+      ...(product.imageUrl ? { images: [{ url: product.imageUrl }] } : {}),
+    },
+  };
+}
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
