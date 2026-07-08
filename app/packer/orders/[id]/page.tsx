@@ -167,7 +167,7 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
         </div>
 
         {/* Cancel button — only for active orders */}
-        {(order.status === "Noua" || order.status === "Confirmata") && (
+        {order.status !== "Anulata" && (
           <div className="flex justify-end rounded-lg border border-red-100 bg-red-50 p-4">
             <CancelOrderButton
               orderId={order.id}
