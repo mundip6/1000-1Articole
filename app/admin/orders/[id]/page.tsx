@@ -1,16 +1,15 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Mail, MapPin, Phone, Save, Scale } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle, Mail, MapPin, Phone, Save, Scale, Truck } from "lucide-react";
 import AdminShell from "@/components/AdminShell";
+import CancelOrderButton from "@/components/CancelOrderButton";
 import PrintOrderButton from "@/components/PrintOrderButton";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { formatPrice } from "@/lib/data";
-import { getOrder, type OrderStatus } from "@/lib/orders";
+import { getOrder } from "@/lib/orders";
 import { updateOrderActualWeightsAction, updateOrderStatusAction } from "../../actions";
 
 export const dynamic = "force-dynamic";
-
-const statuses: OrderStatus[] = ["Noua", "Confirmata", "Livrata", "Anulata"];
 
 const STATUS_STYLES: Record<string, string> = {
   Noua: "bg-red-100 text-red-700",
@@ -60,22 +59,28 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
             <span className="text-sm font-semibold text-neutral-500">Status curent:</span>
             <span className={`rounded-full px-3 py-1 text-xs font-black ${badge}`}>{order.status}</span>
           </div>
-          <form action={updateOrderStatusAction} className="flex gap-2">
-            <input type="hidden" name="id" value={order.id} />
-            <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
-            <select
-              name="status"
-              defaultValue={order.status}
-              className="rounded-lg border border-neutral-200 px-3 py-2 text-sm font-semibold outline-none focus:border-brand"
-            >
-              {statuses.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-            <button className="inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-black text-white hover:bg-brand">
-              <Save size={16} /> Salveaza
-            </button>
-          </form>
+          <div className="flex gap-2">
+            {order.status === "Noua" && (
+              <form action={updateOrderStatusAction}>
+                <input type="hidden" name="id" value={order.id} />
+                <input type="hidden" name="status" value="Confirmata" />
+                <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
+                <button className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-black text-white hover:bg-amber-600">
+                  <CheckCircle size={16} /> Confirmă comanda
+                </button>
+              </form>
+            )}
+            {order.status === "Confirmata" && (
+              <form action={updateOrderStatusAction}>
+                <input type="hidden" name="id" value={order.id} />
+                <input type="hidden" name="status" value="Livrata" />
+                <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
+                <button className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-black text-white hover:bg-green-700">
+                  <Truck size={16} /> Marchează ca Livrat
+                </button>
+              </form>
+            )}
+          </div>
         </div>
 
         {/* Client info + delivery */}
@@ -160,6 +165,17 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
             </table>
           </div>
         </div>
+
+        {/* Cancel button — only for active orders */}
+        {(order.status === "Noua" || order.status === "Confirmata") && (
+          <div className="flex justify-end rounded-lg border border-red-100 bg-red-50 p-4">
+            <CancelOrderButton
+              orderId={order.id}
+              action={updateOrderStatusAction}
+              redirectTo={`/admin/orders/${order.id}`}
+            />
+          </div>
+        )}
 
         {/* Actual weights section — only for orders with kg items */}
         {hasKgItems && (
