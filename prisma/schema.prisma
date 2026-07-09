@@ -115,3 +115,14 @@ model OrderItem {
 
   @@index([orderId])
 }
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  role      String
+  email     String?
+  code      String
+  verified  Boolean  @default(false)
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

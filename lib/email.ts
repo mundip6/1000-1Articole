@@ -53,6 +53,46 @@ export async function sendPackerOtpEmail(code: string) {
   });
 }
 
+export async function sendCustomerPasswordResetEmail(code: string, toEmail: string) {
+  await resend.emails.send({
+    from: FROM,
+    to: toEmail,
+    subject: `${code} — Resetare parola cont 1000&1 Articole`,
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;">
+        <h2 style="color:#c8102e;margin-bottom:8px;">1000&amp;1 Articole</h2>
+        <h3 style="margin-bottom:16px;">Resetare parola cont</h3>
+        <p style="color:#444;line-height:1.6;">Ai solicitat resetarea parolei contului tau. Codul tau este:</p>
+        <div style="font-size:36px;font-weight:900;letter-spacing:10px;color:#111;margin:24px 0;padding:20px;background:#f5f5f5;border-radius:8px;text-align:center;">
+          ${code}
+        </div>
+        <p style="color:#888;font-size:13px;">Codul este valabil <strong>15 minute</strong>.<br/>Daca nu ai solicitat resetarea parolei, ignora acest mesaj — contul tau este in siguranta.</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+        <p style="color:#aaa;font-size:12px;">1000&amp;1 Articole SRL — B-dul Regele Mihai I nr. 49G, Baia Mare</p>
+      </div>
+    `,
+  });
+}
+
+export async function sendPasswordResetEmail(code: string, toEmail: string) {
+  await resend.emails.send({
+    from: FROM,
+    to: toEmail,
+    subject: `${code} — Resetare parola 1000&1 Articole`,
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;">
+        <h2 style="color:#c8102e;margin-bottom:8px;">1000&amp;1 Articole</h2>
+        <h3 style="margin-bottom:16px;">Resetare parola</h3>
+        <p style="color:#444;line-height:1.6;">Ai solicitat resetarea parolei. Codul tau este:</p>
+        <div style="font-size:36px;font-weight:900;letter-spacing:10px;color:#111;margin:24px 0;padding:20px;background:#f5f5f5;border-radius:8px;text-align:center;">
+          ${code}
+        </div>
+        <p style="color:#888;font-size:13px;">Codul este valabil <strong>15 minute</strong>.<br/>Daca nu ai solicitat resetarea parolei, ignora acest mesaj.</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendVerificationEmail(email: string, token: string) {
   const link = `${BASE_URL}/api/customer/verify-email?token=${token}`;
 

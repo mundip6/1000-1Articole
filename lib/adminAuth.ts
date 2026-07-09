@@ -5,7 +5,7 @@ const PENDING_COOKIE = "admin-2fa-pending";
 const IS_PROD = process.env.NODE_ENV === "production";
 
 export function getAdminPassword() {
-  return process.env.ADMIN_PASSWORD || "admin123";
+  return process.env.ADMIN_PASSWORD ?? "admin123";
 }
 
 async function jar() {
