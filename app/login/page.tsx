@@ -23,7 +23,9 @@ export default async function LoginPage({
         </div>
       )}
       <AuthForm mode="login" />
-      <Link href="/forgot-password" className="mt-4 block text-right text-xs font-bold text-brand hover:underline">Ai uitat parola?</Link>
+      <div className="mt-4 text-center">
+        <Link href="/forgot-password" className="text-sm font-bold text-brand hover:underline">Ai uitat parola?</Link>
+      </div>
     </AuthShell>
   );
 }

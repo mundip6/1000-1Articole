@@ -18,7 +18,7 @@ export default async function ResetPasswordPage({
       icon={Lock}
       title="Parola noua"
       subtitle="Alege o parola noua pentru contul tau"
-      footer={<Link href="/login" className="font-bold text-brand hover:underline">Inapoi la conectare</Link>}
+      footer={<Link href="/cont" className="font-bold text-brand hover:underline">Inapoi la conectare</Link>}
     >
       {error === "mismatch" && (
         <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">

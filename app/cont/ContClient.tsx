@@ -171,6 +171,11 @@ export default function CustomerAccountPage() {
           </div>
         </div>
 
+        {searchParams.get("success") === "password-reset" && (
+          <div className="mb-5 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800">
+            <CheckCircle2 size={18} className="shrink-0" /> Parola a fost schimbata cu succes. Poti acum sa te conectezi.
+          </div>
+        )}
         {searchParams.get("verified") === "1" && (
           <div className="mb-5 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800">
             <CheckCircle2 size={18} className="shrink-0" /> Email verificat cu succes! Contul tau este acum activ.
@@ -273,6 +278,13 @@ export default function CustomerAccountPage() {
                 {loading ? "Se incarca..." : mode === "login" ? "Intra in cont" : "Creeaza cont"}
               </button>
             </form>
+            {mode === "login" && (
+              <div className="mt-4 text-center">
+                <Link href="/forgot-password" className="text-sm font-bold text-brand hover:underline">
+                  Ai uitat parola?
+                </Link>
+              </div>
+            )}
           </section>
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">

@@ -15,7 +15,7 @@ export default async function ForgotPasswordPage({
       icon={MailQuestion}
       title="Ai uitat parola?"
       subtitle="Introdu emailul contului tau si iti trimitem un cod de verificare"
-      footer={<Link href="/login" className="font-bold text-brand hover:underline">Inapoi la conectare</Link>}
+      footer={<Link href="/cont" className="font-bold text-brand hover:underline">Inapoi la conectare</Link>}
     >
       {error === "not-found" && (
         <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">

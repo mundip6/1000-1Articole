@@ -91,5 +91,5 @@ export async function saveCustomerNewPassword(formData: FormData) {
     data: { used: true },
   });
 
-  redirect("/login?success=password-reset");
+  redirect("/cont?success=password-reset");
 }
