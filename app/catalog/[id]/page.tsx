@@ -40,8 +40,41 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     getSimilarProducts(product.category, product.id),
   ]);
 
+  const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
+  const effectivePrice = product.discount > 0
+    ? product.price * (1 - product.discount / 100)
+    : product.price;
+  const priceValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    .toISOString().split("T")[0];
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    ...(product.imageUrl ? { image: product.imageUrl } : {}),
+    description: `${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Distribuitor angro Baia Mare — livrare in Maramures, Satu Mare, Salaj.`,
+    sku: product.id,
+    brand: { "@type": "Brand", name: "1000&1 Articole" },
+    offers: {
+      "@type": "Offer",
+      url: `${BASE_URL}/catalog/${product.id}`,
+      priceCurrency: "RON",
+      price: effectivePrice.toFixed(2),
+      priceValidUntil,
+      availability: product.stock > 0
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      itemCondition: "https://schema.org/NewCondition",
+      seller: { "@type": "Organization", name: "1000&1 Articole SRL" },
+    },
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <Navbar />
       <main className="mx-auto max-w-5xl px-4 py-8">
         <Link href="/catalog" className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-brand">

@@ -124,9 +124,22 @@ export async function updateProduct(formData: FormData) {
     throw new Error("Datele produsului nu sunt valide.");
   }
 
+  // Regenerate ID from new name
+  const baseId = slugify(name) || "produs";
+  let newId = baseId;
+  let index = 2;
+  // Find a unique slug — skip the current product's own ID since we're replacing it
+  while (newId !== id) {
+    const conflict = await prisma.product.findUnique({ where: { id: newId } });
+    if (!conflict) break;
+    newId = `${baseId}-${index}`;
+    index += 1;
+  }
+
   await prisma.product.update({
     where: { id },
     data: {
+      id: newId,
       name,
       category,
       price,
