@@ -3,6 +3,7 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import AdminShell from "@/components/AdminShell";
 import { formatPrice } from "@/lib/data";
+import RealTimeVisitors from "@/components/RealTimeVisitors";
 import StatsCharts from "./StatsCharts";
 
 export const dynamic = "force-dynamic";
@@ -88,6 +89,30 @@ async function fetchStats(): Promise<StatsResponse> {
   };
 }
 
+async function fetchTrafficStats() {
+  const { prisma } = await import("@/lib/prisma");
+
+  const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const since5m = new Date(Date.now() - 5 * 60 * 1000);
+
+  const [sourceGroups, realtimeCount, totalViews] = await Promise.all([
+    prisma.pageView.groupBy({
+      by: ["source"],
+      where: { createdAt: { gte: since30d } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+    }),
+    prisma.pageView.count({ where: { createdAt: { gte: since5m } } }),
+    prisma.pageView.count({ where: { createdAt: { gte: since30d } } }),
+  ]);
+
+  return {
+    sources: sourceGroups.map((r) => ({ source: r.source, count: r._count.id })),
+    realtimeCount,
+    totalViews,
+  };
+}
+
 async function fetchCustomerStats() {
   const { prisma } = await import("@/lib/prisma");
 
@@ -119,7 +144,16 @@ async function fetchCustomerStats() {
 export default async function StatisticiPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin");
 
-  const [stats, customers] = await Promise.all([fetchStats(), fetchCustomerStats()]);
+  const [stats, customers, traffic] = await Promise.all([
+    fetchStats(),
+    fetchCustomerStats(),
+    fetchTrafficStats(),
+  ]);
+
+  const SOURCE_ICONS: Record<string, string> = {
+    Google: "🔍", Facebook: "📘", TikTok: "🎵", Instagram: "📸",
+    YouTube: "▶️", Bing: "🔎", Yahoo: "🟣", Direct: "🔗", Altul: "🌐",
+  };
 
   return (
     <AdminShell
@@ -128,6 +162,44 @@ export default async function StatisticiPage() {
       active="statistici"
     >
       <StatsCharts monthly={stats.monthly} totals={stats.totals} />
+
+      {/* Real-time + Traffic sources */}
+      <div className="mt-6 grid gap-5 md:grid-cols-2">
+
+        {/* Real-time */}
+        <div className="rounded-lg border border-neutral-200 bg-white p-5">
+          <h2 className="mb-4 text-sm font-black uppercase tracking-wide text-neutral-500">Vizitatori in timp real</h2>
+          <RealTimeVisitors initial={traffic.realtimeCount} />
+          <p className="mt-4 text-xs text-neutral-400">
+            Total vizite in ultimele 30 de zile: <strong className="text-neutral-600">{traffic.totalViews.toLocaleString("ro-RO")}</strong>
+          </p>
+        </div>
+
+        {/* Traffic sources */}
+        <div className="rounded-lg border border-neutral-200 bg-white p-5">
+          <h2 className="mb-4 text-sm font-black uppercase tracking-wide text-neutral-500">Surse de trafic — ultimele 30 zile</h2>
+          {traffic.sources.length === 0 ? (
+            <p className="text-sm text-neutral-400">Nu exista date inca. Datele apar dupa prima vizita pe site.</p>
+          ) : (
+            <div className="space-y-2">
+              {traffic.sources.map(({ source, count }) => {
+                const pct = traffic.totalViews > 0 ? Math.round((count / traffic.totalViews) * 100) : 0;
+                return (
+                  <div key={source}>
+                    <div className="mb-1 flex items-center justify-between text-sm">
+                      <span className="font-semibold">{SOURCE_ICONS[source] ?? "🌐"} {source}</span>
+                      <span className="font-black">{count.toLocaleString("ro-RO")} <span className="text-xs font-normal text-neutral-400">({pct}%)</span></span>
+                    </div>
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-100">
+                      <div className="h-2 rounded-full bg-brand" style={{ width: `${pct}%` }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="mt-8 rounded-lg border border-neutral-200 bg-white">
         <div className="border-b border-neutral-200 px-5 py-4">

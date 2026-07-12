@@ -116,6 +116,16 @@ model OrderItem {
   @@index([orderId])
 }
 
+model PageView {
+  id        String   @id @default(cuid())
+  source    String
+  page      String   @default("/")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([source])
+}
+
 model PasswordResetToken {
   id        String   @id @default(cuid())
   role      String
