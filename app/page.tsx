@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Clock, Phone, Shield, ShoppingCart, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { business, categories } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "1000&1 Articole | Distribuitor engros Baia Mare",
+  description: "Distribuitor engros de carne congelata, peste, mezeluri, legume congelate si semipreparate din Baia Mare. Livrare in Maramures, Satu Mare si Salaj.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "1000&1 Articole — Distribuitor engros Baia Mare",
+    description: "Carne congelata, peste, legume si semipreparate en-gros. Livrare in Maramures, Satu Mare si Salaj.",
+    url: "/",
+    images: [{ url: "/background_articole.png", width: 1200, height: 630, alt: "1000&1 Articole Baia Mare" }],
+  },
+};
 
 const benefits = [
   { icon: Truck, title: "Livrare in 3 judete", desc: business.delivery },

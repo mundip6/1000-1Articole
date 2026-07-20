@@ -49,6 +49,16 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const priceValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     .toISOString().split("T")[0];
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Acasa", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Catalog", item: `${BASE_URL}/catalog` },
+      { "@type": "ListItem", position: 3, name: product.name, item: `${BASE_URL}/catalog/${product.id}` },
+    ],
+  };
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -73,6 +83,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}

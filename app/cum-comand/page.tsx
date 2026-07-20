@@ -26,9 +26,20 @@ const faq = [
   ["Care este programul de lucru?", "Luni-Vineri: 08:00-15:30. Sambata si duminica: inchis."],
 ];
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map(([q, a]) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a.replace(/\n/g, " ") },
+  })),
+};
+
 export default function OrderGuidePage() {
   return (
     <div className="min-h-screen bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Navbar />
       <main className="mx-auto max-w-4xl px-4 py-12">
         <h1 className="text-3xl font-black">Cum plasezi o comanda</h1>

@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { business } from "@/lib/data";
+
+export const metadata: Metadata = {
+  title: "Contact — 1000&1 Articole Baia Mare",
+  description: "Contacteaza-ne pentru comenzi en-gros de carne, peste si legume congelate. Tel: +40 750 266 304. Adresa: Bdul Regele Mihai I nr. 49G, Baia Mare.",
+  alternates: { canonical: "/contact" },
+};
 
 const program = [
   ["Luni", "08:00 - 15:30"],
