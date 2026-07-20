@@ -18,13 +18,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const product = await getProduct(id);
   if (!product) return {};
   const effectivePrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+  const autoDescription = `Cumpara ${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Disponibil la 1000&1 Articole Baia Mare — livrare in Maramures, Satu Mare, Salaj.`;
+  const description = product.metaDescription || autoDescription;
   return {
     title: product.name,
-    description: `Cumpara ${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Disponibil la 1000&1 Articole Baia Mare — livrare in Maramures, Satu Mare, Salaj.`,
+    description,
     alternates: { canonical: `/catalog/${id}` },
     openGraph: {
       title: product.name,
-      description: `${product.name} — ${formatPrice(effectivePrice)} lei/${product.unit} | 1000&1 Articole engros Baia Mare`,
+      description: product.metaDescription || `${product.name} — ${formatPrice(effectivePrice)} lei/${product.unit} | 1000&1 Articole engros Baia Mare`,
       ...(product.imageUrl ? { images: [{ url: product.imageUrl }] } : {}),
     },
   };
@@ -52,7 +54,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     "@type": "Product",
     name: product.name,
     ...(product.imageUrl ? { image: product.imageUrl } : {}),
-    description: `${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Distribuitor angro Baia Mare — livrare in Maramures, Satu Mare, Salaj.`,
+    description: product.metaDescription || `${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Distribuitor angro Baia Mare — livrare in Maramures, Satu Mare, Salaj.`,
     sku: product.id,
     brand: { "@type": "Brand", name: "1000&1 Articole" },
     offers: {

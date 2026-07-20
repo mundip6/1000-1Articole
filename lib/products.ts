@@ -27,6 +27,7 @@ function toProduct(product: {
   packagedByUs: boolean;
   nutritionInfo: string | null;
   specifications: string | null;
+  metaDescription: string | null;
   kgStep: number;
   discount: number;
 }): Product {
@@ -44,6 +45,7 @@ function toProduct(product: {
     ...(product.imageUrl ? { imageUrl: product.imageUrl } : {}),
     ...(product.nutritionInfo ? { nutritionInfo: product.nutritionInfo } : {}),
     ...(product.specifications ? { specifications: product.specifications } : {}),
+    ...(product.metaDescription ? { metaDescription: product.metaDescription } : {}),
   };
 }
 
@@ -70,6 +72,7 @@ export async function createProduct(formData: FormData) {
   const stock = Math.max(0, parseFloat(String(formData.get("stock") ?? "0")) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
   const specifications = String(formData.get("specifications") || "").trim();
+  const metaDescription = String(formData.get("metaDescription") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
   const kgStep = Math.max(0.001, parseFloat(String(formData.get("kgStep") ?? "1")) || 1);
   const discount = Math.min(100, Math.max(0, parseFloat(String(formData.get("discount") ?? "0")) || 0));
@@ -99,6 +102,7 @@ export async function createProduct(formData: FormData) {
       packagedByUs,
       nutritionInfo: nutritionInfo || null,
       specifications: specifications || null,
+      metaDescription: metaDescription || null,
       kgStep: unit === "kg" ? kgStep : 1,
       discount,
     },
@@ -116,6 +120,7 @@ export async function updateProduct(formData: FormData) {
   const stock = Math.max(0, parseFloat(String(formData.get("stock") ?? "0")) || 0);
   const nutritionInfo = String(formData.get("nutritionInfo") || "").trim();
   const specifications = String(formData.get("specifications") || "").trim();
+  const metaDescription = String(formData.get("metaDescription") || "").trim();
   const packagedByUs = formData.get("packagedByUs") === "on";
   const kgStep = Math.max(0.001, parseFloat(String(formData.get("kgStep") ?? "1")) || 1);
   const discount = Math.min(100, Math.max(0, parseFloat(String(formData.get("discount") ?? "0")) || 0));
@@ -150,6 +155,7 @@ export async function updateProduct(formData: FormData) {
       packagedByUs,
       nutritionInfo: nutritionInfo || null,
       specifications: specifications || null,
+      metaDescription: metaDescription || null,
       kgStep: unit === "kg" ? kgStep : 1,
       discount,
     },

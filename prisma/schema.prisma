@@ -20,9 +20,10 @@ model Product {
   nutritionInfo  String?
   specifications String?
   kgStep         Float    @default(1)
-  discount       Float    @default(0)
-  createdAt      DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  discount        Float    @default(0)
+  metaDescription String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Customer {

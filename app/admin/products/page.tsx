@@ -90,6 +90,16 @@ export default async function AdminProductsPage() {
                 </label>
               </div>
             </div>
+            <label className="text-xs font-semibold uppercase text-neutral-500">
+              Meta descriere SEO <span className="font-normal normal-case text-neutral-400">(apare in Google — ideal 140–160 caractere)</span>
+              <textarea
+                name="metaDescription"
+                rows={2}
+                maxLength={160}
+                placeholder="Ex: Cumpara piept de pui congelat en-gros la cel mai bun pret din Baia Mare. Livrare rapida in Maramures, Satu Mare si Salaj."
+                className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand"
+              />
+            </label>
             <div className="flex items-center gap-4">
               <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold">
                 <input type="checkbox" name="packagedByUs" className="h-4 w-4 accent-brand" />
@@ -198,6 +208,17 @@ export default async function AdminProductsPage() {
                       </label>
                     </div>
                   </div>
+                  <label className="text-xs font-semibold uppercase text-neutral-500">
+                    Meta descriere SEO <span className="font-normal normal-case text-neutral-400">(apare in Google — ideal 140–160 caractere)</span>
+                    <textarea
+                      name="metaDescription"
+                      defaultValue={product.metaDescription || ""}
+                      rows={2}
+                      maxLength={160}
+                      placeholder="Ex: Cumpara piept de pui congelat en-gros la cel mai bun pret din Baia Mare. Livrare rapida in Maramures, Satu Mare si Salaj."
+                      className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand"
+                    />
+                  </label>
                 </form>
                 <form id={`delete-${product.id}`} action={deleteProductAction}>
                   <input type="hidden" name="id" value={product.id} />

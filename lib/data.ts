@@ -21,6 +21,7 @@ export type Product = {
   packagedByUs: boolean;
   nutritionInfo?: string;
   specifications?: string;
+  metaDescription?: string;
   kgStep: number;
   discount: number;
 };
