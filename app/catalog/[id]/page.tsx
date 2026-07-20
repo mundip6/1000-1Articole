@@ -20,8 +20,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const effectivePrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
   const autoDescription = `Cumpara ${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Disponibil la 1000&1 Articole Baia Mare — livrare in Maramures, Satu Mare, Salaj.`;
   const description = product.metaDescription || autoDescription;
+
+  // Keep full title under 60 chars — template appends " | 1000&1 Articole" (18 chars)
+  const SUFFIX_LEN = " | 1000&1 Articole".length; // 18
+  const titleName = product.name.length + SUFFIX_LEN <= 60
+    ? product.name
+    : product.name.substring(0, 60 - SUFFIX_LEN).trimEnd();
+
   return {
-    title: product.name,
+    title: titleName,
     description,
     alternates: { canonical: `/catalog/${id}` },
     openGraph: {

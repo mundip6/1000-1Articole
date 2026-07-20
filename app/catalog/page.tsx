@@ -8,7 +8,7 @@ import CatalogClient from "./CatalogClient";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Catalog produse engros — carne, peste, legume congelate",
+  title: "Catalog en-gros — carne, peste, legume congelate",
   description: "Cumpara en-gros carne congelata de pui si porc, peste, mezeluri, legume congelate si semi-preparate. Livrare in Maramures, Satu Mare si Salaj.",
   alternates: { canonical: "/catalog" },
 };
