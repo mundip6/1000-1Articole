@@ -170,11 +170,11 @@ export default function CartPage() {
                   <div className="min-w-0 flex-1">
                     <div className="font-bold">{item.name}</div>
                     {item.weight && <div className="text-xs text-neutral-500">{item.weight}</div>}
-                    {item.discount > 0 ? (
+                    {item.salePrice ? (
                       <div className="mt-1 flex items-baseline gap-2">
-                        <span className="text-sm font-black text-brand">{formatPrice(effectivePrice(item))} lei/{item.unit}</span>
+                        <span className="text-sm font-black text-brand">{formatPrice(item.salePrice)} lei/{item.unit}</span>
                         <span className="text-xs text-neutral-400 line-through">{formatPrice(item.price)}</span>
-                        <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-black text-red-600">-{item.discount}%</span>
+                        <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[10px] font-black text-red-600">-{Math.round((1 - item.salePrice / item.price) * 100)}%</span>
                       </div>
                     ) : (
                       <div className="mt-1 text-sm font-black text-brand">{formatPrice(item.price)} lei/{item.unit}</div>

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const product = await getProduct(id);
   if (!product) return {};
-  const effectivePrice = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+  const effectivePrice = product.salePrice ?? product.price;
   const autoDescription = `Cumpara ${product.name} en-gros la ${formatPrice(effectivePrice)} lei/${product.unit}. Disponibil la 1000&1 Articole Baia Mare — livrare in Maramures, Satu Mare, Salaj.`;
   const description = product.metaDescription || autoDescription;
 
@@ -50,9 +50,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   ]);
 
   const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
-  const effectivePrice = product.discount > 0
-    ? product.price * (1 - product.discount / 100)
-    : product.price;
+  const effectivePrice = product.salePrice ?? product.price;
   const priceValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     .toISOString().split("T")[0];
 

@@ -23,7 +23,7 @@ export type Product = {
   specifications?: string;
   metaDescription?: string;
   kgStep: number;
-  discount: number;
+  salePrice?: number;
 };
 
 export const business = {

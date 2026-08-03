@@ -62,7 +62,7 @@ export default async function AdminProductsPage() {
               <input name="weight" placeholder="Greutate / calibru" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <input name="stock" type="number" min="0" step="0.5" placeholder="Stoc" defaultValue={0} className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
               <input name="kgStep" type="number" min="0.001" step="0.001" placeholder="Pas kg" defaultValue={1} title="Pas cantitate (kg)" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
-              <input name="discount" type="number" min="0" max="100" step="1" placeholder="Discount %" defaultValue={0} title="Discount %" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input name="salePrice" type="number" min="0" step="0.01" placeholder="Pret nou" title="Pret nou (lei) — lasa gol daca nu e reducere" className="rounded border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-brand" />
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
@@ -162,8 +162,8 @@ export default async function AdminProductsPage() {
                       <input name="kgStep" type="number" min="0.001" step="0.001" defaultValue={product.unit === "kg" ? product.kgStep : 1} className="mt-1 w-full rounded border border-neutral-200 px-3 py-2 text-sm normal-case text-neutral-900 outline-none focus:border-brand" />
                     </label>
                     <label className="text-xs font-semibold uppercase text-neutral-500">
-                      Discount %
-                      <input name="discount" type="number" min="0" max="100" step="1" defaultValue={product.discount} className={`mt-1 w-full rounded border px-3 py-2 text-sm normal-case font-bold outline-none focus:border-brand ${product.discount > 0 ? "border-red-300 bg-red-50 text-red-700" : "border-neutral-200 text-neutral-900"}`} />
+                      Pret nou
+                      <input name="salePrice" type="number" min="0" step="0.01" defaultValue={product.salePrice ?? ""} placeholder="—" title="Pret nou (lei) — lasa gol daca nu e reducere" className={`mt-1 w-full rounded border px-3 py-2 text-sm normal-case font-bold outline-none focus:border-brand ${product.salePrice ? "border-red-300 bg-red-50 text-red-700" : "border-neutral-200 text-neutral-900"}`} />
                     </label>
                     <div className="flex items-end">
                       <button className="inline-flex w-full items-center justify-center gap-2 rounded bg-neutral-900 px-4 py-2 text-sm font-black text-white hover:bg-brand">
@@ -224,8 +224,8 @@ export default async function AdminProductsPage() {
                   <input type="hidden" name="id" value={product.id} />
                 </form>
                 <p className="mt-2 text-xs text-neutral-500">
-                  ID: {product.id} | Afisat in catalog ca {product.discount > 0 ? (
-                    <><span className="line-through">{formatPrice(product.price)}</span> <span className="font-bold text-red-600">{formatPrice(product.price * (1 - product.discount / 100))} lei/{product.unit}</span> (-{product.discount}%)</>
+                  ID: {product.id} | Afisat in catalog ca {product.salePrice ? (
+                    <><span className="line-through">{formatPrice(product.price)}</span> <span className="font-bold text-red-600">{formatPrice(product.salePrice)} lei/{product.unit}</span> (-{Math.round((1 - product.salePrice / product.price) * 100)}%)</>
                   ) : (
                     <>{formatPrice(product.price)} lei/{product.unit}</>
                   )}

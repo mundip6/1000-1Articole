@@ -47,7 +47,7 @@ export function clearCart() {
 }
 
 export function effectivePrice(item: CartItem) {
-  return item.price * (1 - (item.discount ?? 0) / 100);
+  return item.salePrice ?? item.price;
 }
 
 export function cartTotal(cart: CartItem[]) {

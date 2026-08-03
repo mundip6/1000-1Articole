@@ -133,11 +133,11 @@ export default function CatalogClient({ products }: { products: Product[] }) {
                     </div>
                     {product.weight && <div className="mt-1 text-xs text-neutral-500">{product.weight}</div>}
                     <div className="mt-auto pt-5">
-                      {product.discount > 0 ? (
+                      {product.salePrice ? (
                         <>
-                          <span className="mb-1 inline-block rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-black text-white">-{product.discount}% REDUCERE</span>
+                          <span className="mb-1 inline-block rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-black text-white">-{Math.round((1 - product.salePrice / product.price) * 100)}% REDUCERE</span>
                           <div className="flex items-baseline gap-2">
-                            <span className="text-xl font-black text-brand">{formatPrice(product.price * (1 - product.discount / 100))} lei</span>
+                            <span className="text-xl font-black text-brand">{formatPrice(product.salePrice)} lei</span>
                             <span className="text-sm text-neutral-400 line-through">{formatPrice(product.price)} lei</span>
                           </div>
                           <span className="text-xs font-normal text-neutral-500">/{product.unit}</span>

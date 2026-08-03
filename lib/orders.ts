@@ -137,7 +137,7 @@ export async function createOrder(input: OrderInput) {
 
   const effectiveItems = input.items.map((item) => ({
     ...item,
-    price: Number((item.price * (1 - ((item as any).discount ?? 0) / 100)).toFixed(2)),
+    price: Number(((item as any).salePrice ?? item.price).toFixed(2)),
   }));
 
   const order = await prisma.$transaction(async (tx) => {
