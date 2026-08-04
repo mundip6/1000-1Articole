@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { FileSpreadsheet } from "lucide-react";
+import { FileSpreadsheet, Download } from "lucide-react";
 
 type Result = { imported: number; skipped: number };
 
@@ -42,6 +42,14 @@ export default function ImportExcel() {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <input ref={inputRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleFile} />
+      <a
+        href="/api/admin/export-excel"
+        download="produse-in-stoc.xlsx"
+        className="inline-flex items-center gap-2 rounded border border-neutral-300 px-4 py-2 text-sm font-black text-neutral-700 hover:bg-neutral-50"
+      >
+        <Download size={16} />
+        Export Excel
+      </a>
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
