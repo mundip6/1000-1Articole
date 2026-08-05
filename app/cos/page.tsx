@@ -52,14 +52,18 @@ export default function CartPage() {
 
   useEffect(() => {
     if (cart.length === 0) return;
-    void sendMetaEvent("InitiateCheckout", {
-      content_ids: cart.map((i) => i.id),
-      contents: cart.map((i) => ({ id: i.id, quantity: i.qty, item_price: effectivePrice(i) })),
-      content_type: "product",
-      num_items: cart.reduce((s, i) => s + i.qty, 0),
-      value: cartTotal(cart),
-      currency: "RON",
-    });
+    void sendMetaEvent(
+      "InitiateCheckout",
+      {
+        content_ids: cart.map((i) => i.id),
+        contents: cart.map((i) => ({ id: i.id, quantity: i.qty, item_price: effectivePrice(i) })),
+        content_type: "product",
+        num_items: cart.reduce((s, i) => s + i.qty, 0),
+        value: cartTotal(cart),
+        currency: "RON",
+      },
+      form.email || form.phone ? { email: form.email || undefined, phone: form.phone || undefined, city: form.city || undefined, country: "ro" } : undefined,
+    );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

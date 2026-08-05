@@ -1,17 +1,19 @@
 "use client";
 
 import Script from "next/script";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { FB_PIXEL_ID, pageview } from "@/lib/meta/pixel";
 
 export function MetaPixel() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const lastPath = useRef<string | null>(null);
 
   useEffect(() => {
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
     pageview();
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   if (!FB_PIXEL_ID) return null;
 
