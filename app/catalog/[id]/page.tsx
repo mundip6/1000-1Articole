@@ -10,6 +10,7 @@ import AddToCartButton from "./AddToCartButton";
 import ImageZoom from "./ImageZoom";
 import ProductTabs from "./ProductTabs";
 import SimilarProducts from "./SimilarProducts";
+import { ProductTracking } from "./ProductTracking";
 
 export const dynamic = "force-dynamic";
 
@@ -93,6 +94,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
+      <ProductTracking sku={product.id} name={product.name} price={effectivePrice} category={product.category} />
       <Navbar />
       <main className="mx-auto max-w-5xl px-4 py-8">
         <Link href="/catalog" className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-brand">

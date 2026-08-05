@@ -5,6 +5,7 @@ import ChatWidget from "@/components/ChatWidget";
 import CookieBanner from "@/components/CookieBanner";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageViewTracker from "@/components/PageViewTracker";
+import { MetaPixel } from "@/components/MetaPixel";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
 
@@ -66,6 +67,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         {children}
         <Suspense fallback={null}><PageViewTracker /></Suspense>
+        <Suspense fallback={null}><MetaPixel /></Suspense>
         <ChatWidget />
         <CookieBanner />
         <GoogleAnalytics />

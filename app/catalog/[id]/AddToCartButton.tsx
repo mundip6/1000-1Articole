@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { Check, Info, Plus } from "lucide-react";
-import { addToCart } from "@/lib/cart";
+import { addToCart, effectivePrice } from "@/lib/cart";
 import { type Product, formatPrice } from "@/lib/data";
+import { sendMetaEvent } from "@/lib/meta/send";
 
 export default function AddToCartButton({ product }: { product: Product }) {
   const defaultQty = product.unit === "kg" ? product.kgStep : 1;
@@ -31,6 +32,16 @@ export default function AddToCartButton({ product }: { product: Product }) {
     addToCart(product, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
+
+    const price = effectivePrice({ ...product, qty });
+    void sendMetaEvent("AddToCart", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      contents: [{ id: product.id, quantity: qty, item_price: price }],
+      value: price * qty,
+      currency: "RON",
+    });
   }
 
   return (

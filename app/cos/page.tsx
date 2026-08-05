@@ -6,6 +6,7 @@ import { AlertTriangle, ArrowLeft, CheckCircle, ShoppingBag, Trash2, UserRound }
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cartTotal, cartWeight, clearCart, effectivePrice, getCart, removeFromCart, updateQty, type CartItem } from "@/lib/cart";
+import { sendMetaEvent } from "@/lib/meta/send";
 import { formatPrice } from "@/lib/data";
 import CountyCitySelect from "@/components/CountyCitySelect";
 
@@ -48,6 +49,19 @@ export default function CartPage() {
   const weight = cartWeight(cart);
   const minimumValue = form.county === "Maramureș" ? 50 : 300;
   const meetsMinimum = total >= minimumValue;
+
+  useEffect(() => {
+    if (cart.length === 0) return;
+    void sendMetaEvent("InitiateCheckout", {
+      content_ids: cart.map((i) => i.id),
+      contents: cart.map((i) => ({ id: i.id, quantity: i.qty, item_price: effectivePrice(i) })),
+      content_type: "product",
+      num_items: cart.reduce((s, i) => s + i.qty, 0),
+      value: cartTotal(cart),
+      currency: "RON",
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let ignore = false;
@@ -119,6 +133,23 @@ export default function CartPage() {
         throw new Error(data.message || "Comanda nu a putut fi salvata.");
       }
 
+      void sendMetaEvent(
+        "Purchase",
+        {
+          content_ids: cart.map((i) => i.id),
+          contents: cart.map((i) => ({ id: i.id, quantity: i.qty, item_price: effectivePrice(i) })),
+          content_type: "product",
+          num_items: cart.reduce((s, i) => s + i.qty, 0),
+          value: total,
+          currency: "RON",
+        },
+        {
+          email: form.email,
+          phone: form.phone,
+          city: form.city,
+          country: "ro",
+        },
+      );
       clearCart();
       setCart([]);
       setSuccess(true);
