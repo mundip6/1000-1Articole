@@ -117,6 +117,13 @@ model OrderItem {
   @@index([orderId])
 }
 
+model NewsletterSubscriber {
+  id               String   @id @default(cuid())
+  email            String   @unique
+  unsubscribeToken String   @unique @default(cuid())
+  createdAt        DateTime @default(now())
+}
+
 model PageView {
   id        String   @id @default(cuid())
   source    String

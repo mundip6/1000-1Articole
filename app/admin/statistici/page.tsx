@@ -113,6 +113,16 @@ async function fetchTrafficStats() {
   };
 }
 
+async function fetchNewsletterStats() {
+  const { prisma } = await import("@/lib/prisma");
+  const [subscribers, customers] = await Promise.all([
+    prisma.newsletterSubscriber.findMany({ orderBy: { createdAt: "desc" } }),
+    prisma.customer.findMany({ select: { email: true } }),
+  ]);
+  const customerEmails = new Set(customers.map((c) => c.email));
+  return subscribers.map((s) => ({ ...s, hasAccount: customerEmails.has(s.email) }));
+}
+
 async function fetchCustomerStats() {
   const { prisma } = await import("@/lib/prisma");
 
@@ -144,10 +154,11 @@ async function fetchCustomerStats() {
 export default async function StatisticiPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin");
 
-  const [stats, customers, traffic] = await Promise.all([
+  const [stats, customers, traffic, newsletterSubs] = await Promise.all([
     fetchStats(),
     fetchCustomerStats(),
     fetchTrafficStats(),
+    fetchNewsletterStats(),
   ]);
 
   const SOURCE_ICONS: Record<string, string> = {
@@ -198,6 +209,46 @@ export default async function StatisticiPage() {
               })}
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="mt-8 rounded-lg border border-neutral-200 bg-white">
+        <div className="border-b border-neutral-200 px-5 py-4">
+          <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Abonati newsletter</h2>
+          <p className="mt-0.5 text-xs text-neutral-400">{newsletterSubs.length} abonati</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[500px] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-neutral-100 text-left text-xs font-black uppercase tracking-wide text-neutral-400">
+                <th className="px-5 py-3">Email</th>
+                <th className="px-5 py-3 text-center">Are cont</th>
+                <th className="px-5 py-3 text-right">Abonat de la</th>
+              </tr>
+            </thead>
+            <tbody>
+              {newsletterSubs.map((s) => (
+                <tr key={s.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
+                  <td className="px-5 py-3 font-semibold">{s.email}</td>
+                  <td className="px-5 py-3 text-center">
+                    {s.hasAccount
+                      ? <CheckCircle size={16} className="mx-auto text-green-600" />
+                      : <XCircle size={16} className="mx-auto text-neutral-300" />}
+                  </td>
+                  <td className="px-5 py-3 text-right text-neutral-400">
+                    {new Date(s.createdAt).toLocaleDateString("ro-RO")}
+                  </td>
+                </tr>
+              ))}
+              {newsletterSubs.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="px-5 py-8 text-center text-neutral-400">
+                    Nu exista abonati inca.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 

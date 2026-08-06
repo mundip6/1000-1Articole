@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { business } from "@/lib/data";
+import NewsletterSignup from "./NewsletterSignup";
 
 const infoLinks = [
   { href: "/termeni-conditii", label: "Termeni și Condiții" },
@@ -59,6 +60,16 @@ export default function Footer() {
           </ul>
         </div>
       </div>
+      <div className="border-t border-neutral-800 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <h3 className="text-base font-black text-white">Aboneaza-te la newsletter!</h3>
+            <p className="mt-1 text-sm text-neutral-400">Oferte speciale si noutati direct pe email.</p>
+          </div>
+          <NewsletterSignup />
+        </div>
+      </div>
+
       <div className="border-t border-neutral-800 py-4 text-center text-xs text-neutral-500">
         © 2026 1000&1 Articole. Toate drepturile rezervate.
       </div>
