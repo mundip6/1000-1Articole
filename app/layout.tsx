@@ -6,6 +6,7 @@ import CookieBanner from "@/components/CookieBanner";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageViewTracker from "@/components/PageViewTracker";
 import { MetaPixel } from "@/components/MetaPixel";
+import NewsletterPopup from "@/components/NewsletterPopup";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
 
@@ -68,6 +69,7 @@ export default function RootLayout({
         {children}
         <Suspense fallback={null}><PageViewTracker /></Suspense>
         <Suspense fallback={null}><MetaPixel /></Suspense>
+        <NewsletterPopup />
         <ChatWidget />
         <CookieBanner />
         <GoogleAnalytics />
