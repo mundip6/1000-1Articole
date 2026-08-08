@@ -54,7 +54,7 @@ export default function CatalogClient({ products }: { products: Product[] }) {
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Catalog Produse Engros — cauta produs..."
+            placeholder="Catalog Produse — cauta produs..."
             className="w-full rounded-lg border border-neutral-200 bg-white py-4 pl-12 pr-4 text-base font-medium outline-none focus:border-brand"
           />
         </div>
