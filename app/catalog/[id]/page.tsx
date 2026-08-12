@@ -11,6 +11,8 @@ import ImageZoom from "./ImageZoom";
 import ProductTabs from "./ProductTabs";
 import SimilarProducts from "./SimilarProducts";
 import { ProductTracking } from "./ProductTracking";
+import DeliveryInfo from "@/components/DeliveryInfo";
+import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -45,9 +47,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const product = await getProduct(id);
   if (!product) notFound();
 
-  const [category, similar] = await Promise.all([
+  const [category, similar, settings] = await Promise.all([
     Promise.resolve(categories.find((c) => c.name === product.category)),
     getSimilarProducts(product.category, product.id),
+    getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]),
   ]);
 
   const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
@@ -129,6 +132,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </div>
 
             <AddToCartButton product={product} />
+            <DeliveryInfo
+              minBM={settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE]}
+              minOther={settings[SETTINGS_KEYS.MIN_ORDER_OTHER]}
+            />
           </div>
         </div>
 

@@ -9,6 +9,7 @@ import { cartTotal, cartWeight, clearCart, effectivePrice, getCart, removeFromCa
 import { sendMetaEvent } from "@/lib/meta/send";
 import { formatPrice } from "@/lib/data";
 import CountyCitySelect from "@/components/CountyCitySelect";
+import { CITY_SCHEDULE } from "@/lib/deliverySchedule";
 
 type CustomerResponse = {
   ok: boolean;
@@ -316,6 +317,11 @@ export default function CartPage() {
                     onCountyChange={(county) => setForm((prev) => ({ ...prev, county }))}
                     onCityChange={(city) => setForm((prev) => ({ ...prev, city }))}
                   />
+                  {form.city && CITY_SCHEDULE[form.city] && (
+                    <div className="flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-800">
+                      🚚 Livrare în <strong>{form.city}</strong>: <strong>{CITY_SCHEDULE[form.city].day}</strong>
+                    </div>
+                  )}
                   <label className="block text-xs font-semibold text-neutral-500">
                     Observatii
                     <textarea
