@@ -82,7 +82,9 @@ export default function CatalogClient({ products }: { products: Product[] }) {
       {(() => {
         let imgIdx = 0;
         return categories.map((cat) => {
-        const items = filtered.filter((product) => product.category === cat.name);
+        const items = filtered
+          .filter((product) => product.category === cat.name)
+          .sort((a, b) => (a.salePrice ?? a.price) - (b.salePrice ?? b.price));
         if (!items.length) return null;
         return (
           <section key={cat.name} className="mb-12">
