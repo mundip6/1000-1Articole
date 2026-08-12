@@ -1,6 +1,6 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 
 export default function DezabonatPage() {
   return (

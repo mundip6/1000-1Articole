@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Clock, Phone, Shield, ShoppingCart, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 import { business, categories } from "@/lib/data";
 
 export const metadata: Metadata = {

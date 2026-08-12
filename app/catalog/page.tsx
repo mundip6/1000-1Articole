@@ -1,7 +1,7 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 import { listProducts } from "@/lib/products";
 import CatalogClient from "./CatalogClient";
 

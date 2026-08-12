@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { business } from "@/lib/data";
 import NewsletterSignup from "./NewsletterSignup";
-import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 
 const infoLinks = [
   { href: "/termeni-conditii", label: "Termeni și Condiții" },
@@ -14,10 +13,7 @@ const infoLinks = [
   { href: "/anpc", label: "ANPC" },
 ];
 
-export default async function Footer() {
-  const settings = await getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]);
-  const minBM = settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE];
-  const minOther = settings[SETTINGS_KEYS.MIN_ORDER_OTHER];
+export default function Footer({ minBM = "50", minOther = "300" }: { minBM?: string; minOther?: string }) {
 
   return (
     <footer className="mt-auto bg-neutral-950 px-4 pt-12 text-neutral-300">

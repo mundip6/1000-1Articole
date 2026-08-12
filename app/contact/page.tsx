@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 import { business } from "@/lib/data";
 
 export const metadata: Metadata = {

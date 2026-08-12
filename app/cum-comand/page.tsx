@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, ClipboardList, Phone, ShoppingCart, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Afla cum poti plasa o comanda en-gros la 1000&1 Articole Baia Mare. Livrare in Maramures, Satu Mare si Salaj.",
   alternates: { canonical: "/cum-comand" },
 };
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 
 const steps = [
   { icon: ShoppingCart, num: "01", title: "Alegeti produsele", desc: "Navigati prin catalog, selectati cantitatile dorite si adaugati produsele in cos." },

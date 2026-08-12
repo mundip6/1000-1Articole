@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Banknote, ShieldCheck, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 
 export const metadata: Metadata = {
   title: "Modalitati de plata",

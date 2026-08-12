@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/FooterServer";
 import { getProduct, getSimilarProducts } from "@/lib/products";
 import { categories, formatPrice } from "@/lib/data";
 import AddToCartButton from "./AddToCartButton";
