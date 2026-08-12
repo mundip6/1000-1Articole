@@ -147,7 +147,7 @@ export default function TrafficSources() {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(v: number | string) => [`${Number(v).toLocaleString("ro-RO")} vizite`]}
+                formatter={(v) => [`${Number(v ?? 0).toLocaleString("ro-RO")} vizite`]}
                 contentStyle={{ border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12 }}
               />
               <Legend
