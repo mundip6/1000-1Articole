@@ -4,6 +4,7 @@ import { ChevronRight, Clock, Phone, Shield, ShoppingCart, Truck } from "lucide-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/FooterServer";
 import { business, categories } from "@/lib/data";
+import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "1000&1 Articole | Distribuitor engros Baia Mare",
@@ -24,7 +25,10 @@ const benefits = [
   { icon: Clock, title: "Raspuns rapid", desc: "Confirmam in aceeasi zi" },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]);
+  const minBM = settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE];
+  const minOther = settings[SETTINGS_KEYS.MIN_ORDER_OTHER];
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -63,11 +67,11 @@ export default function Home() {
             {/* Min order pills */}
             <div className="mt-5 flex flex-wrap justify-center gap-3 text-sm md:justify-start">
               <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                <span className="font-black text-white">50 lei</span>
+                <span className="font-black text-white">{minBM} lei</span>
                 <span className="ml-1.5 text-white/60">min. Baia Mare</span>
               </div>
               <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                <span className="font-black text-white">300 lei</span>
+                <span className="font-black text-white">{minOther} lei</span>
                 <span className="ml-1.5 text-white/60">min. alte judete</span>
               </div>
             </div>

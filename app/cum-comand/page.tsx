@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cum-comand" },
 };
 import Footer from "@/components/FooterServer";
+import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 
 const steps = [
   { icon: ShoppingCart, num: "01", title: "Alegeti produsele", desc: "Navigati prin catalog, selectati cantitatile dorite si adaugati produsele in cos." },
@@ -17,8 +18,7 @@ const steps = [
   { icon: Truck, num: "04", title: "Livram la sediul dvs.", desc: "Livram in Maramures, Satu Mare si Salaj. Produsele ajung proaspete si conforme." },
 ];
 
-const faq = [
-  ["Care este comanda minima?", "Comanda minima este 50 lei pentru Baia Mare si 300 lei pentru celelalte zone de livrare."],
+const faqStatic = [
   ["Unde livrati?", "Livram in:\n Satu Mare: Satu Mare, Negrești, Livada, Turț\n Maramureș: Ulmeni, Șomcuta, Borșa, Moisei, Seini, Vișeu, Valea Izei, Sighet, Ocna Șugatag, Cavnic, Tg Lăpuș, Copalnic\n Sălaj: Jibou, Cehu Silvaniei, Zalău, Șimleul Silvaniei, Ileanda\n Bistrița-Năsăud: Beclean\n Cluj: Dej"],
   ["Cand se efectueaza livrarile?", "🗓️ Marți\n Traseul Principal 1: Jibou • Cehu Silvaniei • Ulmeni • Șomcuta\n Traseul Principal 2: Borșa ➔ Moisei ➔ Valea Izei\n\n 🗓️ Miercuri\n Traseul Principal 1: Seini ➔ Negrești • Livada • Turț • Satu Mare\n Traseul Principal 2: Vișeu ➔ Valea Izei\n\n 🗓️ Joi\n Traseul Principal: Zalău • Șimleul Silvaniei\n Traseul Principal 2: Sighet ➔ Ocna Șugatag ➔ Cavnic\n\n 🗓️ Vineri\n Traseul Principal 1: Dej • Beclean • Ileanda\n Traseul Principal 2: Târgu Lăpuș ➔ Copalnic"],
   ["Nu sunt dintr-o zona de livrare. Pot comanda?", "Da! Daca nu va aflati in judetele si orasele pe care avem ruta de livrare, va rugam sa ne contactati telefonic la +40 750 266 304 sau 0262 221 154 si vom vedea impreuna cum putem rezolva."],
@@ -26,17 +26,26 @@ const faq = [
   ["Care este programul de lucru?", "Luni-Vineri: 08:00-15:30. Sambata si duminica: inchis."],
 ];
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map(([q, a]) => ({
-    "@type": "Question",
-    name: q,
-    acceptedAnswer: { "@type": "Answer", text: a.replace(/\n/g, " ") },
-  })),
-};
+export default async function OrderGuidePage() {
+  const s = await getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]);
+  const minBM = s[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE];
+  const minOther = s[SETTINGS_KEYS.MIN_ORDER_OTHER];
 
-export default function OrderGuidePage() {
+  const faq: [string, string][] = [
+    ["Care este comanda minima?", `Comanda minima este ${minBM} lei pentru Baia Mare si ${minOther} lei pentru celelalte zone de livrare.`],
+    ...faqStatic as [string, string][],
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map(([q, a]) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a.replace(/\n/g, " ") },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
@@ -61,7 +70,7 @@ export default function OrderGuidePage() {
         <section className="mb-12 rounded-lg border border-red-100 bg-red-50 p-6">
           <h2 className="mb-4 text-xl font-black">Conditii de comanda</h2>
           <ul className="space-y-2 text-sm">
-            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Comanda minima: <strong>50 lei Baia Mare / 300 lei alte zone</strong></li>
+            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Comanda minima: <strong>{minBM} lei Baia Mare / {minOther} lei alte zone</strong></li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Zone de livrare: <strong>Maramures, Satu Mare, Salaj si imprejurimi</strong></li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Nu esti din zona noastra? <strong>Contacteaza-ne telefonic</strong> si vom vedea cum putem rezolva.</li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Preturile includ TVA si pot fi confirmate telefonic.</li>
