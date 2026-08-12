@@ -117,6 +117,12 @@ model OrderItem {
   @@index([orderId])
 }
 
+model SiteSettings {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
 model NewsletterSubscriber {
   id               String   @id @default(cuid())
   email            String   @unique

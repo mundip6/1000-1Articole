@@ -7,6 +7,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PageViewTracker from "@/components/PageViewTracker";
 import { MetaPixel } from "@/components/MetaPixel";
 import NewsletterPopup from "@/components/NewsletterPopup";
+import DeliveryBandServer from "@/components/DeliveryBandServer";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
 
@@ -66,6 +67,7 @@ export default function RootLayout({
     <html lang="ro" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <Suspense fallback={<div className="bg-neutral-900 py-2" />}><DeliveryBandServer /></Suspense>
         {children}
         <Suspense fallback={null}><PageViewTracker /></Suspense>
         <Suspense fallback={null}><MetaPixel /></Suspense>

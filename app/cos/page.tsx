@@ -45,9 +45,22 @@ export default function CartPage() {
     notes: "",
   });
 
+  const [minBM, setMinBM] = useState(50);
+  const [minOther, setMinOther] = useState(300);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((s: Record<string, string>) => {
+        setMinBM(Number(s["min_order_baia_mare"] ?? 50));
+        setMinOther(Number(s["min_order_other"] ?? 300));
+      })
+      .catch(() => {});
+  }, []);
+
   const total = cartTotal(cart);
   const weight = cartWeight(cart);
-  const minimumValue = form.county === "Maramureș" ? 50 : 300;
+  const minimumValue = form.county === "Maramureș" ? minBM : minOther;
   const meetsMinimum = total >= minimumValue;
 
   useEffect(() => {

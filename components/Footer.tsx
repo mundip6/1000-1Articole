@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { business } from "@/lib/data";
 import NewsletterSignup from "./NewsletterSignup";
+import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 
 const infoLinks = [
   { href: "/termeni-conditii", label: "Termeni și Condiții" },
@@ -13,7 +14,11 @@ const infoLinks = [
   { href: "/anpc", label: "ANPC" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]);
+  const minBM = settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE];
+  const minOther = settings[SETTINGS_KEYS.MIN_ORDER_OTHER];
+
   return (
     <footer className="mt-auto bg-neutral-950 px-4 pt-12 text-neutral-300">
       <div className="mx-auto grid max-w-6xl gap-10 pb-10 md:grid-cols-2 lg:grid-cols-4">
@@ -44,7 +49,7 @@ export default function Footer() {
             <p className="flex items-center justify-between gap-3"><span>Duminica</span><strong className="text-brand">Inchis</strong></p>
           </div>
           <div className="mt-5 border-t border-neutral-800 pt-5 text-sm">
-            Comanda minima: <strong className="text-white">50 lei Baia Mare</strong> / <strong className="text-white">300 lei alte zone</strong>
+            Comanda minima: <strong className="text-white">{minBM} lei Baia Mare</strong> / <strong className="text-white">{minOther} lei alte zone</strong>
           </div>
         </div>
         <div>
