@@ -10,9 +10,13 @@ const STORAGE_KEY = "1001-delivery-city";
 export default function DeliveryBand({
   minBM,
   minOther,
+  feeBM = "0",
+  feeOther = "0",
 }: {
   minBM: string;
   minOther: string;
+  feeBM?: string;
+  feeOther?: string;
 }) {
   const [city, setCity] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -44,6 +48,8 @@ export default function DeliveryBand({
 
   const info = city ? CITY_SCHEDULE[city] : null;
   const min = info?.isMaramures ? minBM : minOther;
+  const fee = info?.isMaramures ? Number(feeBM) : Number(feeOther);
+  const hasFee = fee > 0;
 
   return (
     <div className="relative z-30 bg-neutral-900 px-4 py-2 text-xs text-neutral-300">
@@ -56,7 +62,10 @@ export default function DeliveryBand({
               Livrare <strong className="text-white">{info.day}</strong>
               {" · "}
               <strong className="text-white">{city}</strong>
-              {" · "}minim <strong className="text-white">{min} lei</strong>
+              {" · "}
+              {hasFee
+                ? <>livrare gratuita peste <strong className="text-white">{min} lei</strong></>
+                : <>minim <strong className="text-white">{min} lei</strong></>}
             </span>
             <button
               onClick={resetCity}
@@ -69,8 +78,13 @@ export default function DeliveryBand({
         ) : (
           <>
             <span className="hidden sm:inline">
-              Baia Mare <strong className="text-white">{minBM} lei</strong>
-              {" · "}alte localitati <strong className="text-white">{minOther} lei</strong>
+              {Number(feeBM) > 0
+                ? <>Baia Mare — livrare gratuita peste <strong className="text-white">{minBM} lei</strong></>
+                : <>Baia Mare — minim <strong className="text-white">{minBM} lei</strong></>}
+              {" · "}
+              {Number(feeOther) > 0
+                ? <>alte localitati — livrare gratuita peste <strong className="text-white">{minOther} lei</strong></>
+                : <>alte localitati — minim <strong className="text-white">{minOther} lei</strong></>}
               {" · "}
             </span>
 

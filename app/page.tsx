@@ -26,9 +26,14 @@ const benefits = [
 ];
 
 export default async function Home() {
-  const settings = await getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]);
+  const settings = await getSettings([
+    SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER,
+    SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE, SETTINGS_KEYS.SHIPPING_FEE_OTHER,
+  ]);
   const minBM = settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE];
   const minOther = settings[SETTINGS_KEYS.MIN_ORDER_OTHER];
+  const feeBM = Number(settings[SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE]);
+  const feeOther = Number(settings[SETTINGS_KEYS.SHIPPING_FEE_OTHER]);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -68,11 +73,11 @@ export default async function Home() {
             <div className="mt-5 flex flex-wrap justify-center gap-3 text-sm md:justify-start">
               <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <span className="font-black text-white">{minBM} lei</span>
-                <span className="ml-1.5 text-white/60">min. Baia Mare</span>
+                <span className="ml-1.5 text-white/60">{feeBM > 0 ? "livrare gratuita · Baia Mare" : "min. Baia Mare"}</span>
               </div>
               <div className="rounded-lg border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <span className="font-black text-white">{minOther} lei</span>
-                <span className="ml-1.5 text-white/60">min. alte judete</span>
+                <span className="ml-1.5 text-white/60">{feeOther > 0 ? "livrare gratuita · alte judete" : "min. alte judete"}</span>
               </div>
             </div>
 

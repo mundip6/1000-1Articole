@@ -3,11 +3,15 @@ import { prisma } from "@/lib/prisma";
 export const SETTINGS_KEYS = {
   MIN_ORDER_BAIA_MARE: "min_order_baia_mare",
   MIN_ORDER_OTHER: "min_order_other",
+  SHIPPING_FEE_BAIA_MARE: "shipping_fee_baia_mare",
+  SHIPPING_FEE_OTHER: "shipping_fee_other",
 } as const;
 
 const DEFAULTS: Record<string, string> = {
   min_order_baia_mare: "50",
   min_order_other: "300",
+  shipping_fee_baia_mare: "0",
+  shipping_fee_other: "0",
 };
 
 export async function getSetting(key: string): Promise<string> {

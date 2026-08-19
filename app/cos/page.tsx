@@ -48,6 +48,8 @@ export default function CartPage() {
 
   const [minBM, setMinBM] = useState(50);
   const [minOther, setMinOther] = useState(300);
+  const [feeBM, setFeeBM] = useState(0);
+  const [feeOther, setFeeOther] = useState(0);
 
   useEffect(() => {
     fetch("/api/settings")
@@ -55,6 +57,8 @@ export default function CartPage() {
       .then((s: Record<string, string>) => {
         setMinBM(Number(s["min_order_baia_mare"] ?? 50));
         setMinOther(Number(s["min_order_other"] ?? 300));
+        setFeeBM(Number(s["shipping_fee_baia_mare"] ?? 0));
+        setFeeOther(Number(s["shipping_fee_other"] ?? 0));
       })
       .catch(() => {});
   }, []);
@@ -62,7 +66,10 @@ export default function CartPage() {
   const total = cartTotal(cart);
   const weight = cartWeight(cart);
   const minimumValue = form.county === "Maramureș" ? minBM : minOther;
+  const feeForZone = form.county === "Maramureș" ? feeBM : feeOther;
   const meetsMinimum = total >= minimumValue;
+  const shippingFee = !meetsMinimum && feeForZone > 0 ? feeForZone : 0;
+  const canOrder = meetsMinimum || feeForZone > 0;
 
   useEffect(() => {
     if (cart.length === 0) return;
@@ -143,7 +150,7 @@ export default function CartPage() {
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, items: cart }),
+        body: JSON.stringify({ ...form, items: cart, shippingFee }),
       });
       const data = (await response.json()) as { ok: boolean; message?: string };
 
@@ -245,10 +252,21 @@ export default function CartPage() {
               <div className="rounded-lg border border-neutral-200 bg-white p-5">
                 <h2 className="mb-4 font-black">Sumar Comanda</h2>
                 <div className="space-y-2 text-sm text-neutral-500">
-                  <p className="flex justify-between"><span>Valoare totala</span><strong className="text-neutral-900">{formatPrice(total)} lei</strong></p>
+                  <p className="flex justify-between"><span>Valoare produse</span><strong className="text-neutral-900">{formatPrice(total)} lei</strong></p>
+                  {shippingFee > 0 && (
+                    <p className="flex justify-between"><span>Taxa livrare</span><strong className="text-neutral-900">+{formatPrice(shippingFee)} lei</strong></p>
+                  )}
+                  {shippingFee > 0 && (
+                    <p className="flex justify-between border-t border-neutral-100 pt-2"><span className="font-semibold text-neutral-700">Total comanda</span><strong className="text-neutral-900">{formatPrice(total + shippingFee)} lei</strong></p>
+                  )}
                   <p className="flex justify-between"><span>Greutate estimata</span><strong className="text-neutral-900">{formatPrice(weight)} kg</strong></p>
                 </div>
-                {!meetsMinimum && (
+                {!meetsMinimum && feeForZone > 0 && (
+                  <div className="mt-4 flex gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800">
+                    <AlertTriangle size={15} /> Livrare gratuita peste <strong className="ml-1">{minimumValue} lei</strong>
+                  </div>
+                )}
+                {!meetsMinimum && feeForZone === 0 && (
                   <div className="mt-4 flex gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
                     <AlertTriangle size={15} /> Comanda minima este {minimumValue} lei.
                   </div>
@@ -334,7 +352,7 @@ export default function CartPage() {
                 </div>
                 <button
                   onClick={submitOrder}
-                  disabled={submitting || !meetsMinimum || !form.contact || !form.phone || !form.email || !form.county || (form.isBusiness && !form.cui)}
+                  disabled={submitting || !canOrder || !form.contact || !form.phone || !form.email || !form.county || (form.isBusiness && !form.cui)}
                   className="mt-4 w-full rounded-lg bg-brand py-3 font-black text-white hover:bg-brand-dark disabled:opacity-50"
                 >
                   {submitting ? "Se salveaza..." : "Plaseaza Comanda"}

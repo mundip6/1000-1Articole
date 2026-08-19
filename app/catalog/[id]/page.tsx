@@ -50,7 +50,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const [category, similar, settings] = await Promise.all([
     Promise.resolve(categories.find((c) => c.name === product.category)),
     getSimilarProducts(product.category, product.id),
-    getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]),
+    getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER, SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE, SETTINGS_KEYS.SHIPPING_FEE_OTHER]),
   ]);
 
   const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.1000-1-articole.com";
@@ -135,6 +135,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             <DeliveryInfo
               minBM={settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE]}
               minOther={settings[SETTINGS_KEYS.MIN_ORDER_OTHER]}
+              feeBM={settings[SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE]}
+              feeOther={settings[SETTINGS_KEYS.SHIPPING_FEE_OTHER]}
             />
           </div>
         </div>

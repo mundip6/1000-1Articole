@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { type Category } from "@/lib/data";
 import { isValidCui, normalizeCui } from "@/lib/cui";
+import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 
 export type OrderStatus = "Noua" | "Confirmata" | "Livrata" | "Anulata";
 
@@ -46,6 +47,7 @@ export type OrderInput = {
   address?: string;
   notes?: string;
   items: OrderItem[];
+  shippingFee?: number;
 };
 
 function orderTotal(items: OrderItem[]) {
@@ -140,6 +142,23 @@ export async function createOrder(input: OrderInput) {
     price: Number(((item as any).salePrice ?? item.price).toFixed(2)),
   }));
 
+  // Verify minimum order / shipping fee server-side (don't trust client)
+  const settings = await getSettings([
+    SETTINGS_KEYS.MIN_ORDER_BAIA_MARE,
+    SETTINGS_KEYS.MIN_ORDER_OTHER,
+    SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE,
+    SETTINGS_KEYS.SHIPPING_FEE_OTHER,
+  ]);
+  const isBM = input.county === "Maramureș";
+  const minimum = Number(isBM ? settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE] : settings[SETTINGS_KEYS.MIN_ORDER_OTHER]);
+  const configuredFee = Number(isBM ? settings[SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE] : settings[SETTINGS_KEYS.SHIPPING_FEE_OTHER]);
+  const itemsTotal = orderTotal(effectiveItems);
+
+  if (itemsTotal < minimum && configuredFee === 0) {
+    throw new Error(`Comanda minima este ${minimum} lei.`);
+  }
+  const shippingFee = itemsTotal < minimum && configuredFee > 0 ? configuredFee : 0;
+
   const order = await prisma.$transaction(async (tx) => {
     // Verify stock before touching anything
     for (const item of effectiveItems) {
@@ -165,7 +184,7 @@ export async function createOrder(input: OrderInput) {
         city: input.city || "",
         address: input.address || "",
         notes: input.notes || "",
-        total: Number(orderTotal(effectiveItems).toFixed(2)),
+        total: Number((itemsTotal + shippingFee).toFixed(2)),
         weight: Number(orderWeight(effectiveItems).toFixed(2)),
         items: {
           create: effectiveItems.map((item) => ({

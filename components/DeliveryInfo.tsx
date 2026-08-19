@@ -6,7 +6,11 @@ import { CITIES_BY_COUNTY, CITY_SCHEDULE } from "@/lib/deliverySchedule";
 
 const STORAGE_KEY = "1001-delivery-city";
 
-export default function DeliveryInfo({ minBM, minOther }: { minBM: string; minOther: string }) {
+export default function DeliveryInfo({
+  minBM, minOther, feeBM = "0", feeOther = "0",
+}: {
+  minBM: string; minOther: string; feeBM?: string; feeOther?: string;
+}) {
   const [city, setCity] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -37,6 +41,8 @@ export default function DeliveryInfo({ minBM, minOther }: { minBM: string; minOt
 
   const info = city ? CITY_SCHEDULE[city] : null;
   const min = info?.isMaramures ? minBM : minOther;
+  const fee = info ? (info.isMaramures ? Number(feeBM) : Number(feeOther)) : 0;
+  const hasFee = fee > 0;
 
   return (
     <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm">
@@ -44,23 +50,35 @@ export default function DeliveryInfo({ minBM, minOther }: { minBM: string; minOt
         <Truck size={15} className="mt-0.5 shrink-0 text-brand" />
         <div className="flex-1">
           {info ? (
-            <div className="flex items-center justify-between gap-2">
-              <span>
-                Livrare <strong className="text-neutral-900">{info.day}</strong>
-                <span className="text-neutral-400"> · {city} · </span>
-                minim <strong className="text-neutral-900">{min} lei</strong>
-              </span>
-              <button
-                onClick={resetCity}
-                className="shrink-0 text-neutral-400 hover:text-neutral-700"
-                aria-label="Schimba orasul"
-              >
-                <X size={13} />
-              </button>
+            <div>
+              <div className="flex items-center justify-between gap-2">
+                <span>
+                  Livrare <strong className="text-neutral-900">{info.day}</strong>
+                  <span className="text-neutral-400"> · {city} · </span>
+                  {hasFee
+                    ? <>livrare gratuita peste <strong className="text-neutral-900">{min} lei</strong></>
+                    : <>minim <strong className="text-neutral-900">{min} lei</strong></>}
+                </span>
+                <button
+                  onClick={resetCity}
+                  className="shrink-0 text-neutral-400 hover:text-neutral-700"
+                  aria-label="Schimba orasul"
+                >
+                  <X size={13} />
+                </button>
+              </div>
+              {hasFee && (
+                <p className="mt-1 text-xs text-neutral-400">
+                  Taxa livrare <strong className="text-neutral-600">{fee} lei</strong> pentru comenzi sub {min} lei
+                </p>
+              )}
             </div>
           ) : (
             <div ref={ref} className="relative">
-              <p className="mb-2 text-neutral-500">Alege orasul tau pentru a vedea ziua de livrare:</p>
+              <p className="mb-2 text-neutral-500">
+                Alege orasul tau pentru a vedea ziua de livrare
+                {(Number(feeBM) > 0 || Number(feeOther) > 0) && <> si taxa de livrare aplicabila</>}:
+              </p>
               <button
                 onClick={() => setOpen((o) => !o)}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold hover:border-brand hover:text-brand"
@@ -84,7 +102,12 @@ export default function DeliveryInfo({ minBM, minOther }: { minBM: string; minOt
                             className="flex w-full items-center justify-between px-3 py-1.5 text-left text-xs hover:bg-neutral-50"
                           >
                             <span className="font-semibold">{c}</span>
-                            <span className="text-neutral-400">{s.day}</span>
+                            <span className="text-neutral-400">
+                              {s.day}
+                              {(s.isMaramures ? Number(feeBM) : Number(feeOther)) > 0 && (
+                                <span className="ml-1.5 text-neutral-300">· {s.isMaramures ? feeBM : feeOther} lei livrare</span>
+                              )}
+                            </span>
                           </button>
                         );
                       })}

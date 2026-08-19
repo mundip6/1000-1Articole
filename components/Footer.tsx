@@ -13,7 +13,8 @@ const infoLinks = [
   { href: "/anpc", label: "ANPC" },
 ];
 
-export default function Footer({ minBM = "50", minOther = "300" }: { minBM?: string; minOther?: string }) {
+export default function Footer({ minBM = "50", minOther = "300", feeBM = "0", feeOther = "0" }: { minBM?: string; minOther?: string; feeBM?: string; feeOther?: string }) {
+  const hasFee = Number(feeBM) > 0 || Number(feeOther) > 0;
 
   return (
     <footer className="mt-auto bg-neutral-950 px-4 pt-12 text-neutral-300">
@@ -45,7 +46,9 @@ export default function Footer({ minBM = "50", minOther = "300" }: { minBM?: str
             <p className="flex items-center justify-between gap-3"><span>Duminica</span><strong className="text-brand">Inchis</strong></p>
           </div>
           <div className="mt-5 border-t border-neutral-800 pt-5 text-sm">
-            Comanda minima: <strong className="text-white">{minBM} lei Baia Mare</strong> / <strong className="text-white">{minOther} lei alte zone</strong>
+            {hasFee
+              ? <>Livrare gratuita peste <strong className="text-white">{minBM} lei</strong> Baia Mare / <strong className="text-white">{minOther} lei</strong> alte zone</>
+              : <>Comanda minima: <strong className="text-white">{minBM} lei Baia Mare</strong> / <strong className="text-white">{minOther} lei alte zone</strong></>}
           </div>
         </div>
         <div>

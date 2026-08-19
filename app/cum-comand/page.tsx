@@ -27,12 +27,19 @@ const faqStatic = [
 ];
 
 export default async function OrderGuidePage() {
-  const s = await getSettings([SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER]);
+  const s = await getSettings([
+    SETTINGS_KEYS.MIN_ORDER_BAIA_MARE, SETTINGS_KEYS.MIN_ORDER_OTHER,
+    SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE, SETTINGS_KEYS.SHIPPING_FEE_OTHER,
+  ]);
   const minBM = s[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE];
   const minOther = s[SETTINGS_KEYS.MIN_ORDER_OTHER];
+  const feeBM = Number(s[SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE]);
+  const feeOther = Number(s[SETTINGS_KEYS.SHIPPING_FEE_OTHER]);
 
   const faq: [string, string][] = [
-    ["Care este comanda minima?", `Comanda minima este ${minBM} lei pentru Baia Mare si ${minOther} lei pentru celelalte zone de livrare.`],
+    ["Care este comanda minima?", feeBM > 0 || feeOther > 0
+      ? `Livrare gratuita pentru comenzi peste ${minBM} lei in Baia Mare si peste ${minOther} lei in alte zone. Pentru comenzi mai mici se aplica o taxa de livrare.`
+      : `Comanda minima este ${minBM} lei pentru Baia Mare si ${minOther} lei pentru celelalte zone de livrare.`],
     ...faqStatic as [string, string][],
   ];
 
@@ -70,7 +77,12 @@ export default async function OrderGuidePage() {
         <section className="mb-12 rounded-lg border border-red-100 bg-red-50 p-6">
           <h2 className="mb-4 text-xl font-black">Conditii de comanda</h2>
           <ul className="space-y-2 text-sm">
-            <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Comanda minima: <strong>{minBM} lei Baia Mare / {minOther} lei alte zone</strong></li>
+            <li className="flex gap-2">
+              <ChevronRight size={16} className="text-brand" />
+              {feeBM > 0 || feeOther > 0
+                ? <>Livrare gratuita peste <strong>{minBM} lei</strong> (Baia Mare) / <strong>{minOther} lei</strong> (alte zone) — comenzile mai mici au taxa de livrare</>
+                : <>Comanda minima: <strong>{minBM} lei Baia Mare / {minOther} lei alte zone</strong></>}
+            </li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Zone de livrare: <strong>Maramures, Satu Mare, Salaj si imprejurimi</strong></li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Nu esti din zona noastra? <strong>Contacteaza-ne telefonic</strong> si vom vedea cum putem rezolva.</li>
             <li className="flex gap-2"><ChevronRight size={16} className="text-brand" /> Preturile includ TVA si pot fi confirmate telefonic.</li>
