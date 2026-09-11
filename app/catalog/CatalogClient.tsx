@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Check, Plus, Search } from "lucide-react";
-import { addToCart } from "@/lib/cart";
+import { addToCart, effectivePrice } from "@/lib/cart";
 import { categories, formatPrice, type Category, type Product } from "@/lib/data";
+import { sendMetaEvent } from "@/lib/meta/send";
 
 export default function CatalogClient({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
@@ -41,9 +42,19 @@ export default function CatalogClient({ products }: { products: Product[] }) {
   };
 
   const handleAdd = (product: Product) => {
-    addToCart(product, getQty(product));
+    const qty = getQty(product);
+    addToCart(product, qty);
     setAdded((prev) => ({ ...prev, [product.id]: true }));
     window.setTimeout(() => setAdded((prev) => ({ ...prev, [product.id]: false })), 1200);
+
+    const price = effectivePrice({ ...product, qty });
+    void sendMetaEvent("AddToCart", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      value: price * qty,
+      currency: "RON",
+    });
   };
 
   return (
