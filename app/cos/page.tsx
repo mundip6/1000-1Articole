@@ -6,7 +6,7 @@ import { AlertTriangle, ArrowLeft, CheckCircle, ShoppingBag, Trash2, UserRound }
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cartTotal, cartWeight, clearCart, effectivePrice, getCart, removeFromCart, updateQty, type CartItem } from "@/lib/cart";
-import { sendMetaEvent } from "@/lib/meta/send";
+import { sendMetaEvent, saveMetaUser } from "@/lib/meta/send";
 import { formatPrice } from "@/lib/data";
 import CountyCitySelect from "@/components/CountyCitySelect";
 import { CITY_SCHEDULE } from "@/lib/deliverySchedule";
@@ -109,6 +109,12 @@ export default function CartPage() {
           city: data.customer?.city || "",
           address: data.customer?.address || "",
         }));
+        saveMetaUser({
+          email: data.customer?.email || undefined,
+          phone: data.customer?.phone || undefined,
+          city: data.customer?.city || undefined,
+          country: "ro",
+        });
         setPrefilledFromAccount(true);
       } catch {
         setPrefilledFromAccount(false);
@@ -175,6 +181,12 @@ export default function CartPage() {
           country: "ro",
         },
       );
+      saveMetaUser({
+        email: form.email || undefined,
+        phone: form.phone || undefined,
+        city: form.city || undefined,
+        country: "ro",
+      });
       clearCart();
       setCart([]);
       setSuccess(true);
