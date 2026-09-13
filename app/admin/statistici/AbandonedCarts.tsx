@@ -117,34 +117,20 @@ export default function AbandonedCarts() {
 
       {/* Product tier list */}
       {!loading && productRanking.length > 0 && (
-        <div className="mb-6">
-          <h3 className="mb-3 text-xs font-black uppercase tracking-wide text-neutral-400">Produse cu cel mai mare potential (abandonate)</h3>
-          <div className="space-y-1.5">
+        <div className="mb-5 rounded-lg border border-neutral-100 bg-neutral-50 px-4 py-3">
+          <p className="mb-2 text-[10px] font-black uppercase tracking-wide text-neutral-400">Produse cu potential</p>
+          <div className="flex flex-wrap gap-2">
             {productRanking.map((p, i) => {
-              const maxCarts = productRanking[0].carts;
-              const pct = Math.round((p.carts / maxCarts) * 100);
-              const tier = i === 0 ? { label: "S", color: "bg-yellow-400 text-yellow-900" }
-                : i < 3 ? { label: "A", color: "bg-orange-400 text-white" }
-                : i < 6 ? { label: "B", color: "bg-blue-500 text-white" }
-                : { label: "C", color: "bg-neutral-300 text-neutral-600" };
+              const tier = i === 0 ? "bg-yellow-100 text-yellow-800 border-yellow-200"
+                : i < 3 ? "bg-orange-50 text-orange-700 border-orange-200"
+                : i < 6 ? "bg-blue-50 text-blue-700 border-blue-200"
+                : "bg-white text-neutral-500 border-neutral-200";
               return (
-                <div key={p.name} className="flex items-center gap-3">
-                  <span className={`w-6 shrink-0 rounded text-center text-[10px] font-black leading-5 ${tier.color}`}>
-                    {tier.label}
-                  </span>
-                  <span className="w-5 shrink-0 text-right text-xs font-black text-neutral-400">#{i + 1}</span>
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-0.5 flex items-baseline justify-between gap-2">
-                      <span className="truncate text-xs font-semibold text-neutral-800">{p.name}</span>
-                      <span className="shrink-0 text-xs text-neutral-400">
-                        {p.carts} {p.carts === 1 ? "cos" : "cosuri"} · {formatPrice(p.totalValue)} lei
-                      </span>
-                    </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
-                      <div className="h-1.5 rounded-full bg-brand transition-all" style={{ width: `${pct}%` }} />
-                    </div>
-                  </div>
-                </div>
+                <span key={p.name} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${tier}`}>
+                  <span className="font-black">#{i + 1}</span>
+                  {p.name}
+                  <span className="opacity-60">· {p.carts}x</span>
+                </span>
               );
             })}
           </div>
