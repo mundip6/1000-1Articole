@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/data";
 import RealTimeVisitors from "@/components/RealTimeVisitors";
 import StatsCharts from "./StatsCharts";
 import TrafficSources from "./TrafficSources";
+import AbandonedCarts from "./AbandonedCarts";
 
 export const dynamic = "force-dynamic";
 
@@ -172,6 +173,11 @@ export default async function StatisticiPage() {
       {/* Traffic sources — interactive chart + table */}
       <div className="mt-5">
         <TrafficSources />
+      </div>
+
+      {/* Abandoned carts */}
+      <div className="mt-5">
+        <AbandonedCarts />
       </div>
 
       <div className="mt-8 rounded-lg border border-neutral-200 bg-white">

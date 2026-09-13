@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertTriangle, ArrowLeft, CheckCircle, ShoppingBag, Trash2, UserRound } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -46,6 +46,29 @@ export default function CartPage() {
     notes: "",
   });
 
+  const snapshotId = useRef<string | null>(
+    typeof window !== "undefined" ? sessionStorage.getItem("cart_snapshot_id") : null
+  );
+
+  const syncSnapshot = useCallback(async (extra?: { email?: string; phone?: string; contact?: string; county?: string; city?: string }) => {
+    const currentCart = getCart();
+    if (!currentCart.length) return;
+    const body = {
+      id: snapshotId.current ?? undefined,
+      items: currentCart.map((i) => ({ id: i.id, name: i.name, price: i.price, salePrice: i.salePrice, unit: i.unit, qty: i.qty })),
+      total: cartTotal(currentCart),
+      ...extra,
+    };
+    try {
+      const res = await fetch("/api/cart/snapshot", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const data = await res.json() as { ok: boolean; id?: string };
+      if (data.ok && data.id) {
+        snapshotId.current = data.id;
+        sessionStorage.setItem("cart_snapshot_id", data.id);
+      }
+    } catch {}
+  }, []);
+
   const [minBM, setMinBM] = useState(50);
   const [minOther, setMinOther] = useState(300);
   const [feeBM, setFeeBM] = useState(0);
@@ -70,6 +93,28 @@ export default function CartPage() {
   const meetsMinimum = total >= minimumValue;
   const shippingFee = !meetsMinimum && feeForZone > 0 ? feeForZone : 0;
   const canOrder = meetsMinimum || feeForZone > 0;
+
+  // Initial cart snapshot on page load
+  useEffect(() => {
+    if (cart.length > 0) void syncSnapshot();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update snapshot with contact details as user fills the form (debounced 2s)
+  useEffect(() => {
+    if (!cart.length || (!form.email && !form.phone)) return;
+    const t = window.setTimeout(() => {
+      void syncSnapshot({
+        email: form.email || undefined,
+        phone: form.phone || undefined,
+        contact: form.contact || undefined,
+        county: form.county || undefined,
+        city: form.city || undefined,
+      });
+    }, 2000);
+    return () => window.clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.email, form.phone, form.contact, form.county, form.city]);
 
   useEffect(() => {
     if (cart.length === 0) return;
@@ -114,6 +159,13 @@ export default function CartPage() {
           phone: data.customer?.phone || undefined,
           city: data.customer?.city || undefined,
           country: "ro",
+        });
+        void syncSnapshot({
+          email: data.customer?.email || undefined,
+          phone: data.customer?.phone || undefined,
+          contact: `${data.customer?.firstName || ""} ${data.customer?.lastName || ""}`.trim() || undefined,
+          county: data.customer?.county || undefined,
+          city: data.customer?.city || undefined,
         });
         setPrefilledFromAccount(true);
       } catch {
@@ -187,6 +239,15 @@ export default function CartPage() {
         city: form.city || undefined,
         country: "ro",
       });
+      // Mark cart snapshot as converted so it doesn't show as abandoned
+      if (snapshotId.current) {
+        void fetch("/api/cart/snapshot", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: snapshotId.current }),
+        });
+        sessionStorage.removeItem("cart_snapshot_id");
+      }
       clearCart();
       setCart([]);
       setSuccess(true);

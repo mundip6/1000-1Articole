@@ -140,6 +140,23 @@ model PageView {
   @@index([source])
 }
 
+model AbandonedCart {
+  id        String   @id @default(cuid())
+  items     Json
+  total     Float
+  email     String?
+  phone     String?
+  contact   String?
+  county    String?
+  city      String?
+  converted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([converted])
+}
+
 model PasswordResetToken {
   id        String   @id @default(cuid())
   role      String
