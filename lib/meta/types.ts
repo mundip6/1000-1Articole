@@ -3,6 +3,7 @@ export type MetaEventName =
   | "ViewContent"
   | "AddToCart"
   | "InitiateCheckout"
+  | "AddPaymentInfo"
   | "Purchase"
   | "Contact";
 

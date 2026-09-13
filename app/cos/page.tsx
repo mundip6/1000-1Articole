@@ -46,6 +46,21 @@ export default function CartPage() {
     notes: "",
   });
 
+  const paymentInfoFired = useRef(false);
+
+  function handleFormFocus() {
+    if (paymentInfoFired.current || !cart.length) return;
+    paymentInfoFired.current = true;
+    void sendMetaEvent("AddPaymentInfo", {
+      content_ids: cart.map((i) => i.id),
+      contents: cart.map((i) => ({ id: i.id, quantity: i.qty, item_price: effectivePrice(i) })),
+      content_type: "product",
+      num_items: cart.reduce((s, i) => s + i.qty, 0),
+      value: cartTotal(cart),
+      currency: "RON",
+    });
+  }
+
   const snapshotId = useRef<string | null>(
     typeof window !== "undefined" ? sessionStorage.getItem("cart_snapshot_id") : null
   );
@@ -398,6 +413,7 @@ export default function CartPage() {
                       <input
                         value={String(form[key as keyof typeof form])}
                         onChange={(event) => setForm((prev) => ({ ...prev, [key]: event.target.value }))}
+                        onFocus={key === "contact" ? handleFormFocus : undefined}
                         className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
                       />
                     </label>
