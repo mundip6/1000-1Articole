@@ -60,6 +60,25 @@ export default function AbandonedCarts() {
   const withContact = carts.filter((c) => c.email || c.phone).length;
   const avgValue = carts.length > 0 ? totalLost / carts.length : 0;
 
+  // Aggregate products across all abandoned carts
+  const productRanking = (() => {
+    const map = new Map<string, { name: string; carts: number; totalQty: number; totalValue: number }>();
+    for (const cart of carts) {
+      for (const item of cart.items as CartItem[]) {
+        const p = item.salePrice ?? item.price;
+        const existing = map.get(item.id);
+        if (existing) {
+          existing.carts += 1;
+          existing.totalQty += item.qty;
+          existing.totalValue += p * item.qty;
+        } else {
+          map.set(item.id, { name: item.name, carts: 1, totalQty: item.qty, totalValue: p * item.qty });
+        }
+      }
+    }
+    return [...map.values()].sort((a, b) => b.carts - a.carts);
+  })();
+
   return (
     <div className="rounded-lg border border-neutral-200 bg-white p-5">
       {/* Header */}
@@ -96,7 +115,43 @@ export default function AbandonedCarts() {
         ))}
       </div>
 
-      {/* List */}
+      {/* Product tier list */}
+      {!loading && productRanking.length > 0 && (
+        <div className="mb-6">
+          <h3 className="mb-3 text-xs font-black uppercase tracking-wide text-neutral-400">Produse cu cel mai mare potential (abandonate)</h3>
+          <div className="space-y-1.5">
+            {productRanking.map((p, i) => {
+              const maxCarts = productRanking[0].carts;
+              const pct = Math.round((p.carts / maxCarts) * 100);
+              const tier = i === 0 ? { label: "S", color: "bg-yellow-400 text-yellow-900" }
+                : i < 3 ? { label: "A", color: "bg-orange-400 text-white" }
+                : i < 6 ? { label: "B", color: "bg-blue-500 text-white" }
+                : { label: "C", color: "bg-neutral-300 text-neutral-600" };
+              return (
+                <div key={p.name} className="flex items-center gap-3">
+                  <span className={`w-6 shrink-0 rounded text-center text-[10px] font-black leading-5 ${tier.color}`}>
+                    {tier.label}
+                  </span>
+                  <span className="w-5 shrink-0 text-right text-xs font-black text-neutral-400">#{i + 1}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-0.5 flex items-baseline justify-between gap-2">
+                      <span className="truncate text-xs font-semibold text-neutral-800">{p.name}</span>
+                      <span className="shrink-0 text-xs text-neutral-400">
+                        {p.carts} {p.carts === 1 ? "cos" : "cosuri"} · {formatPrice(p.totalValue)} lei
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
+                      <div className="h-1.5 rounded-full bg-brand transition-all" style={{ width: `${pct}%` }} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Cart list */}
       {loading ? (
         <div className="py-10 text-center text-sm text-neutral-400">Se incarca...</div>
       ) : carts.length === 0 ? (
