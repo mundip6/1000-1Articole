@@ -38,3 +38,11 @@ export async function listConversations() {
     include: { messages: { orderBy: { createdAt: "desc" }, take: 1 } },
   });
 }
+
+export async function saveConversationEmail(conversationId: string, email: string) {
+  return prisma.conversation.update({ where: { id: conversationId }, data: { email } });
+}
+
+export async function getConversation(id: string) {
+  return prisma.conversation.findUnique({ where: { id }, include: { messages: { orderBy: { createdAt: "asc" } } } });
+}

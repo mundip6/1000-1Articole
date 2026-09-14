@@ -93,6 +93,41 @@ export async function sendPasswordResetEmail(code: string, toEmail: string) {
   });
 }
 
+export async function sendChatTranscriptEmail(
+  toEmail: string,
+  messages: { text: string; sender: string; createdAt: Date }[],
+) {
+  const rows = messages
+    .map((m) => {
+      const who = m.sender === "admin" ? "1000&amp;1 Articole" : "Tu";
+      const time = new Date(m.createdAt).toLocaleString("ro-RO", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+      return `
+        <tr>
+          <td style="padding:10px 14px;vertical-align:top;white-space:nowrap;font-size:12px;color:#888;">${who}<br/><span style="color:#bbb;">${time}</span></td>
+          <td style="padding:10px 14px;font-size:14px;color:#222;line-height:1.6;">${m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</td>
+        </tr>`;
+    })
+    .join("");
+
+  await resend.emails.send({
+    from: FROM,
+    to: toEmail,
+    subject: "Conversatia ta cu 1000&1 Articole",
+    html: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;">
+        <h2 style="color:#c8102e;margin-bottom:4px;">1000&amp;1 Articole</h2>
+        <p style="color:#666;margin-bottom:24px;font-size:14px;">Transcriptul conversatiei tale cu echipa noastra:</p>
+        <table style="width:100%;border-collapse:collapse;background:#f9f9f9;border-radius:8px;overflow:hidden;">
+          ${rows}
+        </table>
+        <p style="margin-top:24px;font-size:13px;color:#888;">Daca ai alte intrebari ne poti contacta oricand pe site.</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+        <p style="color:#aaa;font-size:12px;">1000&amp;1 Articole SRL — B-dul Regele Mihai I nr. 49G, Baia Mare</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendVerificationEmail(email: string, token: string) {
   const link = `${BASE_URL}/api/customer/verify-email?token=${token}`;
 

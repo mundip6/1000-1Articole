@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
-import { addMessage, getMessages } from "@/lib/chat";
+import { addMessage, getMessages, getConversation } from "@/lib/chat";
+import { sendChatTranscriptEmail } from "@/lib/email";
 
 export async function GET(request: Request) {
   if (!(await isAdminAuthenticated())) {
@@ -23,5 +24,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
   const message = await addMessage(conversationId, text.trim(), "admin");
+
+  // Send transcript to customer if they left an email
+  try {
+    const conv = await getConversation(conversationId);
+    if (conv?.email) {
+      await sendChatTranscriptEmail(conv.email, conv.messages);
+    }
+  } catch {
+    // Non-critical — don't fail the reply if email send fails
+  }
+
   return NextResponse.json({ ok: true, message });
 }

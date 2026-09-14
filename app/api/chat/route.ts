@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getOrCreateConversation, addMessage, getMessages } from "@/lib/chat";
+import { getOrCreateConversation, addMessage, getMessages, saveConversationEmail } from "@/lib/chat";
 import { checkRateLimit, getIP } from "@/lib/rateLimit";
 
 export async function GET(request: Request) {
@@ -26,4 +26,16 @@ export async function POST(request: Request) {
   const conv = await getOrCreateConversation(ip, sessionToken);
   const message = await addMessage(conv.id, text, "customer");
   return NextResponse.json({ ok: true, message });
+}
+
+export async function PATCH(request: Request) {
+  const ip = getIP(request);
+  const sessionToken = request.headers.get("x-chat-token") || "";
+  const body = await request.json() as { email?: string };
+  const email = body.email?.trim();
+  if (!email) return NextResponse.json({ ok: false }, { status: 400 });
+
+  const conv = await getOrCreateConversation(ip, sessionToken);
+  await saveConversationEmail(conv.id, email);
+  return NextResponse.json({ ok: true });
 }

@@ -6,7 +6,7 @@ import { MessageCircle, Send } from "lucide-react";
 import AdminShell from "@/components/AdminShell";
 
 type Msg = { id: string; text: string; sender: string; createdAt: string };
-type Conv = { id: string; ip: string; updatedAt: string; messages: Msg[] };
+type Conv = { id: string; ip: string; email: string | null; updatedAt: string; messages: Msg[] };
 
 export const dynamic = "force-dynamic";
 
@@ -88,8 +88,8 @@ export default function ConversationsPage() {
                   className={`w-full px-4 py-3 text-left hover:bg-neutral-50 ${selected?.id === conv.id ? "bg-red-50" : ""}`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-brand">IP: {conv.ip}</span>
-                    <span className="text-[10px] text-neutral-400">{fmt(conv.updatedAt)}</span>
+                    <span className="text-xs font-black text-brand truncate">{conv.email ?? `IP: ${conv.ip}`}</span>
+                    <span className="text-[10px] text-neutral-400 shrink-0">{fmt(conv.updatedAt)}</span>
                   </div>
                   {last && (
                     <p className={`mt-1 truncate text-xs ${last.sender === "customer" ? "text-neutral-700" : "text-neutral-400"}`}>
@@ -112,7 +112,8 @@ export default function ConversationsPage() {
           ) : (
             <>
               <div className="border-b border-neutral-100 px-5 py-3">
-                <p className="font-black">IP: {selected.ip}</p>
+                <p className="font-black">{selected.email ?? `IP: ${selected.ip}`}</p>
+                {selected.email && <p className="text-xs text-neutral-400">IP: {selected.ip}</p>}
               </div>
               <div className="flex-1 overflow-y-auto p-5 space-y-3" style={{ minHeight: 300, maxHeight: 480 }}>
                 {messages.map((msg) => (
