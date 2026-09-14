@@ -413,7 +413,7 @@ export default function CartPage() {
                       <input
                         value={String(form[key as keyof typeof form])}
                         onChange={(event) => setForm((prev) => ({ ...prev, [key]: event.target.value }))}
-                        onFocus={key === "contact" ? handleFormFocus : undefined}
+                        onFocus={handleFormFocus}
                         className="mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand"
                       />
                     </label>
