@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, CheckCircle, Mail, MapPin, Phone, Save, Scale, Truck } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle, Mail, MapPin, Phone, RotateCcw, Save, Scale, Truck } from "lucide-react";
 import AdminShell from "@/components/AdminShell";
 import CancelOrderButton from "@/components/CancelOrderButton";
 import PrintOrderButton from "@/components/PrintOrderButton";
@@ -77,6 +77,16 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
                 <button className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-black text-white hover:bg-green-700">
                   <Truck size={16} /> Marchează ca Livrat
+                </button>
+              </form>
+            )}
+            {order.status === "Livrata" && (
+              <form action={updateOrderStatusAction}>
+                <input type="hidden" name="id" value={order.id} />
+                <input type="hidden" name="status" value="Confirmata" />
+                <input type="hidden" name="redirectTo" value={`/admin/orders/${order.id}`} />
+                <button className="inline-flex items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-5 py-2.5 text-sm font-black text-amber-700 hover:bg-amber-100">
+                  <RotateCcw size={16} /> Anulează livrarea
                 </button>
               </form>
             )}
