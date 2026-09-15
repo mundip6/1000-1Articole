@@ -1,17 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminAuthenticated } from "@/lib/adminAuth";
 import { sendAbandonedCartReminderEmail } from "@/lib/email";
 
 type CartItem = { name: string; price: number; salePrice?: number; unit: string; qty: number };
 
-export async function GET(req: NextRequest) {
-  // Vercel sets Authorization: Bearer <CRON_SECRET> on cron invocations
-  const secret = process.env.CRON_SECRET;
-  if (secret) {
-    const auth = req.headers.get("authorization");
-    if (auth !== `Bearer ${secret}`) {
-      return NextResponse.json({ ok: false }, { status: 401 });
-    }
+export async function POST() {
+  if (!(await isAdminAuthenticated())) {
+    return NextResponse.json({ ok: false }, { status: 401 });
   }
 
   const fiveHoursAgo = new Date(Date.now() - 5 * 60 * 60 * 1000);
@@ -28,6 +24,8 @@ export async function GET(req: NextRequest) {
   });
 
   let sent = 0;
+  const errors: string[] = [];
+
   for (const cart of carts) {
     try {
       await sendAbandonedCartReminderEmail(
@@ -41,10 +39,10 @@ export async function GET(req: NextRequest) {
         data: { reminderSentAt: new Date() },
       });
       sent++;
-    } catch {
-      // Log but continue — one failure shouldn't stop the rest
+    } catch (e) {
+      errors.push(cart.email!);
     }
   }
 
-  return NextResponse.json({ ok: true, sent, total: carts.length });
+  return NextResponse.json({ ok: true, sent, total: carts.length, errors });
 }

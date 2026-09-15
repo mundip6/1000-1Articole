@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ShoppingCart, Phone, Mail, MapPin, Clock, TrendingDown } from "lucide-react";
+import { ShoppingCart, Phone, Mail, MapPin, Clock, TrendingDown, Send } from "lucide-react";
 import { formatPrice } from "@/lib/data";
 
 const DAYS_OPTIONS = [
@@ -40,6 +40,18 @@ export default function AbandonedCarts() {
   const [totalLost, setTotalLost] = useState(0);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [reminderState, setReminderState] = useState<"idle" | "sending" | "done">("idle");
+  const [reminderResult, setReminderResult] = useState<{ sent: number; total: number } | null>(null);
+
+  const sendReminders = async () => {
+    setReminderState("sending");
+    setReminderResult(null);
+    const res = await fetch("/api/admin/cart-reminder", { method: "POST" });
+    const data = await res.json() as { ok: boolean; sent: number; total: number };
+    setReminderResult({ sent: data.sent, total: data.total });
+    setReminderState("done");
+    void fetchData(days);
+  };
 
   const fetchData = useCallback(async (d: number) => {
     setLoading(true);
@@ -87,18 +99,39 @@ export default function AbandonedCarts() {
           <ShoppingCart size={16} className="text-brand" />
           <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Cosuri abandonate</h2>
         </div>
-        <div className="flex gap-1.5">
-          {DAYS_OPTIONS.map((o) => (
-            <button
-              key={o.value}
-              onClick={() => setDays(o.value)}
-              className={`rounded-lg px-3 py-1 text-xs font-bold transition-colors ${days === o.value ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
-            >
-              {o.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex gap-1.5">
+            {DAYS_OPTIONS.map((o) => (
+              <button
+                key={o.value}
+                onClick={() => setDays(o.value)}
+                className={`rounded-lg px-3 py-1 text-xs font-bold transition-colors ${days === o.value ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => void sendReminders()}
+            disabled={reminderState === "sending"}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            <Send size={12} />
+            {reminderState === "sending" ? "Se trimite..." : "Trimite reminder-uri"}
+          </button>
         </div>
       </div>
+
+      {/* Reminder result */}
+      {reminderState === "done" && reminderResult && (
+        <div className={`mb-4 rounded-lg px-4 py-2.5 text-sm font-semibold ${reminderResult.sent > 0 ? "bg-green-50 text-green-700 border border-green-100" : "bg-neutral-50 text-neutral-500 border border-neutral-100"}`}>
+          {reminderResult.total === 0
+            ? "Nu exista cosuri eligibile pentru reminder (sub 5h sau deja trimis)."
+            : reminderResult.sent === reminderResult.total
+            ? `✓ ${reminderResult.sent} email${reminderResult.sent === 1 ? "" : "-uri"} trimise cu succes.`
+            : `${reminderResult.sent} / ${reminderResult.total} emailuri trimise.`}
+        </div>
+      )}
 
       {/* KPI row */}
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
