@@ -168,7 +168,7 @@ export default function AbandonedCarts() {
         <div className="mb-5 rounded-lg border border-neutral-100 bg-neutral-50 px-4 py-3">
           <p className="mb-2 text-[10px] font-black uppercase tracking-wide text-neutral-400">Produse cu potential</p>
           <div className="flex flex-wrap gap-2">
-            {productRanking.map((p, i) => {
+            {productRanking.slice(0, 20).map((p, i) => {
               const tier = i === 0 ? "bg-yellow-100 text-yellow-800 border-yellow-200"
                 : i < 3 ? "bg-orange-50 text-orange-700 border-orange-200"
                 : i < 6 ? "bg-blue-50 text-blue-700 border-blue-200"
