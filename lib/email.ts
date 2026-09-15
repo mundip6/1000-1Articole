@@ -5,6 +5,81 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+export async function sendAbandonedCartReminderEmail(
+  toEmail: string,
+  items: { name: string; price: number; salePrice?: number; unit: string; qty: number }[],
+  total: number,
+  contact?: string | null,
+) {
+  const cartUrl = `${BASE_URL}/cos`;
+
+  const rows = items.map((item) => {
+    const price = item.salePrice ?? item.price;
+    return `
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:14px;color:#222;font-weight:600;">${item.name}</td>
+        <td style="padding:10px 8px;border-bottom:1px solid #f0f0f0;font-size:14px;color:#666;text-align:center;">${item.qty} ${item.unit}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:14px;color:#222;font-weight:700;text-align:right;">${(price * item.qty).toFixed(2)} lei</td>
+      </tr>`;
+  }).join("");
+
+  const greeting = contact ? `Buna ziua, ${contact}!` : "Buna ziua!";
+
+  await resend.emails.send({
+    from: FROM,
+    to: toEmail,
+    subject: "Ai uitat ceva in cos 🛒 — 1000&1 Articole",
+    html: `
+      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:0;background:#fff;">
+        <!-- Header -->
+        <div style="background:#c8102e;padding:28px 32px;">
+          <h1 style="margin:0;color:#fff;font-size:20px;font-weight:900;letter-spacing:-0.5px;">1000&amp;1 Articole</h1>
+        </div>
+
+        <!-- Body -->
+        <div style="padding:32px;">
+          <h2 style="margin:0 0 8px;font-size:22px;color:#111;">${greeting}</h2>
+          <p style="color:#555;font-size:15px;line-height:1.6;margin:0 0 24px;">
+            Ai lasat cateva produse in cosul tau. Le-am pastrat pentru tine — finalizeaza comanda acum cat sunt inca disponibile!
+          </p>
+
+          <!-- Items table -->
+          <div style="background:#f9f9f9;border-radius:10px;padding:20px 24px;margin-bottom:24px;">
+            <p style="margin:0 0 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999;">Cosul tau</p>
+            <table style="width:100%;border-collapse:collapse;">
+              <tbody>${rows}</tbody>
+            </table>
+            <div style="margin-top:14px;padding-top:14px;border-top:2px solid #e0e0e0;display:flex;justify-content:space-between;">
+              <span style="font-size:14px;font-weight:700;color:#111;">Total</span>
+              <span style="font-size:18px;font-weight:900;color:#c8102e;">${total.toFixed(2)} lei</span>
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <div style="text-align:center;margin-bottom:28px;">
+            <a href="${cartUrl}" style="display:inline-block;background:#c8102e;color:#fff;font-weight:900;font-size:16px;text-decoration:none;padding:16px 40px;border-radius:10px;letter-spacing:-0.3px;">
+              Finalizează comanda →
+            </a>
+          </div>
+
+          <p style="color:#aaa;font-size:13px;line-height:1.6;text-align:center;margin:0;">
+            Daca ai intrebari ne poti scrie oricand pe site sau la telefon.<br/>
+            Livram rapid si cu drag! 🚚
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div style="background:#f5f5f5;padding:20px 32px;border-top:1px solid #eee;">
+          <p style="margin:0;color:#bbb;font-size:12px;text-align:center;">
+            1000&amp;1 Articole SRL — B-dul Regele Mihai I nr. 49G, Baia Mare<br/>
+            Ai primit acest email deoarece ai lasat produse in cosul de cumparaturi.
+          </p>
+        </div>
+      </div>
+    `,
+  });
+}
+
 export async function sendAdminOtpEmail(code: string) {
   const raw = process.env.ADMIN_EMAIL;
   if (!raw) throw new Error("ADMIN_EMAIL nu este configurat in variabilele de mediu.");

@@ -142,20 +142,22 @@ model PageView {
 }
 
 model AbandonedCart {
-  id        String   @id @default(cuid())
-  items     Json
-  total     Float
-  email     String?
-  phone     String?
-  contact   String?
-  county    String?
-  city      String?
-  converted Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String    @id @default(cuid())
+  items          Json
+  total          Float
+  email          String?
+  phone          String?
+  contact        String?
+  county         String?
+  city           String?
+  converted      Boolean   @default(false)
+  reminderSentAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@index([createdAt])
   @@index([converted])
+  @@index([reminderSentAt])
 }
 
 model PasswordResetToken {
