@@ -7,6 +7,7 @@ import RealTimeVisitors from "@/components/RealTimeVisitors";
 import StatsCharts from "./StatsCharts";
 import TrafficSources from "./TrafficSources";
 import AbandonedCarts from "./AbandonedCarts";
+import CollapsibleSection from "./CollapsibleSection";
 
 export const dynamic = "force-dynamic";
 
@@ -159,113 +160,108 @@ export default async function StatisticiPage() {
       description="Evolutia utilizatorilor, comenzilor si veniturilor pe ultimele 12 luni."
       active="statistici"
     >
-      <StatsCharts monthly={stats.monthly} totals={stats.totals} />
+      <div className="space-y-5">
+        <CollapsibleSection title="Prezentare generala" bare>
+          <StatsCharts monthly={stats.monthly} totals={stats.totals} />
+        </CollapsibleSection>
 
-      {/* Real-time visitors */}
-      <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-black uppercase tracking-wide text-neutral-500">Vizitatori in timp real</h2>
-        <RealTimeVisitors initial={traffic.realtimeCount} />
-        <p className="mt-4 text-xs text-neutral-400">
-          Total vizite in ultimele 30 de zile: <strong className="text-neutral-600">{traffic.totalViews.toLocaleString("ro-RO")}</strong>
-        </p>
-      </div>
+        {/* Real-time visitors */}
+        <CollapsibleSection title="Vizitatori in timp real">
+          <RealTimeVisitors initial={traffic.realtimeCount} />
+          <p className="mt-4 text-xs text-neutral-400">
+            Total vizite in ultimele 30 de zile: <strong className="text-neutral-600">{traffic.totalViews.toLocaleString("ro-RO")}</strong>
+          </p>
+        </CollapsibleSection>
 
-      {/* Traffic sources — interactive chart + table */}
-      <div className="mt-5">
-        <TrafficSources />
-      </div>
+        {/* Traffic sources — interactive chart + table */}
+        <CollapsibleSection title="Surse de trafic">
+          <TrafficSources />
+        </CollapsibleSection>
 
-      {/* Abandoned carts */}
-      <div className="mt-5">
-        <AbandonedCarts />
-      </div>
+        {/* Abandoned carts */}
+        <CollapsibleSection title="Cosuri abandonate">
+          <AbandonedCarts />
+        </CollapsibleSection>
 
-      <div className="mt-8 rounded-lg border border-neutral-200 bg-white">
-        <div className="border-b border-neutral-200 px-5 py-4">
-          <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Abonati newsletter</h2>
-          <p className="mt-0.5 text-xs text-neutral-400">{newsletterSubs.length} abonati</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[500px] border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-neutral-100 text-left text-xs font-black uppercase tracking-wide text-neutral-400">
-                <th className="px-5 py-3">Email</th>
-                <th className="px-5 py-3 text-center">Are cont</th>
-                <th className="px-5 py-3 text-right">Abonat de la</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newsletterSubs.map((s) => (
-                <tr key={s.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                  <td className="px-5 py-3 font-semibold">{s.email}</td>
-                  <td className="px-5 py-3 text-center">
-                    {s.hasAccount
-                      ? <CheckCircle size={16} className="mx-auto text-green-600" />
-                      : <XCircle size={16} className="mx-auto text-neutral-300" />}
-                  </td>
-                  <td className="px-5 py-3 text-right text-neutral-400">
-                    {new Date(s.createdAt).toLocaleDateString("ro-RO")}
-                  </td>
+        <CollapsibleSection title="Abonati newsletter" subtitle={`${newsletterSubs.length} abonati`} padded={false}>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[500px] border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-neutral-100 text-left text-xs font-black uppercase tracking-wide text-neutral-400">
+                  <th className="px-5 py-3">Email</th>
+                  <th className="px-5 py-3 text-center">Are cont</th>
+                  <th className="px-5 py-3 text-right">Abonat de la</th>
                 </tr>
-              ))}
-              {newsletterSubs.length === 0 && (
-                <tr>
-                  <td colSpan={3} className="px-5 py-8 text-center text-neutral-400">
-                    Nu exista abonati inca.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              </thead>
+              <tbody>
+                {newsletterSubs.map((s) => (
+                  <tr key={s.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
+                    <td className="px-5 py-3 font-semibold">{s.email}</td>
+                    <td className="px-5 py-3 text-center">
+                      {s.hasAccount
+                        ? <CheckCircle size={16} className="mx-auto text-green-600" />
+                        : <XCircle size={16} className="mx-auto text-neutral-300" />}
+                    </td>
+                    <td className="px-5 py-3 text-right text-neutral-400">
+                      {new Date(s.createdAt).toLocaleDateString("ro-RO")}
+                    </td>
+                  </tr>
+                ))}
+                {newsletterSubs.length === 0 && (
+                  <tr>
+                    <td colSpan={3} className="px-5 py-8 text-center text-neutral-400">
+                      Nu exista abonati inca.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </CollapsibleSection>
 
-      <div className="mt-8 rounded-lg border border-neutral-200 bg-white">
-        <div className="border-b border-neutral-200 px-5 py-4">
-          <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Clienti inregistrati</h2>
-          <p className="mt-0.5 text-xs text-neutral-400">{customers.length} conturi</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px] border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-neutral-100 text-left text-xs font-black uppercase tracking-wide text-neutral-400">
-                <th className="px-5 py-3">Client</th>
-                <th className="px-5 py-3">Email</th>
-                <th className="px-5 py-3 text-center">Verificat</th>
-                <th className="px-5 py-3 text-center">Livrate</th>
-                <th className="px-5 py-3 text-center">Anulate</th>
-                <th className="px-5 py-3 text-right">Total cheltuit</th>
-                <th className="px-5 py-3 text-right">Inregistrat</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers.map((c) => (
-                <tr key={c.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                  <td className="px-5 py-3 font-semibold">{c.firstName} {c.lastName}</td>
-                  <td className="px-5 py-3 text-neutral-500">{c.email}</td>
-                  <td className="px-5 py-3 text-center">
-                    {c.emailVerified
-                      ? <CheckCircle size={16} className="mx-auto text-green-600" />
-                      : <XCircle size={16} className="mx-auto text-neutral-300" />}
-                  </td>
-                  <td className="px-5 py-3 text-center font-black text-green-700">{c.deliveredOrders}</td>
-                  <td className="px-5 py-3 text-center font-black text-red-500">{c.cancelledOrders}</td>
-                  <td className="px-5 py-3 text-right font-black">{formatPrice(c.totalSpent)} lei</td>
-                  <td className="px-5 py-3 text-right text-neutral-400">
-                    {new Date(c.createdAt).toLocaleDateString("ro-RO")}
-                  </td>
+        <CollapsibleSection title="Clienti inregistrati" subtitle={`${customers.length} conturi`} padded={false}>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[700px] border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-neutral-100 text-left text-xs font-black uppercase tracking-wide text-neutral-400">
+                  <th className="px-5 py-3">Client</th>
+                  <th className="px-5 py-3">Email</th>
+                  <th className="px-5 py-3 text-center">Verificat</th>
+                  <th className="px-5 py-3 text-center">Livrate</th>
+                  <th className="px-5 py-3 text-center">Anulate</th>
+                  <th className="px-5 py-3 text-right">Total cheltuit</th>
+                  <th className="px-5 py-3 text-right">Inregistrat</th>
                 </tr>
-              ))}
-              {customers.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center text-neutral-400">
-                    Nu exista clienti inregistrati.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {customers.map((c) => (
+                  <tr key={c.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
+                    <td className="px-5 py-3 font-semibold">{c.firstName} {c.lastName}</td>
+                    <td className="px-5 py-3 text-neutral-500">{c.email}</td>
+                    <td className="px-5 py-3 text-center">
+                      {c.emailVerified
+                        ? <CheckCircle size={16} className="mx-auto text-green-600" />
+                        : <XCircle size={16} className="mx-auto text-neutral-300" />}
+                    </td>
+                    <td className="px-5 py-3 text-center font-black text-green-700">{c.deliveredOrders}</td>
+                    <td className="px-5 py-3 text-center font-black text-red-500">{c.cancelledOrders}</td>
+                    <td className="px-5 py-3 text-right font-black">{formatPrice(c.totalSpent)} lei</td>
+                    <td className="px-5 py-3 text-right text-neutral-400">
+                      {new Date(c.createdAt).toLocaleDateString("ro-RO")}
+                    </td>
+                  </tr>
+                ))}
+                {customers.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="px-5 py-10 text-center text-neutral-400">
+                      Nu exista clienti inregistrati.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </CollapsibleSection>
       </div>
     </AdminShell>
   );

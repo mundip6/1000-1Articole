@@ -71,25 +71,22 @@ export default function TrafficSources() {
   }
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-5">
-      {/* Header + period buttons */}
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Surse de trafic</h2>
-        <div className="flex flex-wrap gap-1.5">
-          {PERIODS.map((p) => (
-            <button
-              key={p.key}
-              onClick={() => setPeriod(p.key)}
-              className={`rounded-lg px-3 py-1 text-xs font-bold transition-colors ${
-                period === p.key
-                  ? "bg-brand text-white"
-                  : "border border-neutral-200 hover:border-brand hover:text-brand"
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
+    <div>
+      {/* Period buttons */}
+      <div className="mb-5 flex flex-wrap gap-1.5">
+        {PERIODS.map((p) => (
+          <button
+            key={p.key}
+            onClick={() => setPeriod(p.key)}
+            className={`rounded-lg px-3 py-1 text-xs font-bold transition-colors ${
+              period === p.key
+                ? "bg-brand text-white"
+                : "border border-neutral-200 hover:border-brand hover:text-brand"
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
       </div>
 
       {/* Custom date range inputs */}

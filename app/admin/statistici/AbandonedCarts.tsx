@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ShoppingCart, Phone, Mail, MapPin, Clock, TrendingDown, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, TrendingDown, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatPrice } from "@/lib/data";
 
 const DAYS_OPTIONS = [
@@ -10,6 +10,20 @@ const DAYS_OPTIONS = [
   { label: "30 zile", value: 30 },
   { label: "90 zile", value: 90 },
 ];
+
+const PER_PAGE = 10;
+
+function pageWindow(current: number, total: number): (number | "…")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | "…")[] = [1];
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+  if (start > 2) pages.push("…");
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (end < total - 1) pages.push("…");
+  pages.push(total);
+  return pages;
+}
 
 type CartItem = { id: string; name: string; price: number; salePrice?: number; unit: string; qty: number };
 
@@ -40,6 +54,7 @@ export default function AbandonedCarts() {
   const [totalLost, setTotalLost] = useState(0);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
   const [reminderState, setReminderState] = useState<"idle" | "sending" | "done">("idle");
   const [reminderResult, setReminderResult] = useState<{ sent: number; total: number } | null>(null);
 
@@ -91,20 +106,20 @@ export default function AbandonedCarts() {
     return [...map.values()].sort((a, b) => b.carts - a.carts);
   })();
 
+  const totalPages = Math.max(1, Math.ceil(carts.length / PER_PAGE));
+  const safePage = Math.min(page, totalPages);
+  const pageCarts = carts.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
+
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-5">
-      {/* Header */}
+    <div>
+      {/* Controls */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <ShoppingCart size={16} className="text-brand" />
-          <h2 className="text-sm font-black uppercase tracking-wide text-neutral-500">Cosuri abandonate</h2>
-        </div>
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex gap-1.5">
             {DAYS_OPTIONS.map((o) => (
               <button
                 key={o.value}
-                onClick={() => setDays(o.value)}
+                onClick={() => { setDays(o.value); setPage(1); }}
                 className={`rounded-lg px-3 py-1 text-xs font-bold transition-colors ${days === o.value ? "bg-brand text-white" : "border border-neutral-200 hover:border-brand hover:text-brand"}`}
               >
                 {o.label}
@@ -177,7 +192,7 @@ export default function AbandonedCarts() {
         <div className="py-10 text-center text-sm text-neutral-400">Nu exista cosuri abandonate in aceasta perioada.</div>
       ) : (
         <div className="space-y-2">
-          {carts.map((cart) => {
+          {pageCarts.map((cart) => {
             const isOpen = expanded === cart.id;
             const hasContact = cart.email || cart.phone;
             return (
@@ -255,6 +270,48 @@ export default function AbandonedCarts() {
               </div>
             );
           })}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3">
+              <p className="text-xs text-neutral-400">
+                {(safePage - 1) * PER_PAGE + 1}–{Math.min(safePage * PER_PAGE, carts.length)} din {carts.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setPage(safePage - 1)}
+                  disabled={safePage === 1}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-neutral-200 text-neutral-500 hover:border-brand hover:text-brand disabled:opacity-30 disabled:hover:border-neutral-200 disabled:hover:text-neutral-500"
+                >
+                  <ChevronLeft size={14} />
+                </button>
+                {pageWindow(safePage, totalPages).map((p, i) =>
+                  p === "…" ? (
+                    <span key={`gap-${i}`} className="px-1 text-xs text-neutral-300">…</span>
+                  ) : (
+                    <button
+                      key={p}
+                      onClick={() => setPage(p)}
+                      className={`h-7 min-w-[28px] rounded-lg px-1.5 text-xs font-bold transition-colors ${
+                        p === safePage
+                          ? "bg-brand text-white"
+                          : "border border-neutral-200 text-neutral-500 hover:border-brand hover:text-brand"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ),
+                )}
+                <button
+                  onClick={() => setPage(safePage + 1)}
+                  disabled={safePage === totalPages}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-neutral-200 text-neutral-500 hover:border-brand hover:text-brand disabled:opacity-30 disabled:hover:border-neutral-200 disabled:hover:text-neutral-500"
+                >
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
