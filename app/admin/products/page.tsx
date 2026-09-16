@@ -7,6 +7,7 @@ import { listProducts } from "@/lib/products";
 import { createProductAction, deleteProductAction, updateProductAction } from "../actions";
 import ImageUpload from "./ImageUpload";
 import ImportExcel from "./ImportExcel";
+import ProductSearch from "./ProductSearch";
 import CompetitorPriceCheck from "@/components/CompetitorPriceCheck";
 
 export const dynamic = "force-dynamic";
@@ -120,8 +121,12 @@ export default async function AdminProductsPage() {
             </div>
             <ImportExcel />
           </div>
-          <div className="space-y-3">
-            {products.map((product) => (
+          <ProductSearch
+            items={products.map((product) => ({
+              id: product.id,
+              name: product.name,
+              category: product.category,
+              card: (
               <div key={product.id} className="rounded-lg border border-neutral-200 p-4">
                 <form action={updateProductAction} className="space-y-3">
                   <input type="hidden" name="id" value={product.id} />
@@ -231,8 +236,9 @@ export default async function AdminProductsPage() {
                   )}
                 </p>
               </div>
-            ))}
-          </div>
+              ),
+            }))}
+          />
         </section>
     </AdminShell>
   );
