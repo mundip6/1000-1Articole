@@ -15,6 +15,39 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    // Report-only for now: it logs violations to the browser console without
+    // blocking anything, so a missing allowlist entry cannot silently kill
+    // Google Analytics, the Meta Pixel or the Maps embed. Promote to
+    // "Content-Security-Policy" once the console is clean.
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://*.public.blob.vercel-storage.com https://*.google-analytics.com https://www.googletagmanager.com https://*.facebook.com https://maps.gstatic.com https://*.googleapis.com",
+      "font-src 'self' data:",
+      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com",
+      "frame-src https://maps.google.com https://www.google.com",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+    ].join("; ");
+
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+          { key: "Content-Security-Policy-Report-Only", value: csp },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       // RFC 9116 canonical location — served by app/security.txt/route.ts
