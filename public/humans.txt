@@ -1,0 +1,24 @@
+/* ECHIPA */
+
+    Companie: 1000&1 Articole SRL
+    Rol: Distributie en-gros produse alimentare congelate
+    Contact: 1001articole@gmail.com
+    Telefon: +40 750 266 304 / 0262 221 154
+    Locatie: Baia Mare, Maramures, Romania
+
+/* MULTUMIRI */
+
+    Clientilor nostri — restaurante, cantine, hoteluri si magazine
+    din Maramures, Satu Mare si Salaj — pentru increderea acordata.
+
+/* SITE */
+
+    Website: https://www.1000-1-articole.com
+    Adresa: Bulevardul Regele Mihai I nr. 49G, Baia Mare, Maramures
+    Program: Luni-Vineri 08:00-15:30
+    CUI: 2200749
+    Limba: Romana
+    Doctype: HTML5
+    Standarde: HTML5, CSS3, ECMAScript
+    Componente: Next.js, React, TypeScript, Tailwind CSS, Prisma, PostgreSQL
+    Software: Visual Studio Code, Git

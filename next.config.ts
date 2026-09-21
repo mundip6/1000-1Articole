@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      // RFC 9116 canonical location — served by app/security.txt/route.ts
+      { source: "/.well-known/security.txt", destination: "/security.txt" },
+      // Some crawlers probe the singular name for the llms.txt standard
+      { source: "/llm.txt", destination: "/llms.txt" },
+    ];
+  },
   turbopack: {
     root: __dirname,
   },

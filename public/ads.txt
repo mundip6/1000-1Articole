@@ -1,0 +1,11 @@
+# ads.txt — Authorized Digital Sellers (IAB Tech Lab)
+# 1000&1 Articole SRL — https://www.1000-1-articole.com
+#
+# Acest site NU vinde spatiu publicitar programatic.
+# Niciun vanzator nu este autorizat sa comercializeze inventar
+# publicitar in numele acestui domeniu.
+#
+# Orice licitatie care pretinde ca reprezinta acest domeniu
+# trebuie tratata ca frauda si respinsa.
+#
+# Contact: 1001articole@gmail.com

@@ -1,0 +1,51 @@
+# ai.txt — Politica de acces pentru crawlere AI
+# 1000&1 Articole SRL — https://www.1000-1-articole.com
+# Distribuitor angro produse alimentare congelate, Baia Mare, Romania
+
+# Continutul public (catalog, preturi, informatii de livrare) poate fi
+# accesat si citat de modele si asistenti AI, cu atribuire catre sursa.
+# Context structurat pentru modele: https://www.1000-1-articole.com/llms.txt
+
+User-Agent: *
+Allow: /
+Allow: /catalog
+Disallow: /admin
+Disallow: /packer
+Disallow: /cos
+Disallow: /cont
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# Crawlere AI cunoscute — acces permis la continutul public
+User-Agent: GPTBot
+Allow: /
+
+User-Agent: OAI-SearchBot
+Allow: /
+
+User-Agent: ChatGPT-User
+Allow: /
+
+User-Agent: ClaudeBot
+Allow: /
+
+User-Agent: Claude-Web
+Allow: /
+
+User-Agent: PerplexityBot
+Allow: /
+
+User-Agent: Google-Extended
+Allow: /
+
+User-Agent: Applebot-Extended
+Allow: /
+
+User-Agent: CCBot
+Allow: /
+
+# Contact pentru intrebari privind utilizarea continutului
+Contact: mailto:1001articole@gmail.com
