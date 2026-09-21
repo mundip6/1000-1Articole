@@ -57,7 +57,7 @@ export default function RootLayout({
       longitude: 23.5699,
     },
     openingHoursSpecification: [
-      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "17:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "15:30" },
     ],
     servesCuisine: "Engros alimentar",
     areaServed: ["Maramures", "Satu Mare", "Salaj"],
