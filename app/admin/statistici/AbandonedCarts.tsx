@@ -212,9 +212,9 @@ export default function AbandonedCarts() {
                       <span className="text-sm font-black text-neutral-900">{formatPrice(cart.total)} lei</span>
                       <span className="text-xs text-neutral-400">{cart.items.length} {cart.items.length === 1 ? "produs" : "produse"}</span>
                       {cart.contact && <span className="text-xs font-semibold text-neutral-600">{cart.contact}</span>}
-                      {cart.city && (
+                      {(cart.city || cart.county) && (
                         <span className="flex items-center gap-1 text-xs text-neutral-400">
-                          <MapPin size={10} /> {cart.city}
+                          <MapPin size={10} /> {[cart.city, cart.county].filter(Boolean).join(", ")}
                         </span>
                       )}
                     </div>

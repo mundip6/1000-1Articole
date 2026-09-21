@@ -116,9 +116,11 @@ export default function CartPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Update snapshot with contact details as user fills the form (debounced 2s)
+  // Update snapshot as the form is filled (debounced 2s). Any single field is
+  // worth capturing — a county and locality alone still tell us who to chase.
   useEffect(() => {
-    if (!cart.length || (!form.email && !form.phone)) return;
+    const hasAnyDetail = Boolean(form.email || form.phone || form.contact || form.county || form.city);
+    if (!cart.length || !hasAnyDetail) return;
     const t = window.setTimeout(() => {
       void syncSnapshot({
         email: form.email || undefined,
