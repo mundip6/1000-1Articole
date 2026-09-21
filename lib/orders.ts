@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { type Category } from "@/lib/data";
 import { isValidCui, normalizeCui } from "@/lib/cui";
 import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
+import { isBaiaMare } from "@/lib/deliverySchedule";
 
 export type OrderStatus = "Noua" | "Confirmata" | "Livrata" | "Anulata";
 
@@ -181,7 +182,7 @@ export async function createOrder(input: OrderInput) {
     SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE,
     SETTINGS_KEYS.SHIPPING_FEE_OTHER,
   ]);
-  const isBM = input.county === "Maramureș";
+  const isBM = isBaiaMare(input.city || "");
   const minimum = Number(isBM ? settings[SETTINGS_KEYS.MIN_ORDER_BAIA_MARE] : settings[SETTINGS_KEYS.MIN_ORDER_OTHER]);
   const configuredFee = Number(isBM ? settings[SETTINGS_KEYS.SHIPPING_FEE_BAIA_MARE] : settings[SETTINGS_KEYS.SHIPPING_FEE_OTHER]);
   const itemsTotal = orderTotal(effectiveItems);

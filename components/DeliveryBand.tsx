@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ChevronDown, MapPin, Truck, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import { CITIES_BY_COUNTY, COUNTIES, formatDays, isMaramuresCounty } from "@/lib/deliverySchedule";
+import { CITIES_BY_COUNTY, COUNTIES, formatDays, isBaiaMare } from "@/lib/deliverySchedule";
 import { useDeliveryCity } from "@/components/useDeliveryCity";
 
 export default function DeliveryBand({
@@ -40,9 +40,9 @@ export default function DeliveryBand({
     setCity("");
   }
 
-  const zoneCounty = match.kind === "none" ? "" : match.county;
-  const min = isMaramuresCounty(zoneCounty) ? minBM : minOther;
-  const hasFee = (isMaramuresCounty(zoneCounty) ? Number(feeBM) : Number(feeOther)) > 0;
+  const isBM = isBaiaMare(selection?.city ?? "");
+  const min = isBM ? minBM : minOther;
+  const hasFee = (isBM ? Number(feeBM) : Number(feeOther)) > 0;
 
   const minText = hasFee
     ? <>livrare gratuita peste <strong className="text-white">{min} lei</strong></>

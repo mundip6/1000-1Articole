@@ -2,7 +2,7 @@
 
 import { ChevronDown, MapPin, Truck, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import { CITIES_BY_COUNTY, COUNTIES, formatDays, isMaramuresCounty } from "@/lib/deliverySchedule";
+import { CITIES_BY_COUNTY, COUNTIES, formatDays, isBaiaMare } from "@/lib/deliverySchedule";
 import { useDeliveryCity } from "@/components/useDeliveryCity";
 
 export default function DeliveryInfo({
@@ -33,8 +33,7 @@ export default function DeliveryInfo({
     setCity("");
   }
 
-  const zoneCounty = match.kind === "none" ? "" : match.county;
-  const isBM = isMaramuresCounty(zoneCounty);
+  const isBM = isBaiaMare(selection?.city ?? "");
   const min = isBM ? minBM : minOther;
   const fee = isBM ? Number(feeBM) : Number(feeOther);
   const hasFee = fee > 0;

@@ -9,7 +9,7 @@ import { cartTotal, cartWeight, clearCart, effectivePrice, getCart, removeFromCa
 import { sendMetaEvent, saveMetaUser } from "@/lib/meta/send";
 import { formatPrice } from "@/lib/data";
 import CountyCitySelect from "@/components/CountyCitySelect";
-import { formatDays, resolveDelivery } from "@/lib/deliverySchedule";
+import { formatDays, isBaiaMare, resolveDelivery } from "@/lib/deliverySchedule";
 
 type CustomerResponse = {
   ok: boolean;
@@ -103,8 +103,9 @@ export default function CartPage() {
 
   const total = cartTotal(cart);
   const weight = cartWeight(cart);
-  const minimumValue = form.county === "Maramureș" ? minBM : minOther;
-  const feeForZone = form.county === "Maramureș" ? feeBM : feeOther;
+  const baiaMareRate = isBaiaMare(form.city);
+  const minimumValue = baiaMareRate ? minBM : minOther;
+  const feeForZone = baiaMareRate ? feeBM : feeOther;
   const meetsMinimum = total >= minimumValue;
   const shippingFee = !meetsMinimum && feeForZone > 0 ? feeForZone : 0;
   const canOrder = meetsMinimum || feeForZone > 0;

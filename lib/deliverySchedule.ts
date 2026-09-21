@@ -3,46 +3,45 @@ export type DeliveryDay = "Luni–Vineri" | "Marți" | "Miercuri" | "Joi" | "Vin
 export interface CityDelivery {
   day: DeliveryDay;
   county: string;
-  isMaramures: boolean; // drives the minimum order threshold
 }
 
 export const CITY_SCHEDULE: Record<string, CityDelivery> = {
   // Baia Mare — headquarters, flexible delivery
-  "Baia Mare":            { day: "Luni–Vineri",    county: "Maramureș", isMaramures: true },
+  "Baia Mare":            { day: "Luni–Vineri",    county: "Maramureș" },
   // Maramureș — Tuesday route
-  "Ulmeni":               { day: "Marți",          county: "Maramureș", isMaramures: true },
-  "Șomcuta Mare":         { day: "Marți",          county: "Maramureș", isMaramures: true },
-  "Borșa":                { day: "Marți",          county: "Maramureș", isMaramures: true },
-  "Moisei":               { day: "Marți",          county: "Maramureș", isMaramures: true },
+  "Ulmeni":               { day: "Marți",          county: "Maramureș" },
+  "Șomcuta Mare":         { day: "Marți",          county: "Maramureș" },
+  "Borșa":                { day: "Marți",          county: "Maramureș" },
+  "Moisei":               { day: "Marți",          county: "Maramureș" },
   // Maramureș — Wednesday route
-  "Seini":                { day: "Miercuri",       county: "Maramureș", isMaramures: true },
-  "Vișeu de Sus":         { day: "Miercuri",       county: "Maramureș", isMaramures: true },
+  "Seini":                { day: "Miercuri",       county: "Maramureș" },
+  "Vișeu de Sus":         { day: "Miercuri",       county: "Maramureș" },
   // Valley Izei on both Tue & Wed routes
-  "Valea Izei":           { day: "Marți / Miercuri", county: "Maramureș", isMaramures: true },
+  "Valea Izei":           { day: "Marți / Miercuri", county: "Maramureș" },
   // Maramureș — Thursday route
-  "Sighetu Marmației":    { day: "Joi",            county: "Maramureș", isMaramures: true },
-  "Ocna Șugatag":         { day: "Joi",            county: "Maramureș", isMaramures: true },
-  "Cavnic":               { day: "Joi",            county: "Maramureș", isMaramures: true },
+  "Sighetu Marmației":    { day: "Joi",            county: "Maramureș" },
+  "Ocna Șugatag":         { day: "Joi",            county: "Maramureș" },
+  "Cavnic":               { day: "Joi",            county: "Maramureș" },
   // Maramureș — Friday route
-  "Târgu Lăpuș":          { day: "Vineri",         county: "Maramureș", isMaramures: true },
-  "Copalnic-Mănăștur":    { day: "Vineri",         county: "Maramureș", isMaramures: true },
+  "Târgu Lăpuș":          { day: "Vineri",         county: "Maramureș" },
+  "Copalnic-Mănăștur":    { day: "Vineri",         county: "Maramureș" },
   // Satu Mare — Wednesday route
-  "Satu Mare":            { day: "Miercuri",       county: "Satu Mare",  isMaramures: false },
-  "Negrești-Oaș":         { day: "Miercuri",       county: "Satu Mare",  isMaramures: false },
-  "Livada":               { day: "Miercuri",       county: "Satu Mare",  isMaramures: false },
-  "Turț":                 { day: "Miercuri",       county: "Satu Mare",  isMaramures: false },
+  "Satu Mare":            { day: "Miercuri",       county: "Satu Mare" },
+  "Negrești-Oaș":         { day: "Miercuri",       county: "Satu Mare" },
+  "Livada":               { day: "Miercuri",       county: "Satu Mare" },
+  "Turț":                 { day: "Miercuri",       county: "Satu Mare" },
   // Sălaj — Tuesday route
-  "Jibou":                { day: "Marți",          county: "Sălaj",      isMaramures: false },
-  "Cehu Silvaniei":       { day: "Marți",          county: "Sălaj",      isMaramures: false },
+  "Jibou":                { day: "Marți",          county: "Sălaj" },
+  "Cehu Silvaniei":       { day: "Marți",          county: "Sălaj" },
   // Sălaj — Thursday route
-  "Zalău":                { day: "Joi",            county: "Sălaj",      isMaramures: false },
-  "Șimleul Silvaniei":    { day: "Joi",            county: "Sălaj",      isMaramures: false },
+  "Zalău":                { day: "Joi",            county: "Sălaj" },
+  "Șimleul Silvaniei":    { day: "Joi",            county: "Sălaj" },
   // Sălaj — Friday route
-  "Ileanda":              { day: "Vineri",         county: "Sălaj",      isMaramures: false },
+  "Ileanda":              { day: "Vineri",         county: "Sălaj" },
   // Bistrița-Năsăud — Friday route
-  "Beclean":              { day: "Vineri",         county: "Bistrița-Năsăud", isMaramures: false },
+  "Beclean":              { day: "Vineri",         county: "Bistrița-Năsăud" },
   // Cluj — Friday route
-  "Dej":                  { day: "Vineri",         county: "Cluj",       isMaramures: false },
+  "Dej":                  { day: "Vineri",         county: "Cluj" },
 };
 
 export const CITIES_BY_COUNTY: Record<string, string[]> = {
@@ -98,9 +97,15 @@ export function formatDays(days: string[]): string {
   return `${days.slice(0, -1).join(", ")} sau ${days[days.length - 1]}`;
 }
 
-/** The order minimum and shipping fee are keyed off the county, matching createOrder. */
-export function isMaramuresCounty(county: string): boolean {
-  return county === "Maramureș";
+const BAIA_MARE_KEY = normalizeCity("Baia Mare");
+
+/**
+ * Baia Mare has its own order minimum and shipping fee; every other locality,
+ * including the rest of Maramureș, falls on the second tier. Matched the same
+ * way as route cities so "BAIA mare" and "baia-mare" both qualify.
+ */
+export function isBaiaMare(city: string): boolean {
+  return normalizeCity(city) === BAIA_MARE_KEY;
 }
 
 export type DeliveryMatch =
