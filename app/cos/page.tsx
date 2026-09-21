@@ -9,7 +9,7 @@ import { cartTotal, cartWeight, clearCart, effectivePrice, getCart, removeFromCa
 import { sendMetaEvent, saveMetaUser } from "@/lib/meta/send";
 import { formatPrice } from "@/lib/data";
 import CountyCitySelect from "@/components/CountyCitySelect";
-import { CITY_SCHEDULE } from "@/lib/deliverySchedule";
+import { formatDays, resolveDelivery } from "@/lib/deliverySchedule";
 
 type CustomerResponse = {
   ok: boolean;
@@ -424,11 +424,25 @@ export default function CartPage() {
                     onCountyChange={(county) => setForm((prev) => ({ ...prev, county }))}
                     onCityChange={(city) => setForm((prev) => ({ ...prev, city }))}
                   />
-                  {form.city && CITY_SCHEDULE[form.city] && (
-                    <div className="flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-800">
-                      🚚 Livrare în <strong>{form.city}</strong>: <strong>{CITY_SCHEDULE[form.city].day}</strong>
-                    </div>
-                  )}
+                  {form.city.trim() && (() => {
+                    const match = resolveDelivery(form.city, form.county);
+                    if (match.kind === "route") {
+                      return (
+                        <div className="flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-800">
+                          🚚 Livrare în <strong>{match.city}</strong>: <strong>{match.day}</strong>
+                        </div>
+                      );
+                    }
+                    if (match.kind === "estimate") {
+                      return (
+                        <div className="rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                          <p>🚚 Estimativ: <strong>{formatDays(match.days)}</strong> <span className="text-amber-600">(rutele noastre din {match.county})</span></p>
+                          <p className="mt-0.5 text-amber-600">📞 Vă contactăm pentru a confirma ziua exactă de livrare.</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                   <label className="block text-xs font-semibold text-neutral-500">
                     Observatii
                     <textarea

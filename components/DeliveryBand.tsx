@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { ChevronDown, MapPin, Truck, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { CITIES_BY_COUNTY, CITY_SCHEDULE } from "@/lib/deliverySchedule";
-
-const STORAGE_KEY = "1001-delivery-city";
+import { useEffect, useId, useRef, useState } from "react";
+import { CITIES_BY_COUNTY, COUNTIES, formatDays, isMaramuresCounty } from "@/lib/deliverySchedule";
+import { useDeliveryCity } from "@/components/useDeliveryCity";
 
 export default function DeliveryBand({
   minBM,
@@ -18,14 +17,12 @@ export default function DeliveryBand({
   feeBM?: string;
   feeOther?: string;
 }) {
-  const [city, setCity] = useState<string | null>(null);
+  const { selection, select, clear, match } = useDeliveryCity();
   const [open, setOpen] = useState(false);
+  const [county, setCounty] = useState("");
+  const [city, setCity] = useState("");
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) setCity(saved);
-  }, []);
+  const listId = useId();
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -35,42 +32,45 @@ export default function DeliveryBand({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  function selectCity(c: string) {
-    setCity(c);
-    localStorage.setItem(STORAGE_KEY, c);
+  function confirm() {
+    if (!county || !city.trim()) return;
+    select({ city: city.trim(), county });
     setOpen(false);
+    setCounty("");
+    setCity("");
   }
 
-  function resetCity() {
-    setCity(null);
-    localStorage.removeItem(STORAGE_KEY);
-  }
+  const zoneCounty = match.kind === "none" ? "" : match.county;
+  const min = isMaramuresCounty(zoneCounty) ? minBM : minOther;
+  const hasFee = (isMaramuresCounty(zoneCounty) ? Number(feeBM) : Number(feeOther)) > 0;
 
-  const info = city ? CITY_SCHEDULE[city] : null;
-  const min = info?.isMaramures ? minBM : minOther;
-  const fee = info?.isMaramures ? Number(feeBM) : Number(feeOther);
-  const hasFee = fee > 0;
+  const minText = hasFee
+    ? <>livrare gratuita peste <strong className="text-white">{min} lei</strong></>
+    : <>minim <strong className="text-white">{min} lei</strong></>;
 
   return (
     <div className="relative z-30 bg-neutral-900 px-4 py-2 text-xs text-neutral-300">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
         <Truck size={12} className="shrink-0 text-brand" />
 
-        {info ? (
+        {selection && match.kind !== "none" ? (
           <>
             <span>
-              Livrare <strong className="text-white">{info.day}</strong>
+              {match.kind === "route" ? (
+                <>Livrare <strong className="text-white">{match.day}</strong></>
+              ) : (
+                <>Estimativ <strong className="text-white">{formatDays(match.days)}</strong></>
+              )}
               {" · "}
-              <strong className="text-white">{city}</strong>
+              <strong className="text-white">{selection.city}</strong>
               {" · "}
-              {hasFee
-                ? <>livrare gratuita peste <strong className="text-white">{min} lei</strong></>
-                : <>minim <strong className="text-white">{min} lei</strong></>}
+              {minText}
+              {match.kind === "estimate" && <span className="text-neutral-500"> · confirmam telefonic</span>}
             </span>
             <button
-              onClick={resetCity}
+              onClick={clear}
               className="flex items-center gap-1 text-neutral-500 hover:text-white"
-              aria-label="Schimba orasul"
+              aria-label="Schimba localitatea"
             >
               <X size={11} />
             </button>
@@ -93,40 +93,49 @@ export default function DeliveryBand({
                 onClick={() => setOpen((o) => !o)}
                 className="flex items-center gap-1 font-semibold text-brand hover:text-red-400"
               >
-                <MapPin size={11} /> Alege orasul tau <ChevronDown size={11} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
+                <MapPin size={11} /> Alege localitatea ta{" "}
+                <ChevronDown size={11} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
               </button>
 
               {open && (
-                <div className="absolute left-1/2 top-full mt-1 w-64 -translate-x-1/2 rounded-lg border border-neutral-700 bg-neutral-800 py-2 shadow-xl">
-                  {Object.entries(CITIES_BY_COUNTY).map(([county, cities]) => (
-                    <div key={county}>
-                      <div className="px-3 py-1 text-[10px] font-black uppercase tracking-wider text-neutral-500">
-                        {county}
-                      </div>
-                      {cities.map((c) => {
-                        const s = CITY_SCHEDULE[c];
-                        return (
-                          <button
-                            key={c}
-                            onClick={() => selectCity(c)}
-                            className="flex w-full items-center justify-between px-3 py-1.5 text-left text-xs hover:bg-neutral-700"
-                          >
-                            <span className="font-semibold text-white">{c}</span>
-                            <span className="text-neutral-400">{s.day}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ))}
-                  <div className="mt-1 border-t border-neutral-700 px-3 pt-2 pb-1">
-                    <Link
-                      href="/cum-comand"
-                      onClick={() => setOpen(false)}
-                      className="text-[10px] text-brand hover:underline"
-                    >
-                      Vezi toate rutele de livrare →
-                    </Link>
-                  </div>
+                <div className="absolute left-1/2 top-full mt-1 w-64 -translate-x-1/2 space-y-2 rounded-lg border border-neutral-700 bg-neutral-800 p-3 text-left shadow-xl">
+                  <select
+                    value={county}
+                    onChange={(e) => { setCounty(e.target.value); setCity(""); }}
+                    className="w-full rounded border border-neutral-600 bg-neutral-900 px-2 py-1.5 text-xs text-white outline-none focus:border-brand"
+                  >
+                    <option value="">Alege judetul</option>
+                    {COUNTIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+
+                  <input
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && confirm()}
+                    disabled={!county}
+                    list={listId}
+                    placeholder={county ? "Scrie localitatea" : "Alege intai judetul"}
+                    className="w-full rounded border border-neutral-600 bg-neutral-900 px-2 py-1.5 text-xs text-white outline-none focus:border-brand disabled:opacity-40"
+                  />
+                  <datalist id={listId}>
+                    {(CITIES_BY_COUNTY[county] ?? []).map((c) => <option key={c} value={c} />)}
+                  </datalist>
+
+                  <button
+                    onClick={confirm}
+                    disabled={!county || !city.trim()}
+                    className="w-full rounded bg-brand px-2 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-40"
+                  >
+                    Vezi ziua de livrare
+                  </button>
+
+                  <Link
+                    href="/cum-comand"
+                    onClick={() => setOpen(false)}
+                    className="block pt-1 text-[10px] text-brand hover:underline"
+                  >
+                    Vezi toate rutele de livrare →
+                  </Link>
                 </div>
               )}
             </div>
