@@ -2,9 +2,12 @@ import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { isValidCui, normalizeCui } from "@/lib/cui";
 import { prisma } from "@/lib/prisma";
+import { createSessionToken, readSessionToken } from "@/lib/sessionToken";
 import { sendVerificationEmail } from "@/lib/email";
 
 const COOKIE_NAME = "customer-session";
+const IS_PROD = process.env.NODE_ENV === "production";
+const SESSION_TTL = 60 * 60 * 24 * 30;
 
 export type PublicCustomer = {
   id: string;
@@ -67,10 +70,14 @@ function verifyPassword(password: string, stored: string) {
 }
 
 export async function setCustomerSession(customerId: string) {
+  const token = createSessionToken(customerId, SESSION_TTL);
+  if (!token) throw new Error("Sesiunea nu poate fi semnata: configureaza SESSION_SECRET sau ADMIN_PASSWORD.");
+
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, customerId, {
+  cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
+    secure: IS_PROD,
     path: "/",
   });
 }
@@ -82,7 +89,7 @@ export async function clearCustomerSession() {
 
 export async function getCurrentCustomer() {
   const cookieStore = await cookies();
-  const id = cookieStore.get(COOKIE_NAME)?.value;
+  const id = readSessionToken(cookieStore.get(COOKIE_NAME)?.value);
   if (!id) return null;
 
   const customer = await prisma.customer.findUnique({ where: { id } });

@@ -50,11 +50,22 @@ export type OrderInput = {
   shippingFee?: number;
 };
 
-function orderTotal(items: OrderItem[]) {
+/** An order line whose price and attributes came from the database, not the request. */
+type PricedItem = {
+  id: string;
+  name: string;
+  category: Category;
+  price: number;
+  unit: "kg" | "buc" | "bax";
+  weight?: string;
+  qty: number;
+};
+
+function orderTotal(items: PricedItem[]) {
   return items.reduce((sum, item) => sum + item.price * item.qty, 0);
 }
 
-function orderWeight(items: OrderItem[]) {
+function orderWeight(items: PricedItem[]) {
   return items.reduce((sum, item) => sum + (item.unit === "kg" ? item.qty : 0), 0);
 }
 
@@ -137,10 +148,31 @@ export async function createOrder(input: OrderInput) {
     throw new Error("CUI invalid. Pentru comenzi pe firma, CUI este obligatoriu si trebuie sa fie valid.");
   }
 
-  const effectiveItems = input.items.map((item) => ({
-    ...item,
-    price: Number(((item as any).salePrice ?? item.price).toFixed(2)),
-  }));
+  // Price, name, category and unit are read from the database. Anything the
+  // client sent for those fields is discarded — only id and qty are honoured.
+  const requestedIds = [...new Set(input.items.map((item) => item.id))];
+  const products = await prisma.product.findMany({ where: { id: { in: requestedIds } } });
+  const productById = new Map(products.map((product) => [product.id, product]));
+
+  const effectiveItems: PricedItem[] = input.items.map((item) => {
+    const product = productById.get(item.id);
+    if (!product) throw new Error(`Produsul "${item.name}" nu mai este disponibil.`);
+
+    const qty = Number(item.qty);
+    if (!Number.isFinite(qty) || qty <= 0) {
+      throw new Error(`Cantitate invalida pentru "${product.name}".`);
+    }
+
+    return {
+      id: product.id,
+      name: product.name,
+      category: product.category as Category,
+      price: Number((product.salePrice ?? product.price).toFixed(2)),
+      unit: product.unit === "kg" ? "kg" : product.unit === "bax" ? "bax" : "buc",
+      ...(product.weight ? { weight: product.weight } : {}),
+      qty,
+    };
+  });
 
   // Verify minimum order / shipping fee server-side (don't trust client)
   const settings = await getSettings([

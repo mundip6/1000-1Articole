@@ -1,27 +1,36 @@
 import { cookies } from "next/headers";
+import { createSessionToken, verifySessionToken } from "@/lib/sessionToken";
 
 const COOKIE = "packer-auth";
 const PENDING_COOKIE = "packer-pending";
 const IS_PROD = process.env.NODE_ENV === "production";
+
+const SESSION_TTL = 60 * 60 * 8;
+const PENDING_TTL = 60 * 15;
+
+const NO_KEY = "Sesiunea nu poate fi semnata: configureaza SESSION_SECRET sau ADMIN_PASSWORD.";
 
 export function getPackerPassword(): string {
   return process.env.PACKER_PASSWORD ?? "";
 }
 
 export async function setPackerAuthenticated() {
+  const token = createSessionToken("packer", SESSION_TTL);
+  if (!token) throw new Error(NO_KEY);
+
   const store = await cookies();
-  store.set(COOKIE, "1", {
+  store.set(COOKIE, token, {
     httpOnly: true,
     secure: IS_PROD,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 8,
+    maxAge: SESSION_TTL,
   });
 }
 
 export async function isPackerAuthenticated(): Promise<boolean> {
   const store = await cookies();
-  return store.get(COOKIE)?.value === "1";
+  return verifySessionToken(store.get(COOKIE)?.value, "packer");
 }
 
 export async function clearPackerAuthenticated() {
@@ -30,19 +39,22 @@ export async function clearPackerAuthenticated() {
 }
 
 export async function setPackerPending() {
+  const token = createSessionToken("packer-2fa", PENDING_TTL);
+  if (!token) throw new Error(NO_KEY);
+
   const store = await cookies();
-  store.set(PENDING_COOKIE, "1", {
+  store.set(PENDING_COOKIE, token, {
     httpOnly: true,
     secure: IS_PROD,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 15,
+    maxAge: PENDING_TTL,
   });
 }
 
 export async function isPackerPending(): Promise<boolean> {
   const store = await cookies();
-  return store.get(PENDING_COOKIE)?.value === "1";
+  return verifySessionToken(store.get(PENDING_COOKIE)?.value, "packer-2fa");
 }
 
 export async function clearPackerPending() {
