@@ -1,7 +1,6 @@
 "use client";
 
-import { useId } from "react";
-import { CITIES_BY_COUNTY, COUNTIES } from "@/lib/deliverySchedule";
+import { CITIES_BY_COUNTY, CITY_SCHEDULE, COUNTIES } from "@/lib/deliverySchedule";
 
 type Props = {
   county: string;
@@ -11,7 +10,7 @@ type Props = {
   selectClassName?: string;
 };
 
-const fieldBase =
+const selectBase =
   "mt-1 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand disabled:opacity-50 disabled:cursor-not-allowed";
 
 export default function CountyCitySelect({
@@ -21,9 +20,8 @@ export default function CountyCitySelect({
   onCityChange,
   selectClassName,
 }: Props) {
-  const listId = useId();
-  const suggestions = county ? (CITIES_BY_COUNTY[county] ?? []) : [];
-  const cls = selectClassName ?? fieldBase;
+  const cities = county ? (CITIES_BY_COUNTY[county] ?? []) : [];
+  const cls = selectClassName ?? selectBase;
 
   return (
     <>
@@ -46,25 +44,19 @@ export default function CountyCitySelect({
 
       <label className="block text-xs font-semibold text-neutral-500">
         Localitate *
-        <input
+        <select
           value={city}
           onChange={(e) => onCityChange(e.target.value)}
           disabled={!county}
-          list={listId}
-          autoComplete="address-level2"
-          placeholder={county ? "Scrieți localitatea" : "Selectați mai întâi județul"}
-          className={`${cls} normal-case`}
-        />
-        <datalist id={listId}>
-          {suggestions.map((c) => (
-            <option key={c} value={c} />
+          className={cls}
+        >
+          <option value="">
+            {county ? "Selectați localitatea" : "Selectați mai întâi județul"}
+          </option>
+          {cities.map((c) => (
+            <option key={c} value={c}>{c} — {CITY_SCHEDULE[c].day}</option>
           ))}
-        </datalist>
-        {county && (
-          <span className="mt-1 block text-[11px] font-normal text-neutral-400">
-            Livrăm în orice localitate din județ — scrieți satul sau comuna dvs.
-          </span>
-        )}
+        </select>
       </label>
     </>
   );

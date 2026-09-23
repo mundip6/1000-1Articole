@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { ChevronDown, MapPin, Truck, X } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
-import { CITIES_BY_COUNTY, COUNTIES, formatDays, isBaiaMare } from "@/lib/deliverySchedule";
+import { useEffect, useRef, useState } from "react";
+import { CITIES_BY_COUNTY, CITY_SCHEDULE, COUNTIES, isBaiaMare } from "@/lib/deliverySchedule";
 import { useDeliveryCity } from "@/components/useDeliveryCity";
 
 export default function DeliveryBand({
@@ -22,7 +22,6 @@ export default function DeliveryBand({
   const [county, setCounty] = useState("");
   const [city, setCity] = useState("");
   const ref = useRef<HTMLDivElement>(null);
-  const listId = useId();
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -53,19 +52,14 @@ export default function DeliveryBand({
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
         <Truck size={12} className="shrink-0 text-brand" />
 
-        {selection && match.kind !== "none" ? (
+        {selection && match.kind === "route" ? (
           <>
             <span>
-              {match.kind === "route" ? (
-                <>Livrare <strong className="text-white">{match.day}</strong></>
-              ) : (
-                <>Estimativ <strong className="text-white">{formatDays(match.days)}</strong></>
-              )}
+              Livrare <strong className="text-white">{match.day}</strong>
               {" · "}
-              <strong className="text-white">{selection.city}</strong>
+              <strong className="text-white">{match.city}</strong>
               {" · "}
               {minText}
-              {match.kind === "estimate" && <span className="text-neutral-500"> · confirmam telefonic</span>}
             </span>
             <button
               onClick={clear}
@@ -108,18 +102,17 @@ export default function DeliveryBand({
                     {COUNTIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
 
-                  <input
+                  <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && confirm()}
                     disabled={!county}
-                    list={listId}
-                    placeholder={county ? "Scrie localitatea" : "Alege intai judetul"}
                     className="w-full rounded border border-neutral-600 bg-neutral-900 px-2 py-1.5 text-xs text-white outline-none focus:border-brand disabled:opacity-40"
-                  />
-                  <datalist id={listId}>
-                    {(CITIES_BY_COUNTY[county] ?? []).map((c) => <option key={c} value={c} />)}
-                  </datalist>
+                  >
+                    <option value="">{county ? "Alege localitatea" : "Alege intai judetul"}</option>
+                    {(CITIES_BY_COUNTY[county] ?? []).map((c) => (
+                      <option key={c} value={c}>{c} — {CITY_SCHEDULE[c].day}</option>
+                    ))}
+                  </select>
 
                   <button
                     onClick={confirm}

@@ -1,8 +1,8 @@
 "use client";
 
 import { ChevronDown, MapPin, Truck, X } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
-import { CITIES_BY_COUNTY, COUNTIES, formatDays, isBaiaMare } from "@/lib/deliverySchedule";
+import { useEffect, useRef, useState } from "react";
+import { CITIES_BY_COUNTY, CITY_SCHEDULE, COUNTIES, isBaiaMare } from "@/lib/deliverySchedule";
 import { useDeliveryCity } from "@/components/useDeliveryCity";
 
 export default function DeliveryInfo({
@@ -15,7 +15,6 @@ export default function DeliveryInfo({
   const [county, setCounty] = useState("");
   const [city, setCity] = useState("");
   const ref = useRef<HTMLDivElement>(null);
-  const listId = useId();
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -43,16 +42,12 @@ export default function DeliveryInfo({
       <div className="flex items-start gap-3">
         <Truck size={15} className="mt-0.5 shrink-0 text-brand" />
         <div className="flex-1">
-          {selection && match.kind !== "none" ? (
+          {selection && match.kind === "route" ? (
             <div>
               <div className="flex items-center justify-between gap-2">
                 <span>
-                  {match.kind === "route" ? (
-                    <>Livrare <strong className="text-neutral-900">{match.day}</strong></>
-                  ) : (
-                    <>Estimativ <strong className="text-neutral-900">{formatDays(match.days)}</strong></>
-                  )}
-                  <span className="text-neutral-400"> · {selection.city} · </span>
+                  Livrare <strong className="text-neutral-900">{match.day}</strong>
+                  <span className="text-neutral-400"> · {match.city} · </span>
                   {hasFee
                     ? <>livrare gratuita peste <strong className="text-neutral-900">{min} lei</strong></>
                     : <>minim <strong className="text-neutral-900">{min} lei</strong></>}
@@ -65,11 +60,6 @@ export default function DeliveryInfo({
                   <X size={13} />
                 </button>
               </div>
-              {match.kind === "estimate" && (
-                <p className="mt-1 text-xs text-amber-700">
-                  📞 Va contactam pentru a confirma ziua exacta de livrare.
-                </p>
-              )}
               {hasFee && (
                 <p className="mt-1 text-xs text-neutral-400">
                   Taxa livrare <strong className="text-neutral-600">{fee} lei</strong> pentru comenzi sub {min} lei
@@ -101,18 +91,17 @@ export default function DeliveryInfo({
                     {COUNTIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
 
-                  <input
+                  <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && confirm()}
                     disabled={!county}
-                    list={listId}
-                    placeholder={county ? "Scrie localitatea" : "Alege intai judetul"}
                     className="w-full rounded border border-neutral-200 px-2 py-1.5 text-xs outline-none focus:border-brand disabled:opacity-40"
-                  />
-                  <datalist id={listId}>
-                    {(CITIES_BY_COUNTY[county] ?? []).map((c) => <option key={c} value={c} />)}
-                  </datalist>
+                  >
+                    <option value="">{county ? "Alege localitatea" : "Alege intai judetul"}</option>
+                    {(CITIES_BY_COUNTY[county] ?? []).map((c) => (
+                      <option key={c} value={c}>{c} — {CITY_SCHEDULE[c].day}</option>
+                    ))}
+                  </select>
 
                   <button
                     onClick={confirm}
