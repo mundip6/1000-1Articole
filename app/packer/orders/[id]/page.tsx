@@ -6,7 +6,7 @@ import CancelOrderButton from "@/components/CancelOrderButton";
 import PrintOrderButton from "@/components/PrintOrderButton";
 import { isPackerAuthenticated } from "@/lib/packerAuth";
 import { formatPrice } from "@/lib/data";
-import { getOrder } from "@/lib/orders";
+import { getOrder, orderShippingFee } from "@/lib/orders";
 import { updateOrderActualWeightsPackerAction, updateOrderStatusPackerAction } from "../../actions";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +42,7 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
     return s + item.price * qty;
   }, 0);
   const diff = finalTotal - estimatedTotal;
+  const shippingFee = orderShippingFee(order);
 
   return (
     <PackerShell title={order.id} description={`Plasata pe ${dateTime}`}>
@@ -152,8 +153,18 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
               </tbody>
               <tfoot>
                 <tr className="border-t-2 border-neutral-200">
-                  <td colSpan={3} className="pt-3 text-right text-sm font-semibold text-neutral-500">Total comanda</td>
-                  <td className="pt-3 text-right text-lg font-black text-brand">{formatPrice(order.total)} lei</td>
+                  <td colSpan={3} className="pt-3 text-right text-sm font-semibold text-neutral-500">Subtotal produse</td>
+                  <td className="pt-3 text-right text-sm font-bold text-neutral-600">{formatPrice(estimatedTotal)} lei</td>
+                </tr>
+                {shippingFee > 0 && (
+                  <tr>
+                    <td colSpan={3} className="pt-1 text-right text-sm font-semibold text-neutral-500">Taxa livrare</td>
+                    <td className="pt-1 text-right text-sm font-bold text-amber-700">{formatPrice(shippingFee)} lei</td>
+                  </tr>
+                )}
+                <tr>
+                  <td colSpan={3} className="pt-2 text-right text-sm font-black text-neutral-700">Total comanda</td>
+                  <td className="pt-2 text-right text-lg font-black text-brand">{formatPrice(order.total)} lei</td>
                 </tr>
                 {order.weight > 0 && (
                   <tr>
@@ -234,22 +245,29 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
             </form>
 
             {allWeighed && (
-              <div className="mt-5 grid grid-cols-3 gap-4 border-t border-neutral-100 pt-5">
-                <div className="rounded-lg bg-neutral-50 p-4 text-center">
-                  <p className="text-xs font-semibold uppercase text-neutral-500">Total estimat</p>
-                  <p className="mt-1 text-xl font-black text-neutral-600">{formatPrice(estimatedTotal)} lei</p>
+              <>
+                <div className="mt-5 grid grid-cols-3 gap-4 border-t border-neutral-100 pt-5">
+                  <div className="rounded-lg bg-neutral-50 p-4 text-center">
+                    <p className="text-xs font-semibold uppercase text-neutral-500">Total estimat</p>
+                    <p className="mt-1 text-xl font-black text-neutral-600">{formatPrice(estimatedTotal + shippingFee)} lei</p>
+                  </div>
+                  <div className="rounded-lg bg-green-50 p-4 text-center">
+                    <p className="text-xs font-semibold uppercase text-neutral-500">Total final</p>
+                    <p className="mt-1 text-xl font-black text-green-700">{formatPrice(finalTotal + shippingFee)} lei</p>
+                  </div>
+                  <div className={`rounded-lg p-4 text-center ${diff >= 0 ? "bg-red-50" : "bg-blue-50"}`}>
+                    <p className="text-xs font-semibold uppercase text-neutral-500">Diferenta</p>
+                    <p className={`mt-1 text-xl font-black ${diff >= 0 ? "text-red-600" : "text-blue-600"}`}>
+                      {diff >= 0 ? "+" : ""}{formatPrice(diff)} lei
+                    </p>
+                  </div>
                 </div>
-                <div className="rounded-lg bg-green-50 p-4 text-center">
-                  <p className="text-xs font-semibold uppercase text-neutral-500">Total final</p>
-                  <p className="mt-1 text-xl font-black text-green-700">{formatPrice(finalTotal)} lei</p>
-                </div>
-                <div className={`rounded-lg p-4 text-center ${diff >= 0 ? "bg-red-50" : "bg-blue-50"}`}>
-                  <p className="text-xs font-semibold uppercase text-neutral-500">Diferenta</p>
-                  <p className={`mt-1 text-xl font-black ${diff >= 0 ? "text-red-600" : "text-blue-600"}`}>
-                    {diff >= 0 ? "+" : ""}{formatPrice(diff)} lei
+                {shippingFee > 0 && (
+                  <p className="mt-2 text-center text-xs text-neutral-400">
+                    Totalurile includ taxa de livrare de {formatPrice(shippingFee)} lei. Diferenta reflecta doar cantarirea.
                   </p>
-                </div>
-              </div>
+                )}
+              </>
             )}
           </div>
         )}

@@ -126,6 +126,16 @@ function toOrder(order: {
   };
 }
 
+/**
+ * Shipping fee charged on an order, recovered from the stored total. The fee is
+ * folded into `total` at checkout and nothing rewrites it afterwards, so the gap
+ * against the item subtotal gives it back for old and new orders alike.
+ */
+export function orderShippingFee(order: Order): number {
+  const itemsTotal = order.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  return Math.max(0, Number((order.total - itemsTotal).toFixed(2)));
+}
+
 export async function getOrder(id: string): Promise<Order | null> {
   const order = await prisma.order.findUnique({ where: { id }, include: { items: true } });
   return order ? toOrder(order) : null;
