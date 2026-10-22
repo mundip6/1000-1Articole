@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { formatDateTime } from "@/lib/datetime";
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, CheckCircle2, LogOut, Mail, ShoppingBag, UserRound, XCircle } from "lucide-react";
@@ -395,7 +396,7 @@ export default function CustomerAccountPage() {
                       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                         <div>
                           <h3 className="font-black">{order.id}</h3>
-                          <p className="text-sm text-neutral-500">{new Date(order.createdAt).toLocaleString("ro-RO")}</p>
+                          <p className="text-sm text-neutral-500">{formatDateTime(order.createdAt)}</p>
                         </div>
                         <div className="text-left sm:text-right">
                           <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-black text-brand">{order.status}</span>

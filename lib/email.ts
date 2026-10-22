@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { formatCompact } from "@/lib/datetime";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -175,7 +176,7 @@ export async function sendChatTranscriptEmail(
   const rows = messages
     .map((m) => {
       const who = m.sender === "admin" ? "1000&amp;1 Articole" : "Tu";
-      const time = new Date(m.createdAt).toLocaleString("ro-RO", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+      const time = formatCompact(m.createdAt);
       return `
         <tr>
           <td style="padding:10px 14px;vertical-align:top;white-space:nowrap;font-size:12px;color:#888;">${who}<br/><span style="color:#bbb;">${time}</span></td>

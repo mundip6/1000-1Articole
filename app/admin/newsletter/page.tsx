@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { formatDate } from "@/lib/datetime";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import AdminShell from "@/components/AdminShell";
 import { prisma } from "@/lib/prisma";
@@ -50,7 +51,7 @@ export default async function NewsletterPage() {
                         : <span className="text-neutral-300">—</span>}
                     </td>
                     <td className="px-5 py-3 text-right text-neutral-400">
-                      {new Date(s.createdAt).toLocaleDateString("ro-RO")}
+                      {formatDate(s.createdAt)}
                     </td>
                   </tr>
                 ))}

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { formatDate } from "@/lib/datetime";
 import { CheckCircle, XCircle } from "lucide-react";
 import { isAdminAuthenticated } from "@/lib/adminAuth";
 import AdminShell from "@/components/AdminShell";
@@ -203,7 +204,7 @@ export default async function StatisticiPage() {
                         : <XCircle size={16} className="mx-auto text-neutral-300" />}
                     </td>
                     <td className="px-5 py-3 text-right text-neutral-400">
-                      {new Date(s.createdAt).toLocaleDateString("ro-RO")}
+                      {formatDate(s.createdAt)}
                     </td>
                   </tr>
                 ))}
@@ -247,7 +248,7 @@ export default async function StatisticiPage() {
                     <td className="px-5 py-3 text-center font-black text-red-500">{c.cancelledOrders}</td>
                     <td className="px-5 py-3 text-right font-black">{formatPrice(c.totalSpent)} lei</td>
                     <td className="px-5 py-3 text-right text-neutral-400">
-                      {new Date(c.createdAt).toLocaleDateString("ro-RO")}
+                      {formatDate(c.createdAt)}
                     </td>
                   </tr>
                 ))}

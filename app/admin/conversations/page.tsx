@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { formatCompact } from "@/lib/datetime";
 import { redirect } from "next/navigation";
 import { MessageCircle, Send } from "lucide-react";
 import AdminShell from "@/components/AdminShell";
@@ -63,7 +64,7 @@ export default function ConversationsPage() {
   };
 
   const fmt = (date: string) =>
-    new Date(date).toLocaleString("ro-RO", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+    formatCompact(date);
 
   return (
     <AdminShell title="Conversatii" description="Mesaje primite de la vizitatori." active="conversations">

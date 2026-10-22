@@ -1,6 +1,7 @@
 "use client";
 
 import { Printer } from "lucide-react";
+import { formatDateTime } from "@/lib/datetime";
 import type { Order } from "@/lib/orders";
 
 function formatPrice(n: number) {
@@ -9,11 +10,7 @@ function formatPrice(n: number) {
 
 export default function PrintOrderButton({ order }: { order: Order }) {
   const handlePrint = () => {
-    const d = new Date(order.createdAt);
-    const dateTime = d.toLocaleString("ro-RO", {
-      day: "2-digit", month: "long", year: "numeric",
-      hour: "2-digit", minute: "2-digit",
-    });
+    const dateTime = formatDateTime(order.createdAt);
 
     const estimatedTotal = order.items.reduce((s, item) => s + item.price * item.qty, 0);
     const finalTotal = order.items.reduce((s, item) => {

@@ -33,7 +33,7 @@ export default function RealTimeVisitors({ initial }: { initial: number }) {
         <span className="text-sm text-neutral-500">vizitatori activi</span>
       </div>
       <span className="text-xs text-neutral-400">
-        (ultimele 5 min · actualizat la {lastUpdated.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit", second: "2-digit" })})
+        (ultimele 5 min · actualizat la {lastUpdated.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Bucharest" })})
       </span>
     </div>
   );

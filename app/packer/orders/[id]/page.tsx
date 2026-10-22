@@ -6,6 +6,7 @@ import CancelOrderButton from "@/components/CancelOrderButton";
 import PrintOrderButton from "@/components/PrintOrderButton";
 import { isPackerAuthenticated } from "@/lib/packerAuth";
 import { formatPrice } from "@/lib/data";
+import { formatDateTime } from "@/lib/datetime";
 import { getOrder, orderShippingFee } from "@/lib/orders";
 import { updateOrderActualWeightsPackerAction, updateOrderStatusPackerAction } from "../../actions";
 
@@ -25,11 +26,7 @@ export default async function PackerOrderDetailPage({ params }: { params: Promis
   const order = await getOrder(id);
   if (!order) notFound();
 
-  const d = new Date(order.createdAt);
-  const dateTime = d.toLocaleString("ro-RO", {
-    day: "2-digit", month: "long", year: "numeric",
-    hour: "2-digit", minute: "2-digit",
-  });
+  const dateTime = formatDateTime(order.createdAt);
   const badge = STATUS_STYLES[order.status] ?? "bg-neutral-100 text-neutral-500";
 
   const kgItems = order.items.filter((item) => item.unit === "kg");

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatListDate, formatTime } from "@/lib/datetime";
 import { redirect } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
 import PackerShell from "@/components/PackerShell";
@@ -41,9 +42,8 @@ export default async function PackerOrdersPage() {
         ) : (
           <div className="overflow-hidden rounded-lg border border-neutral-200">
             {orders.map((order, i) => {
-              const d = new Date(order.createdAt);
-              const date = d.toLocaleDateString("ro-RO", { day: "2-digit", month: "short", year: "numeric" });
-              const time = d.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" });
+              const date = formatListDate(order.createdAt);
+              const time = formatTime(order.createdAt);
               const rowBg = ROW_STYLES[order.status] ?? "bg-white hover:bg-neutral-50";
               const badge = STATUS_STYLES[order.status] ?? "bg-neutral-100 text-neutral-500";
 
