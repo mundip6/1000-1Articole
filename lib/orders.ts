@@ -3,6 +3,7 @@ import { type Category } from "@/lib/data";
 import { isValidCui, normalizeCui } from "@/lib/cui";
 import { getSettings, SETTINGS_KEYS } from "@/lib/settings";
 import { isBaiaMare } from "@/lib/deliverySchedule";
+import { sendNewOrderEmail } from "@/lib/email";
 
 export type OrderStatus = "Noua" | "Confirmata" | "Livrata" | "Anulata";
 
@@ -255,7 +256,16 @@ export async function createOrder(input: OrderInput) {
     return created;
   });
 
-  return toOrder(order);
+  const placed = toOrder(order);
+
+  // Alert the shop. A mail failure must never fail an order that is already committed.
+  try {
+    await sendNewOrderEmail(placed);
+  } catch {
+    // notification is best-effort
+  }
+
+  return placed;
 }
 
 export async function updateOrderStatus(id: string, status: OrderStatus) {
