@@ -268,10 +268,12 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     const order = await tx.order.findUnique({ where: { id }, include: { items: true } });
     if (!order) throw new Error("Comanda nu a fost gasita.");
 
-    // Restore stock when cancelling
+    // Restore stock when cancelling. updateMany so a product deleted from the
+    // catalog since the order was placed simply has no stock to restore,
+    // instead of aborting the whole cancellation.
     if (status === "Anulata" && order.status !== "Anulata") {
       for (const item of order.items) {
-        await tx.product.update({
+        await tx.product.updateMany({
           where: { id: item.productId },
           data: { stock: { increment: item.qty } },
         });
@@ -281,7 +283,7 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     // Decrement stock when un-cancelling (e.g. Anulata → Noua)
     if (order.status === "Anulata" && status !== "Anulata") {
       for (const item of order.items) {
-        await tx.product.update({
+        await tx.product.updateMany({
           where: { id: item.productId },
           data: { stock: { decrement: item.qty } },
         });
@@ -324,9 +326,9 @@ export async function cancelCustomerOrder(id: string, email: string) {
       throw new Error("Comanda poate fi anulata doar daca are statusul Noua.");
     }
 
-    // Restore stock for each item
+    // Restore stock for each item; skips products no longer in the catalog
     for (const item of order.items) {
-      await tx.product.update({
+      await tx.product.updateMany({
         where: { id: item.productId },
         data: { stock: { increment: item.qty } },
       });
